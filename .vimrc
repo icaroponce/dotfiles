@@ -31,7 +31,7 @@ let g:user_emmet_settings = {
 
 map <C-h> :NERDTreeToggle<CR>
 
-"""beautifiers
+""beautifiers
 "for js
 autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
 autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
@@ -49,7 +49,6 @@ autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
 "for css or scss
 autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
-
 
 "by default, the indent is 4 spaces. 
 "set shiftwidth=4
@@ -71,8 +70,32 @@ autocmd Filetype css setlocal ts=4 sw=4 sts=0 noexpandtab
 "set tabstop=4
 "set shiftwidth=4
 
-"let g:airline_powerline_fonts=1 
+let g:airline_powerline_fontsi = 1 
 let g:Powerline_symbols='unicode'
 
+if !exists('g:airline_symbols')
+	let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+"let g:airline_theme = 'powerlineish'
+let g:airline#extensions#hunks#enabled=0
+let g:airline#extensions#branch#enabled=1
+
+set ttimeoutlen=50
 set encoding=utf-8
 set t_Co=256
+set laststatus=2
