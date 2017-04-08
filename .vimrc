@@ -21,6 +21,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'powerline/powerline'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'ryanoasis/vim-devicons'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -97,4 +98,5 @@ set ttimeoutlen=50
 set encoding=utf-8
 set t_Co=256
 set laststatus=2
-""""
+
+colorscheme slate
