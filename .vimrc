@@ -20,6 +20,7 @@ Plugin 'ervandew/supertab'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'powerline/powerline'
+Plugin 'flazz/vim-colorschemes'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -51,10 +52,6 @@ autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
 autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
 
-"by default, the indent is 4 spaces. 
-"set shiftwidth=4
-"set softtabstop=4
-"set tabstop=4
 
 "for html/rb files, 2 spaces
 autocmd Filetype html setlocal ts=2 sw=2 noexpandtab
@@ -67,9 +64,10 @@ autocmd Filetype ruby setlocal ts=2 sw=2 noexpandtab
 autocmd Filetype python setlocal ts=4 sw=4 sts=4 noexpandtab
 autocmd Filetype css setlocal ts=4 sw=4 sts=0 noexpandtab
 
-"set laststatus=2
-"set tabstop=4
-"set shiftwidth=4
+"by default, the indent is 4 spaces. 
+set sts=2
+set sw=4
+set sw=4
 
 let g:airline_powerline_fontsi = 1 
 let g:Powerline_symbols='unicode'
@@ -77,8 +75,6 @@ let g:Powerline_symbols='unicode'
 if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
 endif
-
-" unicode symbols
 
 " powerline symbols
 let g:airline_left_sep = ''
@@ -93,21 +89,6 @@ let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 
-
-let g:airline_mode_map = {
-	\ '__' : '-',
-      	\ 'n'  : 'N',
-     	 \ 'i'  : 'I',
-      	\ 'R'  : 'R',
-      	\ 'c'  : 'C',
-      	\ 'v'  : 'V',
-      	\ 'V'  : 'V',
-      	\ '' : 'V',
-      	\ 's'  : 'S',
-      	\ 'S'  : 'S',
-      	\ '' : 'S',
-\ }
-
 "let g:airline_theme = 'powerlineish'
 "let g:airline#extensions#hunks#enabled=0
 "let g:airline#extensions#branch#enabled=1
@@ -116,3 +97,4 @@ set ttimeoutlen=50
 set encoding=utf-8
 set t_Co=256
 set laststatus=2
+""""
