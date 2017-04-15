@@ -1,6 +1,6 @@
 #makes the terminal support 256 color schemes
 #DISABLE_AUTO_TITLE=true
-
+export LINUX_ICON=$'\uF17C'
 export TERM="xterm-256color"
 
 export EDITOR="vim"
@@ -30,6 +30,7 @@ export ZSH=/home/icaroponce/.oh-my-zsh
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="powerlevel9k/powerlevel9k"
+POWERLEVEL9K_MODE='nerdfont-fontconfig'
 
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 #POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
@@ -37,32 +38,24 @@ POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 #POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 #POWERLEVEL9K_DISABLE_RPROMPT=true
 #POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-#POWERLEVEL9K_MODE='awesome-fontconfig'
 #POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
 #POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
 #POWERLEVEL9K_COLOR_SCHEME='light'
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon dir node_version vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs ram time)
 
-POWERLEVEL9K_HOME_ICON=''
-POWERLEVEL9K_HOME_SUB_ICON=''
-POWERLEVEL9K_FOLDER_ICON=''
-
 DISABLE_AUTO_TITLE="true"
 
-POWERLEVEL9K_VCS_GIT_ICON=''
-POWERLEVEL9K_VCS_STAGED_ICON='\u00b1'
-POWERLEVEL9K_VCS_UNTRACKED_ICON='\u25CF'
-POWERLEVEL9K_VCS_UNSTAGED_ICON='\u00b1'
-POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON='\u2193'
-POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON='\u2191'
+POWERLEVEL9K_DIR_HOME_FOREGROUND="white"
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="white"
+POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="white"
+
+POWERLEVEL9K_NODE_ICON=$'\ue718'
 
 POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
 POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
 
 POWERLEVEL9K_TIME_FORMAT="%D{\uf017 %H:%M \uf073 %d.%m.%y}"
-POWERLEVEL9K_OS_ICON_BACKGROUND="black"
-POWERLEVEL9K_OS_ICON_FOREGROUND="249"
 
 POWERLEVEL9K_TIME_FOREGROUND='red'
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
@@ -141,6 +134,9 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
+#
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
