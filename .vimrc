@@ -54,21 +54,22 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
 
 
-"for html/rb files, 2 spaces
-autocmd Filetype html setlocal ts=2 sw=2 noexpandtab
-autocmd Filetype javascript set ts=2 sw=2 noexpandtab
-autocmd Filetype javascript.jsx set ts=2 sw=2 noexpandtab
-autocmd Filetype jsx set ts=2 sw=2 noexpandtab
-autocmd Filetype ruby setlocal ts=2 sw=2 noexpandtab
+"for html/js/jsx/ruby files, 2 spaces
+autocmd Filetype html setlocal ts=2 sw=2 
+autocmd Filetype javascript setlocal ts=2 sw=2 
+autocmd Filetype javascript.jsx setlocal ts=2 sw=2
+autocmd Filetype jsx setlocal ts=2 sw=2 
+autocmd Filetype ruby setlocal ts=2 sw=2 
 
-"for js/coffee/jade files, 4 spaces
-autocmd Filetype python setlocal ts=4 sw=4 sts=4 noexpandtab
-autocmd Filetype css setlocal ts=4 sw=4 sts=0 noexpandtab
+"for python/css files, 4 spaces
+autocmd Filetype python setlocal ts=4 sw=4 sts=4 
+autocmd Filetype css setlocal ts=4 sw=4 sts=0 
 
 "by default, the indent is 4 spaces. 
 set sts=2
 set sw=4
 set sw=4
+set expandtab
 
 let g:airline_powerline_fontsi = 1 
 let g:Powerline_symbols='unicode'
