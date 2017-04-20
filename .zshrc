@@ -1,6 +1,5 @@
 #makes the terminal support 256 color schemes
 #DISABLE_AUTO_TITLE=true
-export LINUX_ICON=$'\uF17C'
 export TERM="xterm-256color"
 
 export EDITOR="vim"
