@@ -91,10 +91,6 @@ let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 
-"let g:airline_theme = 'powerlineish'
-"let g:airline#extensions#hunks#enabled=0
-"let g:airline#extensions#branch#enabled=1
-
 set ttimeoutlen=50
 set encoding=utf-8
 set t_Co=256
