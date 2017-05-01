@@ -1,7 +1,7 @@
-#Personal config files
+# Personal config files
 Scripts to set up my preferable terminal shell and vim editor configuration.
 
-##Pre-requisites
+## Pre-requisites
 To use this scripts, you must have properly running/installed in your machine:
   - [Vim](http://www.vim.org/)  - Text Editor;
   - [Bundle](https://github.com/VundleVim/Vundle.vim) - Plug-in Manager for Vim;
@@ -9,11 +9,11 @@ To use this scripts, you must have properly running/installed in your machine:
   - [tmux](https://tmux.github.io/) - terminal multiplexer;
   - [Nerd-fonts](https://github.com/ryanoasis/nerd-fonts) - Complete fonts and icons collection;
 
-##Getting started
+## Getting started
 Download or clone this repository into your machine.
 To get the same result as mine, you probably should install other packages, as nvm or git-flow. But all the files are highly customizable, feel free to check their respective documentations on the Internet and adjust it regarding your style and needs. 
 
-##Running the code
+## Running the code
 
 Place the .tmux.conf, .vimrc and .zshrc files into the user directory root: ~/ .
 The .editorconfig into the ~/.vim directory. And the alias.zsh, you can place into ~/.oh-my-zsh/lib, as I'm doing.
