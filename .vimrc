@@ -63,15 +63,15 @@ autocmd Filetype ruby setlocal ts=2 sw=2
 
 "for python/css files, 4 spaces
 autocmd Filetype python setlocal ts=4 sw=4 sts=4 
-autocmd Filetype css setlocal ts=4 sw=4 sts=0 
+autocmd Filetype css setlocal ts=4 sw=4 sts=4
 
 "by default, the indent is 4 spaces. 
-set sts=2
+set sts=4
 set sw=4
 set sw=4
 set expandtab
 
-let g:airline_powerline_fontsi = 1 
+let g:airline_powerline_fonts = 1 
 let g:Powerline_symbols='unicode'
 
 if !exists('g:airline_symbols')
