@@ -9,6 +9,9 @@ export VISUAL=$EDITOR
 # ooh, what is this? Aliases?
 source ~/.oh-my-zsh/lib/alias.zsh
 
+# private-aliases:
+source ~/.aliases.sh
+
 #if you do a "rm *", zsh will give a sanity check
 setopt RM_STAR_WAIT
 
