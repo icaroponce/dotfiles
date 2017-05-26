@@ -22,6 +22,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'powerline/powerline'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'ryanoasis/vim-devicons'
+Plugin 'elixir-lang/vim-elixir'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
