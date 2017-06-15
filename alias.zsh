@@ -12,3 +12,6 @@ alias ez='vim ~/.zshrc'
 
 # xclip aliases
 alias cs='xclip -selection clipboard'
+
+# docker
+alias docrm='docker rm -v $(docker ps -qa -f status=exited)'
