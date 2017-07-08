@@ -7,22 +7,19 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
-Plugin 'mattn/emmet-vim'
-Plugin 'maksimr/vim-jsbeautify'
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'csscomb/vim-csscomb.git'
 Plugin 'pangloss/vim-javascript'
-Plugin 'mxw/vim-jsx'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'isRuslan/vim-es6'
+" Plugin 'scrooloose/syntastic'
+Plugin 'mattn/emmet-vim'
+Plugin 'oinksoft/npm.vim'
+Plugin 'maksimr/vim-jsbeautify'
 Plugin 'godlygeek/tabular'
 Plugin 'ervandew/supertab'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'powerline/powerline'
-Plugin 'flazz/vim-colorschemes'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'elixir-lang/vim-elixir'
+Plugin 'mxw/vim-jsx'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -59,12 +56,14 @@ set sts=4
 set sw=4
 set sw=4
 set expandtab
+set autoindent
 
 "for html/js/jsx/ruby files, 2 spaces
 autocmd Filetype html setlocal ts=2 sw=2 sts=2
 autocmd Filetype javascript setlocal ts=2 sw=2 sts=2
 autocmd Filetype javascript.jsx setlocal ts=2 sw=2 sts=2
 autocmd Filetype jsx setlocal ts=2 sw=2 sts=2
+autocmd Filetype json setlocal ts=2 sw=2 sts=2
 autocmd Filetype ruby setlocal ts=2 sw=2 sts=2
 
 "for python/css files, 4 spaces
@@ -96,5 +95,26 @@ set ttimeoutlen=50
 set encoding=utf-8
 set t_Co=256
 set laststatus=2
+syntax on
 
-colorscheme slate
+" let g:xml_syntax_folding = 1
+let g:jsx_ext_required = 0
+
+set background=dark
+
+"let g:solarized_termcolors=16
+let g:solarized_termcolors=256
+colorscheme solarized
+" highlight Comment ctermfg=darkgray
+
+
+" Syntastic configuration
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_javascript_checkers=['eslint']
