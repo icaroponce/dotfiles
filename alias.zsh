@@ -18,3 +18,6 @@ alias docrme='docker rm -v $(docker ps -qa -f status=exited)'
 
 # docker pause and remove 
 alias docsr='docker rm $(docker stop $(docker ps -q))'
+
+alias gflbs='git flow bugfix start'
+alias gflbf='git flow bugfix finish'

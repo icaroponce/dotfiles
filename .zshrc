@@ -44,7 +44,7 @@ POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 #POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
 #POWERLEVEL9K_COLOR_SCHEME='light'
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon dir node_version nvm anaconda docker_machine vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs ram time)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs ram)
 
 DISABLE_AUTO_TITLE="true"
 
