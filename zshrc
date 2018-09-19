@@ -1,66 +1,40 @@
-#makes the terminal support 256 color schemes
-#DISABLE_AUTO_TITLE=true
-export TERM="xterm-256color"
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+export TERM="screen-256color"
+# Path to your oh-my-zsh installation.
+export ZSH=/Users/icarovitalponce/.oh-my-zsh
 export EDITOR="vim"
 export USE_EDITOR=$EDITOR
 export VISUAL=$EDITOR
 
-# ooh, what is this? Aliases?
-source ~/.oh-my-zsh/lib/alias.zsh
-
-# private-aliases:
-source ~/.aliases.sh
-
-#if you do a "rm *", zsh will give a sanity check
-setopt RM_STAR_WAIT
-
-# allows you to type Bash style comments on your command line
-# good 'ol Bash
-setopt interactivecomments
-
-# Zsh has a spelling corrector
-setopt CORRECT
-
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
-export ZSH=/home/icaroponce/.oh-my-zsh
-
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# ZSH_THEME="robbyrussell"
 ZSH_THEME="powerlevel9k/powerlevel9k"
-POWERLEVEL9K_MODE='nerdfont-fontconfig'
+POWERLEVEL9K_MODE="nerdfont-complete"
 
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-#POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
+setopt RM_STAR_WAIT
+setopt interactivecomments
+setopt CORRECT
 
-#POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-#POWERLEVEL9K_DISABLE_RPROMPT=true
-#POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-#POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
-#POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
-#POWERLEVEL9K_COLOR_SCHEME='light'
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon dir node_version nvm anaconda docker_machine vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs ram)
-
-DISABLE_AUTO_TITLE="true"
-
-POWERLEVEL9K_DIR_HOME_FOREGROUND="white"
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="white"
-POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="white"
-
-POWERLEVEL9K_NODE_ICON=$'\ue718'
+POWERLEVEL9K_PROMPT_ON_NEWLINE=false
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir nvm vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
 
 POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
 POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
 
-POWERLEVEL9K_TIME_FORMAT="%D{\uf017 %H:%M \uf073 %d.%m.%y}"
-
-POWERLEVEL9K_TIME_FOREGROUND='red'
+POWERLEVEL9K_DIR_HOME_FOREGROUND="white"
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="white"
+POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="white"
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+
+POWERLEVEL9K_NODE_ICON=$'\ue718'
+
+source ~/.alias.sh # private-aliases
+source ~/alias.sh
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -79,7 +53,7 @@ POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -104,8 +78,7 @@ POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git-flow node zshmarks)
-
+plugins=(git tmux node zshmarks docker-compose spotify) 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -136,10 +109,28 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-#
-#
 
-export NVM_DIR="$HOME/.nvm"
+eval $(thefuck --alias)
+
+ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export PATH="/home/icaroponce/anaconda3/bin:$PATH"
+bindkey "\e[1~" beginning-of-line
+bindkey "\e[4~" end-of-line
+
+GOPATH=$(go env GOPATH)
+export PATH=$PATH:$GOPATH/bin:~/protoc/bin
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/icarovitalponce/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/icarovitalponce/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/icarovitalponce/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/icarovitalponce/google-cloud-sdk/completion.zsh.inc'; fi
+
+eval "$(direnv hook zsh)"
+
+# Fuzzy matching vim pluging junegunn/fzf with ripgrep for listing
+export PATH=$PATH:~/.vim/pack/minpac/start/fzf/bin
+export FZF_DEFAULT_COMMAND='rg --files'
+export PATH=$PATH:/Users/icarovitalponce/Library/Python/2.7/bin
