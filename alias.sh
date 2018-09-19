@@ -9,6 +9,7 @@ alias tkill='tmux kill-session -t'
 alias ev='vim ~/.vimrc'
 alias et='vim ~/.tmux.conf'
 alias ez='vim ~/.zshrc'
+alias soz='source ~/.zshrc'
 
 # xclip aliases
 alias cs='xclip -selection clipboard'
