@@ -4,7 +4,7 @@
 export TERM="screen-256color"
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/icarovitalponce/.oh-my-zsh
-export EDITOR="vim"
+export EDITOR="nvim"
 export USE_EDITOR=$EDITOR
 export VISUAL=$EDITOR
 
