@@ -1,3 +1,7 @@
+#alias for neovim
+alias vim='nvim'
+# alias vi='nvim'
+
 #aliases for Tmux
 alias tmux='tmux -2'
 alias ta='tmux attach -t'
