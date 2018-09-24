@@ -20,7 +20,7 @@ call minpac#add('ervandew/supertab')
 call minpac#add('ruanyl/vim-gh-line')
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('vim-airline/vim-airline')
-call minpac#add('vim-airline/vim-airline-themes')
+" call minpac#add('vim-airline/vim-airline-themes')
 call minpac#add('ryanoasis/vim-devicons')
 call minpac#add('terryma/vim-multiple-cursors')
 
@@ -37,3 +37,6 @@ call minpac#add('raichoo/purescript-vim')
 "Python specific
 call minpac#add('vim-scripts/indentpython.vim')
 call minpac#add('davidhalter/jedi-vim')
+
+"Colorschemes
+call minpac#add('morhetz/gruvbox')
