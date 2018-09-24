@@ -1,10 +1,13 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+export LC_ALL='en_US.UTF-8'
+export LANG='en_US.UTF-8'
 export TERM="screen-256color"
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/icarovitalponce/.oh-my-zsh
 export EDITOR="nvim"
+export MYVIMRC="~/.vimrc"
 export USE_EDITOR=$EDITOR
 export VISUAL=$EDITOR
 
@@ -12,8 +15,8 @@ export VISUAL=$EDITOR
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
-ZSH_THEME="powerlevel9k/powerlevel9k"
-POWERLEVEL9K_MODE="nerdfont-complete"
+ZSH_THEME="lambda"
+#POWERLEVEL9K_MODE="nerdfont-complete"
 
 setopt RM_STAR_WAIT
 setopt interactivecomments
@@ -23,12 +26,12 @@ POWERLEVEL9K_PROMPT_ON_NEWLINE=false
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir nvm vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
 
-POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
-POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
+#POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
+#POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
 
-POWERLEVEL9K_DIR_HOME_FOREGROUND="white"
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="white"
-POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="white"
+#POWERLEVEL9K_DIR_HOME_FOREGROUND="white"
+#POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="white"
+#POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="white"
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 
 POWERLEVEL9K_NODE_ICON=$'\ue718'
