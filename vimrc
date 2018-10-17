@@ -43,8 +43,6 @@ autocmd Filetype vim setlocal ts=2 sw=2 sts=2
 "for python files, 4 spaces
 autocmd Filetype python setlocal ts=4 sw=4 sts=4 foldmethod=indent foldlevel=79 textwidth=79
 
-highlight BadWhitespace ctermbg=red guibg=darkred
-au BufRead,BufNewFile *.py,*.js,*.html,*.css match BadWhitespace /\s\+$/
 
 " ****************************************************************************
 "  Visual Preferences
@@ -62,6 +60,15 @@ let g:airline_powerline_fonts = 1
 
 let g:gruvbox_italic = 1
 let g:gruvbox_contrast_dark='medium'
+
+" ****************************************************************************
+"  Neovim's Terminal customization
+" ****************************************************************************
+" switches to normal mode by pressing Esc
+if has('nvim')
+  tnoremap <Esc> <C-\><C-n>
+  tnoremap <C-v><Esc> <Esc>
+endif
 
 " ****************************************************************************
 "  Plugins Customization
@@ -90,19 +97,28 @@ let g:jedi#usages_command = "<leader>n"
 let g:jedi#rename_command = "<leader>r"
 let g:jedi#show_call_signatures = "0"
 let g:jedi#completions_command = "<C-Space>"
-" let g:jedi#smart_auto_mappings = 0
+let g:jedi#smart_auto_mappings = 0
 
 " Ale configuartions
 let g:ale_linters = {
-\ 'javascript': ['eslint'],
-\ 'python': ['pylint'],
-\ }
+      \ 'javascript': ['eslint'],
+      \ 'python': ['pylint'],
+      \ }
 
 let g:ale_fixers = {
-\ 'python': ['pylint'],
-\ 'javascript': ['eslint'],
-\ '*': ['remove_trailing_lines', 'trim_whitespace'],
-\ }
+      \ 'python': ['pylint'],
+      \ 'javascript': ['eslint'],
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ }
+
+" vim-test
+let g:test#strategy = "dispatch"
+let g:test#python#runner = 'pytest'
+let g:dispatch_compilers = {}
+let g:dispatch_compilers['pytest'] = 'pytest'
+
+"highlight BadWhitespace ctermbg=red guibg=darkred
+"au BufRead,BufNewFile *.py,*.js,*.html,*.css match BadWhitespace /\s\+$/
 
 "*****************************************************************************
 " Abbreviations / Remapping / Other Key bindings
