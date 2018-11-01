@@ -138,6 +138,7 @@ config.bind('K', 'tab-next')
 
 c.url.searchengines = {
     'DEFAULT': 'https://duckduckgo.com/?q={}',
-    'wa': 'https://wiki.archlinux.org/?search={}',
+    'aw': 'https://wiki.archlinux.org/?search={}',
     'gh': 'https://github.com/{}',
+    'yt': 'https://youtube.com/results?search_query={}',
 }
