@@ -1,5 +1,5 @@
 #alias for neovim
-alias vim='nvim'
+#alias vim='nvim'
 # alias vi='nvim'
 
 #aliases for Tmux

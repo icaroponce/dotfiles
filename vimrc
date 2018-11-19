@@ -25,8 +25,8 @@ set autoindent
 set nopaste     " enable formatting while pasting
 set showmatch   " highlight matching brackets
 set hlsearch    " highlight same words while searching with Shift +
-" set number
-" set relativenumber
+set number
+set relativenumber
 
 ""for html/js/jsx/ruby files, 2 spaces
 autocmd Filetype html setlocal ts=2 sw=2 sts=2
@@ -53,13 +53,13 @@ set background=dark
 "let g:airline_theme = 'behelit'
 "let g:solarized_termcolors=256
 "
-colorscheme gruvbox
+"colorscheme gruvbox
 
-let g:gruvbox_termcolors = 256
-let g:airline_powerline_fonts = 1
+"let g:gruvbox_termcolors = 256
+let g:airline_powerline_fonts=1
 
-let g:gruvbox_italic = 1
-let g:gruvbox_contrast_dark='medium'
+"let g:gruvbox_italic = 1
+"let g:gruvbox_contrast_dark='medium'
 
 " ****************************************************************************
 "  Neovim's Terminal customization
