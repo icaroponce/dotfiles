@@ -3,40 +3,19 @@
 
 export LC_ALL='en_US.UTF-8'
 export LANG='en_US.UTF-8'
-export TERM="screen-256color"
-export XDG_CONFIG_HOME="$HOME/.config"
+#export TERM="screen-256color"
 
-# Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 export EDITOR="nvim"
 export MYVIMRC="~/.vimrc"
 export USE_EDITOR=$EDITOR
 export VISUAL=$EDITOR
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-# ZSH_THEME="robbyrussell"
-ZSH_THEME="lambda"
-#POWERLEVEL9K_MODE="nerdfont-complete"
+ZSH_THEME="af-magic"
 
 setopt RM_STAR_WAIT
 setopt interactivecomments
 setopt CORRECT
-
-POWERLEVEL9K_PROMPT_ON_NEWLINE=false
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir nvm vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
-
-#POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
-#POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
-
-#POWERLEVEL9K_DIR_HOME_FOREGROUND="white"
-#POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="white"
-#POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="white"
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
-
-POWERLEVEL9K_NODE_ICON=$'\ue718'
 
 source ~/.alias.sh # private-aliases
 source ~/alias.sh
@@ -117,27 +96,35 @@ source $ZSH/oh-my-zsh.sh
 
 eval $(thefuck --alias)
 
- export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-bindkey "\e[1~" beginning-of-line
-bindkey "\e[4~" end-of-line
+#bindkey "\e[1~" beginning-of-line
+#bindkey "\e[4~" end-of-line
 
 GOPATH=$(go env GOPATH)
 export PATH=$PATH:$GOPATH/bin:~/protoc/bin
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/icarovitalponce/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/icarovitalponce/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/icarovitalponce/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/icarovitalponce/google-cloud-sdk/completion.zsh.inc'; fi
 
 eval "$(direnv hook zsh)"
 
 # Fuzzy matching vim pluging junegunn/fzf with ripgrep for listing
 export PATH=$PATH:~/.vim/pack/minpac/start/fzf/bin
 export FZF_DEFAULT_COMMAND='rg --files'
-export PATH=$PATH:/Users/icarovitalponce/Library/Python/2.7/bin
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export PATH=$PATH:~/.local/bin
+
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH=$PATH:$PYENV_ROOT/bin
+
+eval "$(pyenv init -)"
+
+export PATH=$PATH:/opt/i3-lock-fancy-rapid/
+
+#source "$HOME/.vim/pack/minpac/start/gruvbox/gruvbox_256palette.sh"
+# export TERM=rxvt-256color
+
+#neofetch

@@ -1,0 +1,9 @@
+set zoom-step 20
+#set scroll-step 80
+
+set selection-clipboard clipboard
+
+set incremental-search true
+
+map <C-l> zoom in
+map <C-r> zoom out

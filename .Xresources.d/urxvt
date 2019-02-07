@@ -1,48 +1,36 @@
-*foreground: #00cc00
-*foreground_bold: #a8a19f
-*cursor: #a8a19f
-*background:       #1b1918
-!!*background: rgba(0, 0, 0, .7)
+#define font1   Inconsolata Nerd Font Mono
+#define font2   DejaVu Sans
 
-!! black
-*color0: #1b1918
-*color8: #766e6b
-!! red
-*color1: #f22c40
-*color9: #f22c40
-!! green
-*color2: #5ab738
-*color10: #5ab738
-!! yellow
-*color3: #d5911a
-*color11: #d5911a
-!! blue
-*color4: #407ee7
-*color12: #407ee7
-!! magenta
-*color5: #6666ea
-*color13: #6666ea
-!! cyan
-*color6: #00ad9c
-*color14: #00ad9c
-!! white
-*color7: #a8a19f
-*color15: #f1efee
+URxvt*termName: rxvt-unicode
+URxvt.perl.ext-common: font-size
 
-!! Disable ISO mode
-!! URxvt.iso14755: false
-!! URxvt.iso14755_52: false
+URxvt.intensityStyles:	   true
+URxvt.depth:		   32
+URxvt*saveLines:           32767
+URxvt*iso14755:            false
+URxvt*iso14755_52:         false
 
-URxvt.intensityStyles:	false
-URxvt.depth:		32
-URxvt.background:       rgba:0000/0000/0200/c800
-URxvt.font: 		xft:monospace:size=11
+URxvt.internalBorder:       2
+
+!URxvt.font:                 xft:monospace:size=11
+!URxvt.boldFont:             xft:monospace:size=11
+!URxvt.italicFont:           xft:monospace:size=11
+
+URxvt.font:                 xft:font1:pixelsize=23:minspace=False:size=9, xft:font2:pixelsize=15
+URxvt.boldFont:             xft:font1:bold:pixelsize=23:minspace=False, xft:font2:pixelsize=15
+URxvt.italicFont:           xft:font1:italic:pixelsize=23:minspace=False, xft:font2:pixelsize=15
+URxvt.letterSpace: 0
+
 URxvt.scrollBar:	false
-URxvt.cursorColor:	white
+!URxvt.cursorColor:	white
 
 !! resize-font
-URxvt.resize-font.smaller:	C-Down
-URxvt.resize-font.bigger:	C-Up
+URxvt.keysym.C-Up:     font-size:increase
+URxvt.keysym.C-Down:   font-size:decrease
+URxvt.keysym.C-S-Up:   font-size:incglobal
+URxvt.keysym.C-S-Down: font-size:decglobal
+;URxvt.keysym.C-equal:  font-size:reset
+URxvt.keysym.C-backslash:  font-size:show
 
-!! URxvt.keysym.C-Down:	resize-font:smaller
-!! URxvt.keysym.C-Up:	resize-font:bigger
+URxvt.keysym.C-slash: command:\033]720;1\007
+URxvt.keysym.C-equal: command:\033]721;1\007

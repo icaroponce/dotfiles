@@ -1,4 +1,4 @@
-" ****************************************************************************
+
 "  Basic Setup
 " ****************************************************************************
 set nocompatible
@@ -53,13 +53,14 @@ set background=dark
 "let g:airline_theme = 'behelit'
 "let g:solarized_termcolors=256
 "
-"colorscheme gruvbox
+colorscheme gruvbox
 
 "let g:gruvbox_termcolors = 256
 let g:airline_powerline_fonts=1
 
-"let g:gruvbox_italic = 1
+let g:gruvbox_italic = 1
 "let g:gruvbox_contrast_dark='medium'
+highlight TermCursor ctermfg=red guifg=red
 
 " ****************************************************************************
 "  Neovim's Terminal customization
@@ -86,7 +87,9 @@ let g:netrw_winsize = 25
 
 " Change default gh map to open github link on browser
 let g:gh_line_map_default = 0
-let g:gh_line_map = '<leader>o'
+let g:gh_line_map = '<leader>gh'
+let g:gh_line_blame_map = '<leader>gb'
+let g:gh_open_command = 'xdg-open '
 
 " jedi-vim configuration
 let g:jedi#popup_on_dot = 0
@@ -139,6 +142,9 @@ if has('macunix')
   " pbcopy for OSX copy/paste
   vmap <C-x> :!pbcopy<CR>
   vmap <C-c> :w !pbcopy<CR><CR>
+else
+  vmap <C-x> :!xclip<CR>
+  vmap <C-c> :w !xclip<CR><CR>
 endif
 
 " Grepper config
@@ -167,3 +173,5 @@ nnoremap <Leader>* :Grepper -cword -noprompt<CR>
 " Search for the current selection
 nmap gs <plug>(GrepperOperator)
 xmap gs <plug>(GrepperOperator)
+
+autocmd VimEnter * hi Normal ctermbg=none

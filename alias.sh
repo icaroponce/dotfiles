@@ -1,5 +1,5 @@
 #alias for neovim
-#alias vim='nvim'
+alias vim='nvim'
 # alias vi='nvim'
 
 #aliases for Tmux
@@ -26,3 +26,7 @@ alias docsr='docker rm $(docker stop $(docker ps -q))'
 
 alias gflbs='git flow bugfix start'
 alias gflbf='git flow bugfix finish'
+
+# zshmarks (zsh's bookmark plugin)
+alias j='jump'
+alias s='bookmark'
