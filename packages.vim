@@ -22,7 +22,6 @@ call minpac#add('ruanyl/vim-gh-line')
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('vim-airline/vim-airline')
 call minpac#add('ryanoasis/vim-devicons')
-" call minpac#add('terryma/vim-multiple-cursors')
 call minpac#add('janko-m/vim-test')
 
 call minpac#add('k-takata/minpac', {'type': 'opt'})
