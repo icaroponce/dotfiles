@@ -20,5 +20,5 @@
 "xbacklight -dec 10"
    XF86MonBrightnessDown
 
-"scrot"
+"scrot ~/Screenshots/$(date '+%Y-%m-%dT%H:%M:%S.png')"
    Print

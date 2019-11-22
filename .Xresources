@@ -12,7 +12,7 @@ Xft.dpi: 120
 
 
 !#include ".Xresources.d/themes/solarized-dark"
-#include ".Xresources.d/themes/gruvbox"
+!#include ".Xresources.d/themes/gruvbox"
 
-#include ".Xresources.d/colors"
-#include ".Xresources.d/urxvt"
+!#include ".Xresources.d/colors"
+!#include ".Xresources.d/urxvt"

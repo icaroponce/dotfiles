@@ -1,5 +1,6 @@
 *.foreground:    fg
-*.background:    [90]bg 
+!*.background:    [90]bg 
+*.background:    bg 
 *.cursorColor:   fg
 *.cursorColor2:  bg
 *.border:        bg
