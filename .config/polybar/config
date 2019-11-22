@@ -445,8 +445,8 @@ exec = ~/.config/polybar/scripts/player-mpris-simple.sh
 interval = 1
 format-prefix = "    "
 format-prefix-foreground = #fdbf2c
-click-left = playerctl previous
-click-right = playerctl next
-click-middle = playerctl play-pause
+click-left = playerctl -p spotify previous
+click-right = playerctl -p spotify next
+click-middle = playerctl -p spotify play-pause
 
 ; vim:ft=dosini

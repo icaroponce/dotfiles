@@ -23,6 +23,24 @@ call minpac#add('airblade/vim-gitgutter')
 call minpac#add('vim-airline/vim-airline')
 call minpac#add('ryanoasis/vim-devicons')
 call minpac#add('janko-m/vim-test')
+call minpac#add('machakann/vim-highlightedyank')
+call minpac#add('autozimu/LanguageClient-neovim')
+"call minpac#add('Shougo/deoplete.nvim')
+"call minpac#add('Valloric/YouCompleteMe')
+call minpac#add('roxma/nvim-yarp')
+call minpac#add('Shougo/neco-syntax')
+call minpac#add('Shougo/neco-vim')
+
+call minpac#add('ncm2/ncm2')
+call minpac#add('ncm2/ncm2-bufword')
+call minpac#add('ncm2/ncm2-path')
+call minpac#add('ncm2/ncm2-tern')
+call minpac#add('ncm2/ncm2-cssomni')
+call minpac#add('ncm2/ncm2-syntax')
+call minpac#add('ncm2/ncm2-vim')
+call minpac#add('ncm2/ncm2-jedi')
+call minpac#add('fgrsnau/ncm-otherbuf')
+call minpac#add('ncm2/nvim-typescript')
 
 call minpac#add('k-takata/minpac', {'type': 'opt'})
 
@@ -33,6 +51,10 @@ call minpac#add('mattn/emmet-vim')
 call minpac#add('pangloss/vim-javascript')
 call minpac#add('mxw/vim-jsx')
 call minpac#add('raichoo/purescript-vim')
+
+"Typescript specific
+call minpac#add('HerringtonDarkholme/yats.vim')
+call minpac#add('mhartington/nvim-typescript')
 
 "Python specific
 call minpac#add('vim-scripts/indentpython.vim')

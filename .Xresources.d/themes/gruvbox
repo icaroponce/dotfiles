@@ -1,9 +1,8 @@
 #define bg                 #282828
 #define fg                 #fbf1c7
 
-!#define blk                #252323
 #define blk                #282828
-#define blk2               #32302F
+#define blk2               #928374
 #define red                #cc241d
 #define red2               #9d0006
 #define grn                #98971a
