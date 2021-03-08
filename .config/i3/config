@@ -5,9 +5,8 @@
 for_window [class="^.*"] border pixel 2
 
 set $mod Mod4
-set $browser chromium
-#set $term urxvt
-set $term kitty
+set $browser brave
+set $term alacritty
 
 font pango:monospace 10
 
@@ -18,7 +17,7 @@ floating_modifier $mod
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Composite manager:
-exec --no-startup-id compton -b
+exec --no-startup-id picom -b
 
 # Launchs Dunst for notifications
 exec --no-startup-id dunst
@@ -32,6 +31,9 @@ exec --no-startup-id blueman-applet
 # Launchs an audio-manager applet
 exec --no-startup-id pasystray
 
+# Launchs an audio-manager applet
+exec --no-startup-id xfce4-power-manager
+
 # Sets the keyboard layout for the laptop keyboard (note the swap)
 # check:
 # /usr/share/X11/xkb/rules/base.lst
@@ -43,9 +45,6 @@ exec --no-startup-id xbindkeys --poll-rc
 
 # hides the mouse pointer when it's not need 
 exec --no-startup-id unclutter
-
-# hides the mouse pointer when typing
-exec_always --no-startup-id xbanish
 
 # ----- Basic Bindings ------ #
 bindsym $mod+Return exec $term
@@ -87,9 +86,9 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # bind media-keys
-bindsym $mod+Ctrl+8 exec playerctl -p spotify previous
-bindsym $mod+Ctrl+9 exec playerctl -p spotify play-pause
-bindsym $mod+Ctrl+0 exec playerctl -p spotify next
+bindsym $mod+Ctrl+8 exec playerctl -p spotifyd previous
+bindsym $mod+Ctrl+9 exec playerctl -p spotifyd play-pause
+bindsym $mod+Ctrl+0 exec playerctl -p spotifyd next
 
 #bindsym $mod+Ctrl+8 exec mpc prev
 #bindsym $mod+Ctrl+9 exec mpc toggle
@@ -165,8 +164,6 @@ bindsym $mod+Shift+b move container to workspace back_and_forth; workspace back_
 
 # Open specific applications on predefined workspaces
 assign [class="Slack"] $ws3
-assign [class="Chromium"] $ws1
-assign [class="Spotify"] $ws9
 
 # Open some applications in floatting mode
 for_window [window_role="pop_up"] floating enable
@@ -176,11 +173,12 @@ for_window [class="Arandr"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [title="alsamixer"] floating enable
 for_window [class="Arandr"] floating enable
-#for_window [class="Scid"] floating enable
 for_window [class="Galculator"] floating enable border pixel 1
 for_window [class="Lxappearance"] floating enable sticky enable border normal
 
 for_window [urgent=latest] focus
+
+bindsym $mod+c exec "setxkbmap us dvorak-alt-intl -option caps:ctrl_modifier"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -193,9 +191,11 @@ bindsym $mod+q exec "i3lock-fancy-rapid 5 3"
 
 bindsym $mod+Print --release exec "scrot -u ~/Screenshots/$(date '+%Y-%m-%dT%H:%M:%S.png')"
 bindsym $mod+Shift+Print --release exec "scrot -s ~/Screenshots/$(date '+%Y-%m-%dT%H:%M:%S.png')"
-
+bindsym $mod+g exec "$HOME/dotfiles/.bin/spotifyd_launcher.sh"
+#bindsym $mod+m exec "xrandr --output DP1 --auto --rotate left --right-of eDP1"
 bindsym $mod+m exec "xrandr --output DP1 --auto --right-of eDP1"
 bindsym $mod+Shift+m exec "xrandr --output DP1 --off"
+#indsym $mod+Shift+m exec "xrandr --output HDMI1 --off"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {

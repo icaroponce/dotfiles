@@ -1,0 +1,17 @@
+http://lukesmith.xyz/rss.xml
+https://notrelated.libsyn.com/rss
+
+https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA "~Luke Smith (YouTube)" "yt"
+
+https://martinfowler.com/feed.atom "tech"
+https://news.ycombinator.com/rss "tech"
+https://fnune.com/atom.xml "tech" "js"
+https://www.archlinux.org/feeds/news/ "tech" "linux"
+https://www.alexedwards.net/static/feed.rss "tech" "golang"
+https://christine.website/blog.rss "tech"
+https://github.com/neovim/neovim/tags.atom "tech" "vim"
+https://www.linuxjournal.com/node/feed "tech" "linux"
+https://feeds.feedburner.com/2ality?format=xml "tech" "js"
+
+https://standardebooks.org/rss/new-releases "books"
+https://protonmail.com/blog/feed/ "tech" "security"

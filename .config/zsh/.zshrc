@@ -3,7 +3,7 @@ export LANG='en_US.UTF-8'
 
 export ZSH=$HOME/.oh-my-zsh
 export EDITOR="nvim"
-export MYVIMRC="~/.vimrc"
+export MYVIMRC="~/.config/nvim/init.vim"
 export USE_EDITOR=$EDITOR
 export VISUAL=$EDITOR
 
@@ -13,12 +13,13 @@ setopt RM_STAR_WAIT
 setopt interactivecomments
 setopt CORRECT
 
+source ~/.profile
 source ~/.alias.sh # private-aliases
 source ~/alias.sh
 
 DISABLE_AUTO_TITLE="true"
 
-plugins=(git dotenv tmux node zshmarks vi-mode zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git dotenv node zshmarks vi-mode zsh-syntax-highlighting zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 
 eval $(thefuck --alias)
@@ -39,19 +40,20 @@ export FZF_DEFAULT_COMMAND='rg --files'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export PATH=$PATH:~/.local/bin
-export PYENV_ROOT="$HOME/.pyenv"
+export PATH=$PATH:~/.cargo/bin
 export PATH=$PATH:$(yarn global bin)
-export PATH=$PATH:$PYENV_ROOT/bin
 export PATH=$PATH:/opt/i3-lock-fancy-rapid/
 
-eval "$(pyenv init -)"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
 [[ -f /home/icaro/.nvm/versions/node/v10.15.1/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/icaro/.nvm/versions/node/v10.15.1/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-#[[ -f /home/icaro/.nvm/versions/node/v10.15.1/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /home/icaro/.nvm/versions/node/v10.15.1/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
-# tabtab source for slss package
-# uninstall by removing these lines or running `tabtab uninstall slss`
-#[[ -f /home/icaro/.nvm/versions/node/v10.15.1/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh ]] && . /home/icaro/.nvm/versions/node/v10.15.1/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+export GREP_OPTIONS='- color = auto'

@@ -1,8 +1,8 @@
 #!/bin/sh
 userresources=$HOME/.Xresources
-#usermodmap=$HOME/.Xmodmap
 
 xrdb -merge $userresources
-feh --bg-scale ~/dotfiles/wallpapers/firewatcher.jpg
+feh --bg-scale ~/dotfiles/wallpapers/space-earth.jpg
+#ibus-daemon -drx
 
 exec i3
