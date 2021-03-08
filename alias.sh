@@ -1,32 +1,24 @@
 #alias for neovim
 alias vim='nvim'
-# alias vi='nvim'
 
-#aliases for Tmux
-alias tmux='tmux -2'
-alias ta='tmux attach -t'
-alias tnew='tmux new -s'
-alias tls='tmux ls'
-alias tkill='tmux kill-session -t'
-
-# convenience aliases for editing configs
-alias ev='vim ~/.vimrc'
-alias et='vim ~/.tmux.conf'
-alias ez='vim ~/.zshrc'
+# convenient aliases for editing configs
+alias cfa='vim ~/.config/alacritty/alacritty.yml'
+alias cfv='vim ~/.config/nvim/init.vim'
+alias cfi='vim ~/.config/i3/config'
+alias cfz='vim ~/.zshrc'
 alias soz='source ~/.zshrc'
 
-# xclip aliases
+# xclip alias
 alias cs='xclip -selection clipboard'
 
 # docker remove exited containers
 alias docrme='docker rm -v $(docker ps -qa -f status=exited)'
-
 # docker pause and remove 
 alias docsr='docker rm $(docker stop $(docker ps -q))'
-
-alias gflbs='git flow bugfix start'
-alias gflbf='git flow bugfix finish'
 
 # zshmarks (zsh's bookmark plugin)
 alias j='jump'
 alias s='bookmark'
+alias n='newsboat'
+alias b='buku --suggest'
+alias c='calcurse'

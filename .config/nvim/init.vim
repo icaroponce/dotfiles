@@ -1,85 +1,89 @@
-" ****************************************************************************
+" *********************************************************************
 "  Basic Setup
-" ****************************************************************************
+" *********************************************************************
 set nocompatible
 set encoding=utf-8
 set backspace=indent,eol,start
 set hidden
 set shortmess+=c
 set signcolumn=yes
-set cmdheight=2
+"set cmdheight=2
 set termguicolors
+set noshowmode "get rid off the -- INSERT --
 
-syntax on
-"filetype plugin indent on
+syntax enable
+filetype plugin indent on
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'Tpope/vim-eunuch'
+Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-surround'
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-"Plug 'w0rp/ale'
+Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
+Plug 'w0rp/ale'
 Plug 'mhinz/vim-grepper'
 Plug 'ruanyl/vim-gh-line'
 Plug 'airblade/vim-gitgutter'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
-Plug 'janko-m/vim-test'
 Plug 'machakann/vim-highlightedyank'
 Plug 'Valloric/MatchTagAlways'
+"Plug 'alvan/vim-closetag' check config later
 Plug 'Raimondi/delimitMate'
-Plug 'tomasr/molokai'
+Plug 'justinmk/vim-dirvish'
+Plug 'terryma/vim-expand-region'
+Plug 'vimwiki/vimwiki'
 
 Plug 'junegunn/vim-easy-align' "gaip
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
+
+"Statusline
+Plug 'itchyny/lightline.vim'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
 
 "Completion
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "HTML specific
 Plug 'mattn/emmet-vim'
 Plug 'ap/vim-css-color' "highlight hex and rgb colors
 
-"CSS specific
-"Plug 'styled-components/vim-styled-components'
-
-  "Markdown specific
+"Markdown specific
 Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 
+"Commenting
+Plug 'tpope/vim-commentary'
+
 "Javascript specific
-"Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
-"Plug 'maxmellon/vim-jsx-pretty'
+Plug 'maxmellon/vim-jsx-pretty'
 "Plug 'raichoo/purescript-vim'
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+"Plug 'prettier/vim-prettier', {
+  "\ 'do': 'yarn install',
+  "\ 'for': ['javascript', 'typescript', 'typescriptreact', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 "Plug 'chemzqm/vim-jsx-improve'
 
 "Typescript specific
 Plug 'HerringtonDarkholme/yats.vim'
-"Plug 'mhartington/nvim-typescript'
-"Plug 'leafgarland/typescript-vim'
 
 "Python specific
 Plug 'vim-scripts/indentpython.vim'
 
 "colorschemes
+"Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
 
 call plug#end()
 
 command! PackUpdate source $MYVIMRC | redraw | PlugInstall
-command! PackClean  source $MYVIMRC | PlugClean
+command! PackClean  source $MYVIMRC | redraw | PlugClean
+
+let g:python3_host_prog="~/.pyenv/versions/neovim3/bin/python"
+let g:python_host_prog='~/.pyenv/versions/neovim2/bin/python'
 
 let g:mapleader=','
 set history=5000
@@ -117,10 +121,11 @@ autocmd Filetype vim setlocal ts=2 sw=2 sts=2
 "for python files, 4 spaces
 autocmd Filetype python setlocal ts=4 sw=4 sts=4 foldmethod=indent foldlevel=79 textwidth=79
 
+autocmd BufRead,BufNewFile /tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
 
-" ****************************************************************************
+" *********************************************************************
 "  Visual Preferences
-" ****************************************************************************
+" *********************************************************************
 set background=dark
 
 "colorscheme solarized
@@ -128,18 +133,19 @@ set background=dark
 "let g:solarized_termcolors=256
 "
 "
-"let g:gruvbox_italic = 1
-"colorscheme gruvbox
-"let g:gruvbox_termcolors = 256
-"let g:gruvbox_contrast_dark='medium'
+let g:gruvbox_italic=1
+let g:gruvbox_contrast_dark='medium'
+colorscheme gruvbox
 
-colorscheme molokai
-let g:rehash256 = 1
+"colorscheme molokai
+"let g:rehash256 = 1
 "let g:imolokai_original = 1
 
-let g:airline_powerline_fonts=1
-
-highlight TermCursor ctermfg=red guifg=red
+"let g:airline_powerline_fonts=1
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ }
+"highlight TermCursor ctermfg=red guifg=red
 
 " ****************************************************************************
 "  Neovim's Terminal customization
@@ -165,27 +171,35 @@ let g:netrw_winsize = 25
 "augroup END
 
 " Change default gh map to open github link on browser
+"let g:gh_trace = 1
 let g:gh_line_map_default = 0
 let g:gh_line_map = '<leader>gh'
 let g:gh_line_blame_map = '<leader>gb'
-let g:gh_open_command = 'xdg-open '
-
-" vim-test
-let g:test#strategy = "dispatch"
-let g:test#python#runner = 'pytest'
-let g:dispatch_compilers = {}
-let g:dispatch_compilers['pytest'] = 'pytest'
+"let g:gh_open_command = 'xdg-open '
+let g:gh_open_command = 'fn() { echo "$@" | xclip -selection clipboard; }; fn '
 
 "let g:ale_fix_on_save = 1
-"let g:ale_linters = {
-"      \ 'python': ['pylint'],
-"      \ }
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+let g:airline#extensions#ale#enabled = 1
+
+let g:ale_linters = {
+      \ 'javascript': ['eslint'],
+      \ 'python': ['pylint'],
+      \ }
+
+nmap <silent> [k <Plug>(ale_previous_wrap)
+nmap <silent> ]k <Plug>(ale_next_wrap)
 
 "let g:ale_fixers = {
 "      \ 'python': ['pylint'],
 "      \ 'javascript': ['eslint'],
 "      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
 "      \ }
+"highlight ALEErrorSign guifg=red
+"highlight ALEWarningSign guifg=yellow
+
+
 "*****************************************************************************
 " Abbreviations / Remapping / Other Key bindings
 "*****************************************************************************
@@ -244,8 +258,8 @@ inoremap <silent><expr> <TAB>
       \ coc#refresh()
 
 " Use `[k` and `]k` for navigate diagnostics
-nmap <silent> [k <Plug>(coc-diagnostic-prev)
-nmap <silent> ]k <Plug>(coc-diagnostic-next)
+"nmap <silent> [k <Plug>(coc-diagnostic-prev)
+"nmap <silent> ]k <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
@@ -298,6 +312,12 @@ command! -nargs=0 Format :call CocAction('format')
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 
+" ------------------------------------------------
+" vim-dirvish
+" ------------------------------------------------
+
+autocmd FileType dirvish nmap <buffer> <c-o> -
+
 " -------------------------------------------------
 "  iamcco/markdown-preview
 " -------------------------------------------------
@@ -307,4 +327,23 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 "  plasticboy/vim-markdown
 " -------------------------------------------------
 autocmd FileType markdown normal zR
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+" -------------------------------------------------
+" terryma/vim-expand-region
+" -------------------------------------------------
+" Defaults: 
+" map + <Plug>(expand_region_expand)
+" map _ <Plug>(expand_region_shrink)
+
+" ------------------------------------------------
+" aliases
+" ------------------------------------------------
+"
+"  Use urlview to choose and open a url:
+"noremap <leader>u :w<Home>silent <End> !urlview<CR>
+noremap <leader>u :w \| startinsert \| term urlscan -dc -r 'linkhandler {}' %<cr>
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)

@@ -63,12 +63,12 @@ font-2 = "Inconolata Nerd Font Mono:pixelsize=13"
 modules-left = i3
 modules-center = player-mpris-simple
 ;modules-right = filesystem xbacklight alsa pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
-modules-right = filesystem xbacklight pulseaudio memory cpu battery temperature date
+modules-right = filesystem xbacklight pulseaudio memory cpu temperature date battery
 
 tray-position = right
 tray-padding = 2
 ;tray-transparent = true
-;tray-background = #0063ff
+#tray-background = #0063ff
 
 ;wm-restack = bspwm
 ;wm-restack = i3
@@ -344,7 +344,7 @@ bar-volume-empty-foreground = ${colors.foreground-alt}
 
 [module/battery]
 type = internal/battery
-battery = BAT0
+battery = BAT1
 adapter = AC
 full-at = 98
 
@@ -439,14 +439,14 @@ screenchange-reload = true
 margin-top = 5
 margin-bottom = 5
 
-[module/player-mpris-simple]
-type = custom/script
-exec = ~/.config/polybar/scripts/player-mpris-simple.sh
-interval = 1
-format-prefix = "    "
-format-prefix-foreground = #fdbf2c
-click-left = playerctl -p spotify previous
-click-right = playerctl -p spotify next
-click-middle = playerctl -p spotify play-pause
+;[module/player-mpris-simple]
+;type = custom/script
+;exec = ~/.config/polybar/scripts/player-mpris-simple.sh
+;interval = 2
+;format-prefix = "    "
+;format-prefix-foreground = #fdbf2c
+;click-left = playerctl -p spotifyd previous
+;click-right = playerctl -p spotifyd next
+;click-middle = playerctl -p spotifyd play-pause
 
 ; vim:ft=dosini
