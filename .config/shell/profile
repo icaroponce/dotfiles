@@ -1,0 +1,25 @@
+#!/bin/bash
+export LC_ALL='en_US.UTF-8'
+export LANG='en_US.UTF-8'
+
+export EDITOR="nvim"
+export VISUAL=$EDITOR
+export USE_EDITOR=$EDITOR
+export TERMINAL="alacritty"
+export FILE="ranger"
+export READER="zathura"
+export BROWSER="brave"
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+export MYVIMRC="${XDG_CONFIG_HOME:-$HOME/.config}/nvim/init.vim"
+export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+
+# use nvim as Man pager `:h Man`
+export MANPAGER='nvim +Man!'
+export MANWIDTH=999
+
+# Other program settings
+export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
+export GREP_OPTIONS='- color = auto'

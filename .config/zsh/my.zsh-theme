@@ -3,9 +3,14 @@ local return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
 
 
 # primary prompt
-#PROMPT='$FG[032]%~\
+#PROMPT='$FG[032]%~\ P
+
+#PROMPT=' $FG[032]%~\
+#$(git_prompt_info)$(hg_prompt_info) \
+#$FG[105]%(!.#.»)%{$reset_color%} '
+
 PROMPT=' $FG[032]%~\
-$(git_prompt_info)$(hg_prompt_info) \
+$(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '
 #PROMPT2='%{$fg[red]%}\ %{$reset_color%}'
 #RPS1='${return_code}'

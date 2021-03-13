@@ -110,6 +110,7 @@ autocmd Filetype javascript setlocal ts=2 sw=2 sts=2
 autocmd Filetype javascript.jsx setlocal ts=2 sw=2 sts=2
 autocmd Filetype typescript setlocal ts=2 sw=2 sts=2
 autocmd Filetype typescript.tsx setlocal ts=2 sw=2 sts=2
+autocmd Filetype typescriptreact setlocal ts=2 sw=2 sts=2
 autocmd Filetype jsx setlocal ts=2 sw=2 sts=2
 autocmd Filetype json setlocal ts=2 sw=2 sts=2
 autocmd Filetype ruby setlocal ts=2 sw=2 sts=2
@@ -122,6 +123,7 @@ autocmd Filetype vim setlocal ts=2 sw=2 sts=2
 autocmd Filetype python setlocal ts=4 sw=4 sts=4 foldmethod=indent foldlevel=79 textwidth=79
 
 autocmd BufRead,BufNewFile /tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
+autocmd Filetype conf set filetype=dosini
 
 " *********************************************************************
 "  Visual Preferences

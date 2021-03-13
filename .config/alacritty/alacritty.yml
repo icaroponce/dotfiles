@@ -97,7 +97,7 @@ font:
     style: Bold
   italic:
     family: monospace
-    style: Light Italic
+    style: Italic
   bold_italic:
     family: monospace
     style: Bold Italic
