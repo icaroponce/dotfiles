@@ -20,7 +20,7 @@
 "xbacklight -dec 10"
    XF86MonBrightnessDown
 
-""
+"xvkbd -xsendevent -text ' '"
    Shift + space
 
 "scrot ~/Screenshots/$(date '+%Y-%m-%dT%H:%M:%S.png')"
