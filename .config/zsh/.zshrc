@@ -1,5 +1,6 @@
 ## Enable colors
 autoload -U colors && colors
+PROMPT=" %F{032}%1~ %F{105}%#%f "
 
 setopt AUTOCD		# Automatically cd into typed directory 
 setopt INTERACTIVE_COMMENTS # Allow comments even in interactive shells.
@@ -50,9 +51,8 @@ bindkey '^v' edit-command-line
 # Enable searching through history
 bindkey '^R' history-incremental-pattern-search-backward
 
-# load integration with vcs for git info on prompt
-
-PROMPT=" %F{032}%1~ %F{105}%#%f "
+# Accept command suggestion with ctrl+space
+bindkey '^ ' autosuggest-accept
 
 ## TODO: move everything below to a separate file (clean-up)
 eval "$(thefuck --alias)"
