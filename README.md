@@ -1,3 +1,3 @@
 # Personal config files
 
-Always outdated, ocasionally updated.
+Ocasionally updated.
