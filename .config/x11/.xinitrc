@@ -1,6 +1,6 @@
 #!/bin/sh
 userresources=$HOME/.Xresources
-wallpaper=~/dotfiles/wallpapers/space-earth.jpg
+wallpaper=~/dotfiles/wallpapers/streets.jpg
 
 xrdb -merge $userresources
 [ -f "${wallpaper}" ] && feh --bg-scale "$wallpaper"
