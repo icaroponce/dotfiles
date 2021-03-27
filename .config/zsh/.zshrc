@@ -57,10 +57,6 @@ bindkey '^ ' autosuggest-accept
 ## TODO: move everything below to a separate file (clean-up)
 eval "$(thefuck --alias)"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 GOPATH=$(go env GOPATH)
 export PATH=$PATH:$GOPATH/bin:~/protoc/bin
 
@@ -90,7 +86,7 @@ fi
  # The next line enables shell command completion for gcloud.
  if [ -f '/opt/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/google-cloud-sdk/completion.zsh.inc'; fi
 
-#source /home/icaro/.oh-my-zsh/themes/af-magic.zsh-theme
+source /usr/share/nvm/init-nvm.sh
 
 # TODO: check replace plugin by something else with same func
 source /usr/share/zsh/plugins/zshmarks/zshmarks.plugin.zsh

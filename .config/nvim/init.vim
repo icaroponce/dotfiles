@@ -39,6 +39,9 @@ Plug 'vimwiki/vimwiki'
 
 Plug 'junegunn/vim-easy-align' "gaip
 
+Plug 'Yggdroot/indentLine'
+Plug 'lukas-reineke/indent-blankline.nvim' "gaip
+
 "Statusline
 Plug 'itchyny/lightline.vim'
 "Plug 'vim-airline/vim-airline'
