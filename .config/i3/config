@@ -25,7 +25,8 @@ bindsym $mod+o exec $browser
 bindsym $mod+Shift+q kill
 
 # start rofi as an alternative to dmenu
-bindsym $mod+d exec --no-startup-id "rofi -combi-mode window,drun,ssh -show combi"
+#bindsym $mod+d exec --no-startup-id "rofi -combi-mode window,drun,ssh -show combi"
+bindsym $mod+d exec --no-startup-id "dmenu_run -c -l 10"
 
 # kill and start compton again
 # bindsym $mod+Ctrl+t exec --no-startup-id pkill compton
@@ -138,8 +139,9 @@ assign [class="Brave"] $ws1
 assign [class="TelegramDesktop"] $ws9
 
 # Open some applications in floatting mode
-for_window [window_role="pop_up"] floating enable
-for_window [window_role="task_dialog"] floating enable
+#for_window [window_role="pop_up"] floating enable; rezise shrink width 1000px; resize grow width 400px; resize shrink height 1000px; resize grow height 800px;
+for_window [window_role="task_dialog"] floating enable sticky;
+for_window [window_role="pop_up"] floating enable sticky;
 
 for_window [class="Arandr"] floating enable
 for_window [class="Pavucontrol"] floating enable
@@ -163,8 +165,8 @@ bindsym $mod+Print --release exec "scrot -u ~/Screenshots/$(date '+%Y-%m-%dT%H:%
 bindsym $mod+Shift+Print --release exec "scrot -s ~/Screenshots/$(date '+%Y-%m-%dT%H:%M:%S.png')"
 bindsym $mod+g exec "spotifyd-launcher"
 #bindsym $mod+m exec "xrandr --output DP1 --auto --rotate left --right-of eDP1"
-bindsym $mod+m exec "xrandr --output DP1 --auto --right-of eDP1"
-bindsym $mod+Shift+m exec "xrandr --output DP1 --off"
+bindsym $mod+m exec "xrandr --output HDMI-1-1 --auto --right-of eDP1"
+bindsym $mod+Shift+m exec "xrandr --output HDMI-1-1 --off"
 #indsym $mod+Shift+m exec "xrandr --output HDMI1 --off"
 
 # resize window (you can also use the mouse for that)
