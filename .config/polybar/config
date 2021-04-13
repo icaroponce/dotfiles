@@ -105,7 +105,7 @@ label = %percentage:2%%
 
 [module/pacman-packages]
 type = custom/ipc
-hook-0 = sudo pacman -Qu | wc -l
+hook-0 = sudo pacman -Syup | wc -l
 format-prefix = "📦 "
 click-left = updatepackages
 initial = 1
