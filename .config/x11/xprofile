@@ -10,5 +10,5 @@ xbindkeys --poll-rc & # for biding keys
 xfce4-power-manager & # for managing battery
 unclutter &           # for removing mouse when idle
 telegram-desktop &    # for telegram
-xset r rate 250 45 &  # speed xrate up
+#(sleep 15 && xset r rate 300 45) &  # speed xrate up
 polybar-launcher &    # start polybar
