@@ -11,6 +11,7 @@ set $term alacritty
 font pango:monospace 10
 
 floating_modifier $mod
+floating_maximum_size 1280 x 960
 
 # Sets the keyboard layout for the laptop keyboard (note the swap)
 # check:
@@ -24,9 +25,8 @@ bindsym $mod+o exec $browser
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start rofi as an alternative to dmenu
-#bindsym $mod+d exec --no-startup-id "rofi -combi-mode window,drun,ssh -show combi"
-bindsym $mod+d exec --no-startup-id "dmenu_run -c -l 10"
+bindsym $mod+d exec --no-startup-id "rofi -combi-mode window,drun,ssh -theme gruvbox-dark-hard -show combi"
+#bindsym $mod+d exec --no-startup-id "dmenu_run -c -l 10"
 
 # kill and start compton again
 # bindsym $mod+Ctrl+t exec --no-startup-id pkill compton
@@ -57,9 +57,9 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # bind media-keys
-bindsym $mod+Ctrl+8 exec playerctl -p spotifyd previous
-bindsym $mod+Ctrl+9 exec playerctl -p spotifyd play-pause
-bindsym $mod+Ctrl+0 exec playerctl -p spotifyd next
+bindsym $mod+Ctrl+8 exec playerctl -p $(playerctl -l | grep spotify) previous
+bindsym $mod+Ctrl+9 exec playerctl -p $(playerctl -l | grep spotify) play-pause
+bindsym $mod+Ctrl+0 exec playerctl -p $(playerctl -l | grep spotify) next
 
 #bindsym $mod+Ctrl+8 exec mpc prev
 #bindsym $mod+Ctrl+9 exec mpc toggle

@@ -1,14 +1,15 @@
 # convenient aliases for editing configs
 alias \
 	cfa="vim ~/.config/alacritty/alacritty.yml" \
-	cfv="vim ~/.config/nvim/init.vim" \
+	cfv="vim ~/.config/nvim/init.lua" \
 	cfi="vim ~/.config/i3/config" \
 	cfz="vim ~/.config/zsh/.zshrc" \
 	soz="source ~/.config/zsh/.zshrc"
 
 alias \
-	v="nvim" \
 	vim="nvim" \
+	vi="nvim" \
+	v="nvim" \
 	j="jump" \
 	s="bookmark" \
 	n="newsboat" \

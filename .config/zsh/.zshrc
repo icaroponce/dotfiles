@@ -72,13 +72,8 @@ export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/.cargo/bin
 export PATH=$PATH:$(yarn global bin)
 export PATH=$PATH:/opt/i3-lock-fancy-rapid/
-#
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-#
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
+
+eval "$(pyenv init -)"
 
 # The next line updates PATH for the Google Cloud SDK.
  if [ -f '/opt/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/google-cloud-sdk/path.zsh.inc'; fi

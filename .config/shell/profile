@@ -25,3 +25,7 @@ export QT_AUTO_SCREEN_SCALE_FACTOR=1
 export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
 
 export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/.nvm"
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
