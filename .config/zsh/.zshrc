@@ -86,5 +86,11 @@ source /usr/share/nvm/init-nvm.sh
 # TODO: check replace plugin by something else with same func
 source /usr/share/zsh/plugins/zshmarks/zshmarks.plugin.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-# Load syntax highlighting. Should be last
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+
+# Search history
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down

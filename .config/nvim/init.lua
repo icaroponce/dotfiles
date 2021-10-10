@@ -60,11 +60,10 @@ opt.swapfile = false
 opt.signcolumn = "yes"
 opt.ruler = true 
 opt.expandtab = true
-opt.wrap = false
+opt.wrap = true
 opt.termguicolors = true
 opt.showmode = false -- get rido fo the -- INSERT --
 opt.clipboard = 'unnamedplus'
-opt.wrap = false -- disable wrap line
 cmd "set shortmess+=c"
 
 local packer = require('packer')
@@ -92,10 +91,7 @@ packer.startup(function()
 
     use 'morhetz/gruvbox'
     use 'terryma/vim-expand-region'
-    use {
-        'lukas-reineke/indent-blankline.nvim',
-        branch = 'lua'
-    }
+    use 'lukas-reineke/indent-blankline.nvim'
 
     use 'ap/vim-css-color' -- highlight hex and rgb colors
     use {'plasticboy/vim-markdown', requires = {'godlygeek/tabular'}}
@@ -123,7 +119,6 @@ lualine.setup({
     })
 
 g['mapleader'] = ','
-g['deoplete#enable_at_startup'] = 1  -- enable deoplete at startup
 
 g['python3_host_prog'] = '~/.pyenv/versions/neovim3/bin/python'
 g['python_host_prog'] = '~/.pyenv/versions/neovim2/bin/python'
@@ -178,20 +173,13 @@ cmd "inoremap <silent><expr> <C-Space> compe#complete()"
 -- cmd "inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })"
 -- cmd "inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })"
 
--- root_dir is where the LSP server will start: here at the project root otherwise in current folder
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
---lsp.pyls.setup {root_dir = lsp.util.root_pattern('.git', fn.getcwd()), capabilities=capabilities}
-lsp.pyls.setup { capabilities = capabilities }
-
-local format_async = function(err, _, result, _, bufnr)
+local format_async = function(err, result, ctx, config)
     if err ~= nil or result == nil then return end
-    if not vim.api.nvim_buf_get_option(bufnr, "modified") then
+    if not vim.api.nvim_buf_get_option(ctx.bufnr, "modified") then
         local view = vim.fn.winsaveview()
-        vim.lsp.util.apply_text_edits(result, bufnr)
+        vim.lsp.util.apply_text_edits(result, ctx.bufnr)
         vim.fn.winrestview(view)
-        if bufnr == vim.api.nvim_get_current_buf() then
+        if ctx.bufnr == vim.api.nvim_get_current_buf() then
             vim.api.nvim_command("noautocmd :update")
         end
     end
@@ -247,16 +235,24 @@ local on_attach = function(client, bufnr)
             ]], true)
     end
 end
--- <Tab> to navigate the completion menu
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+lsp.pylsp.setup { on_attach=on_attach }
 lsp.tsserver.setup{
     capabilities=capabilities,
     filetypes = { 'javascript', 'typescript', 'typescriptreact' }, 
+    root_dir = function() return vim.loop.cwd() end,
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false -- avoid conflicts with prettier
         on_attach(client)
     end
 }
-lspfuzzy.setup {}  -- Make the LSP client use FZF instead of the quickfix list
+lspfuzzy.setup {
+    on_attach=on_attach,
+    root_dir = function() return vim.loop.cwd() end
+}  -- Make the LSP client use FZF instead of the quickfix list
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
         underline = true,
@@ -273,7 +269,9 @@ sign define LspDiagnosticsSignHint text=👉 linehl= numhl=
 
 map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', {expr = true})
 map('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', {expr = true})
+
 map('n', '<C-l>', '<cmd>noh<CR>')    -- Clear highlights
+map('n','<leader>h', ':Gitsigns preview_hunk<CR>')
 
 local filetypes = {
     typescript = "eslint",
@@ -314,6 +312,7 @@ local formatFiletypes = {
 lsp.diagnosticls.setup {
     on_attach = on_attach,
     filetypes = vim.tbl_keys(filetypes),
+    -- root_dir = function() return vim.loop.cwd() end,
     init_options = {
         filetypes = filetypes,
         linters = linters,
