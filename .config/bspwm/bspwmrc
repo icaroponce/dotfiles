@@ -1,0 +1,45 @@
+#! /bin/sh
+
+declare -x monitor1=$(xrandr | grep ' connected' | sed -n 1p | awk '{print $1}')
+declare -x monitor2=$(xrandr | grep ' connected' | sed -n 2p | awk '{print $1}')
+mode=1920x1080
+
+if [[ -z $monitor2 ]]; then
+    notify-send "only 1 monitor"
+    xrandr --output "$monitor1" --mode "$mode" --primary
+    bspc monitor "$monitor1" -d 1 2 3 4 5 6 7 8 9 0
+else
+    notify-send "2 monitors ${monitor2}"
+    xrandr --output "$monitor1" --mode "$mode" --primary
+    bspc monitor "$monitor1" -d 1 2 3 4 5
+    xrandr --output "$monitor2" --mode "$mode" --right-of "$monitor1"
+    bspc monitor "$monitor2" -d 6 7 8 9 0
+fi
+    
+bspc config border_width        2
+bspc config window_gap          3
+bspc config focused_border_color "#327bd1"
+bspc config presel_feedback_color  "#327bd1"
+
+bspc config split_ratio          0.52
+bspc config single_monocle  true
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+bspc config pointer_follows_focus true
+bspc config focus_follows_pointer true
+bspc config directional_focus_tightness low
+
+bspc config remove_unplugged_monitors true
+bspc config remove_disabled_monitors true
+bspc config merge_overlapping_monitors true
+
+bspc rule -r '*:*'
+bspc rule -a "*:Navigator" desktop='^1' follow=on
+bspc rule -a "Slack" desktop='^3' follow=on
+bspc rule -a "TelegramDesktop" desktop='^4' follow=on
+bspc rule -a Pavucontrol state=floating
+bspc rule -a Galculator state=floating
+
+picom -b &
+polybar-launcher &
+pkill sxhkd; sxhkd -m 1 &
