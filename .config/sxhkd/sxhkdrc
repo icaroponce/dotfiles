@@ -14,7 +14,7 @@ super + o
  brave
 
 # make sxhkd reload its configuration files:
-super + Escape
+super + ctrl + r
     pkill -USR1 -x sxhkd; notify-send "sxhkd config reloaded"
 
 #
@@ -178,3 +178,13 @@ Print
 
 super + q
     i3lock-fancy-rapid 5 3
+
+# Dunst bindings
+alt + space
+    dunstctl close
+
+alt + shift + space
+    dunstctl close-all
+
+alt + grave
+    dunstctl history-pop
