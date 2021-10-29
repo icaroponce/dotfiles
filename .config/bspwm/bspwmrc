@@ -39,6 +39,7 @@ bspc rule -a "Slack" desktop='^3' follow=on
 bspc rule -a "TelegramDesktop" desktop='^4' follow=on
 bspc rule -a Pavucontrol state=floating
 bspc rule -a Galculator state=floating
+bspc rule -a Lxappearance state=floating
 
 picom -b &
 polybar-launcher &

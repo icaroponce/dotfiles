@@ -8,5 +8,8 @@ https://christine.website/blog.rss "tech"
 https://github.com/neovim/neovim/tags.atom "tech" "vim"
 https://feeds.feedburner.com/2ality?format=xml "tech" "js"
 https://overreacted.io/rss.xml "tech" "react" "js"
+https://wickstrom.tech/feed.xml "tech" "haskell"
 
 https://standardebooks.org/rss/new-releases "books"
+https://parceljs.org/feed.xml "js" "tech"
+https://rss.dw.com/xml/DKpodcast_alltagsdeutsch_de "deutsch"
