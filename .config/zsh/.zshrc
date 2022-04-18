@@ -60,7 +60,7 @@ eval "$(thefuck --alias)"
 GOPATH=$(go env GOPATH)
 export PATH=$PATH:$GOPATH/bin:~/protoc/bin
 
-#eval "$(direnv hook zsh)"
+eval "$(direnv hook zsh)"
 
 # Fuzzy matching vim pluging junegunn/fzf with ripgrep for listing
 export PATH=$PATH:~/.vim/pack/minpac/start/fzf/bin
@@ -70,6 +70,8 @@ export FZF_DEFAULT_COMMAND='rg --files'
 
 export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/.cargo/bin
+export PATH=$PATH:~/.cabal/bin
+export PATH=$PATH:~/.ghcup/bin
 export PATH=$PATH:$(yarn global bin)
 export PATH=$PATH:/opt/i3-lock-fancy-rapid/
 
@@ -81,13 +83,14 @@ eval "$(pyenv init -)"
  # The next line enables shell command completion for gcloud.
  if [ -f '/opt/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/google-cloud-sdk/completion.zsh.inc'; fi
 
-source /usr/share/nvm/init-nvm.sh
 
 # TODO: check replace plugin by something else with same func
 source /usr/share/zsh/plugins/zshmarks/zshmarks.plugin.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+source /usr/share/nvm/init-nvm.sh
+[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
 
 # Search history
 bindkey '^[[A' history-substring-search-up

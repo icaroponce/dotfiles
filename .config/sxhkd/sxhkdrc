@@ -21,9 +21,6 @@ super + ctrl + r
 # bspwm hotkeys
 #
 
-super + f
-    bspc node -t \~fullscreen
-
 # quit/restart bspwm
 super + shift + {w,r}
     bspc {quit,wm -r}
@@ -46,14 +43,15 @@ super + m
 # super + g
 #     bspc node -s biggest.window
 
-
 #
 # state/flags
 #
+super + f
+    bspc node -t \~fullscreen
 
 # set the window state
-# super + {t,shift + t,s,f}
-#     bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+alt + {t,shift + c,n}
+    bspc node -t {\~tiled,\~pseudo_tiled,\~floating}
 
 # set the node flags
 super + ctrl + {m,x,y,z}
@@ -135,26 +133,22 @@ super + {Left,Down,Up,Right}
 # common bindings
 #
 
-ctrl + bracketright
-    pactl set-sink-volume @DEFAULT_SINK@ +5000
-XF86AudioRaiseVolume
+{XF86AudioRaiseVolume,ctrl + bracketright}
     pactl set-sink-volume @DEFAULT_SINK@ +5000
 
-ctrl + bracketleft
-    pactl set-sink-volume @DEFAULT_SINK@ -5000
-XF86AudioLowerVolume
+{XF86AudioLowerVolume,ctrl + bracketleft}
     pactl set-sink-volume @DEFAULT_SINK@ -5000
 
 XF86AudioMute
     pactl set-sink-mute @DEFAULT_SINK@ toggle
 
-ctrl + 8
+{XF86AudioPrev,ctrl + 8}
     playerctl -p $(playerctl -l | grep spotify) previous
 
-ctrl + 9
+{XF86AudioPlay,XF86AudioPause,ctrl + 9}
     playerctl -p $(playerctl -l | grep spotify) play-pause
 
-ctrl + 0
+{XF86AudioNext,ctrl + 0}
     playerctl -p $(playerctl -l | grep spotify) next
 
 # XF86MonBrightnessUp

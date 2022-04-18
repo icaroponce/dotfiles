@@ -20,6 +20,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 cmd "syntax enable"
+cmd "filetype plugin indent on"
 
 opt.number = true
 opt.relativenumber = true
@@ -46,13 +47,11 @@ opt.visualbell = false
 opt.splitbelow = true
 opt.splitright = true
 
-opt.cursorline = false
+opt.cursorline = true
 opt.autoread = true -- auto read file changes
 opt.grepprg = "rg --vimgrep --no-heading --smart-case"
 
 -- default tab 4 spaces
-opt.shiftwidth = 4
-opt.softtabstop = 4
 
 opt.encoding = "utf-8"
 opt.history = 5000
@@ -79,7 +78,9 @@ packer.startup(function()
     use 'tpope/vim-unimpaired' -- [ ] aliases
     use 'tpope/vim-fugitive' -- vim plugin for Git
     use 'tpope/vim-rhubarb'
+    use 'tpope/vim-surround'
     use 'sheerun/vim-polyglot'
+    use { 'ndmitchell/ghcid', rtp = 'plugins/nvim' }
 
     use 'nvim-treesitter/nvim-treesitter'
     use {
@@ -100,7 +101,7 @@ packer.startup(function()
             'onsails/lspkind-nvim',
         }
     }
-
+    use 'neovimhaskell/haskell-vim'
     use {
         'iamcco/markdown-preview.nvim',
         run = 'cd app && yarn install',
@@ -128,8 +129,12 @@ packer.startup(function()
     use 'norcalli/nvim-colorizer.lua'
 
     use {'plasticboy/vim-markdown', requires = {'godlygeek/tabular'}}
-
-    use 'tpope/vim-commentary'
+    use {
+      'numToStr/Comment.nvim',
+      config = function()
+        require('Comment').setup()
+      end
+    }
 
     use {
         'lewis6991/gitsigns.nvim',
@@ -155,14 +160,16 @@ colorizer.setup {
 
 local nightfox = require 'nightfox'
 nightfox.setup({
-        fox = 'nightfox',
-        styles = {
-            comments = "italic", -- change style of comments to be italic
-            keywords = "bold", -- change style of keywords to be bold
-            functions = "italic" -- styles can be a comma separated list
-        },
-    })
-nightfox.load();
+ options = {
+  transparent = false,
+    styles = {
+      comments = "italic",
+      functions = "italic",
+      keywords = "bold",
+    }
+  }
+})
+cmd('colorscheme nightfox')
 
 local lualine = require 'lualine'
 lualine.setup({
@@ -178,7 +185,8 @@ lualine.setup({
 local ts = require 'nvim-treesitter.configs'
 ts.setup {
     ensure_installed = 'maintained',
-    highlight = {enable = true}
+    highlight = {enable = true},
+    -- indent = {enable = true}
 }
 
 -- telescope configuration --
@@ -192,6 +200,17 @@ telescope.setup {
                 ["<C-k>"] = telescope_actions.move_selection_previous,
             },
         },
+    },
+    pickers = {
+        lsp_code_actions = {
+            layout_config = {
+                horizontal = {
+                    height = 0.3;
+                    width = 0.7
+                }
+
+            }
+        }
     }
 }
 
@@ -199,23 +218,18 @@ map('n', '<C-p>', '<cmd>Telescope find_files<cr>')
 map('n', '<leader>/', '<cmd>Telescope live_grep<cr>')
 map('n', "<leader>'", '<cmd>Telescope buffers<cr>')
 map('n', '<leader>fh', '<cmd>Telescope help_tags<cr>')
+map('n', '<leader>gs', '<cmd>Telescope git_status<cr>')
+map('n', 'ca', '<cmd>Telescope lsp_code_actions<cr>')
 
 -- nvim-tree configuration --
-cmd('autocmd BufEnter NvimTree set cursorline')
--- cmd('highlight NvimTreeFolderIcon guibg=red')
--- cmd('highlight NvimTreeOpenedFile guibg=red guifg=green')
+cmd('autocmd BufEnter NvimTree* set cursorline')
 
 local tree = require 'nvim-tree'
-
-g.nvim_tree_indent_markers = 1
-g.nvim_tree_git_hl = 1
-g.nvim_tree_highlight_opened_files = 1
-
 tree.setup {
-    hijack_cursor = true;
-    update_focused_file = {
-        enable = true;
-    }
+  hijack_cursor = true;
+  update_focused_file = {
+    enable = true;
+  }
 }
 
 map('n', "<leader>t", '<cmd>NvimTreeToggle<CR>')
@@ -226,6 +240,34 @@ local lsp = require 'lspconfig'
 local cmp = require 'cmp'
 local lspkind = require "lspkind"
 local luasnip = require 'luasnip'
+local types = require "luasnip.util.types"
+
+luasnip.config.set_config {
+  updateevents = "TextChanged,TextChangedI",
+  store_selection_keys = "<c-j>",
+  ext_opts = {
+    [types.insertNode] = {
+      passive = {
+        hl_group = "Substitute",
+      },
+    },
+    [types.choiceNode] = {
+      active = {
+        virt_text = { { "choiceNode", "IncSearch" } },
+      },
+    },
+  },
+}
+
+vim.cmd [[
+  imap <silent><expr> <c-j> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<c-j>'
+  imap <silent><expr> <c-k>  luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev': '<c-k>'
+  imap <silent><expr> <c-e> luasnip#choice_active() ? '<Plug>luasnip-next-choice': '<c-e>'
+  snoremap <silent> <c-j> <cmd>lua require'luasnip'.jump(1)<Cr>
+  snoremap <silent> <c-k> <cmd>lua require'luasnip'.jump(-1)<Cr>
+  vnoremap <c-f>  "ec<cmd>lua require('luasnip.extras.otf').on_the_fly()<cr>
+  inoremap <c-f>  <cmd>lua require('luasnip.extras.otf').on_the_fly('e')<cr>
+]]
 
 cmp.setup {
     -- compe.preselect = 'always' equivalent
@@ -263,7 +305,7 @@ cmp.setup {
         ['<C-e>'] = cmp.mapping.close(),
         ['<CR>'] = cmp.mapping.confirm {
             behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
+            select = false,
         },
     },
     sources = {
@@ -276,19 +318,18 @@ cmp.setup {
     }
 }
 
-local format_async = function(err, result, ctx, config)
-    if err ~= nil or result == nil then return end
-    if not vim.api.nvim_buf_get_option(ctx.bufnr, "modified") then
-        local view = vim.fn.winsaveview()
-        vim.lsp.util.apply_text_edits(result, ctx.bufnr)
-        vim.fn.winrestview(view)
-        if ctx.bufnr == vim.api.nvim_get_current_buf() then
-            vim.api.nvim_command("noautocmd :update")
-        end
-    end
-end
-
-vim.lsp.handlers["textDocument/formatting"] = format_async
+-- local format_async = function(err, result, ctx, config)
+--     if err ~= nil or result == nil then return end
+--     if not vim.api.nvim_buf_get_option(ctx.bufnr, "modified") then
+--         local view = vim.fn.winsaveview()
+--         vim.lsp.util.apply_text_edits(result, ctx.bufnr)
+--         vim.fn.winrestview(view)
+--         if ctx.bufnr == vim.api.nvim_get_current_buf() then
+--             vim.api.nvim_command("noautocmd :update")
+--         end
+--     end
+-- end
+-- vim.lsp.handlers["textDocument/formatting"] = format_async
 
 _G.lsp_organize_imports = function()
     local params = {
@@ -303,6 +344,7 @@ local on_attach = function(client, bufnr)
     local buf_map = vim.api.nvim_buf_set_keymap
     cmd("command! LspDef lua vim.lsp.buf.definition()")
     cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
+    cmd("command! LspFormattingSync lua vim.lsp.buf.formatting_seq_sync(nil, 1000)")
     cmd("command! LspCodeAction lua vim.lsp.buf.code_action()")
     cmd("command! LspHover lua vim.lsp.buf.hover()")
     cmd("command! LspRename lua vim.lsp.buf.rename()")
@@ -310,33 +352,24 @@ local on_attach = function(client, bufnr)
     cmd("command! LspRefs lua vim.lsp.buf.references()")
     cmd("command! LspTypeDef lua vim.lsp.buf.type_definition()")
     cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
-    cmd("command! LspDiagPrev lua vim.lsp.diagnostic.goto_prev()")
-    cmd("command! LspDiagNext lua vim.lsp.diagnostic.goto_next()")
+    cmd("command! LspDiagPrev lua vim.diagnostic.goto_prev()")
+    cmd("command! LspDiagNext lua vim.diagnostic.goto_next()")
     cmd(
-        "command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()")
+        "command! LspDiagLine lua vim.diagnostic.open_float()")
     cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
 
     buf_map(bufnr, "n", "gd", ":LspDef<CR>", {silent = true})
     buf_map(bufnr, "n", "gr", ":LspRename<CR>", {silent = true})
+    buf_map(bufnr, "n", "ga", ":LspFormatting<CR>", {silent = true})
     buf_map(bufnr, "n", "gR", ":LspRefs<CR>", {silent = true})
     buf_map(bufnr, "n", "gy", ":LspTypeDef<CR>", {silent = true})
     buf_map(bufnr, "n", "K", ":LspHover<CR>", {silent = true})
-    buf_map(bufnr, "n", "gs", ":LspOrganize<CR>", {silent = true})
+    buf_map(bufnr, "n", "gi", ":LspOrganize<CR>", {silent = true})
     buf_map(bufnr, "n", "[k", ":LspDiagPrev<CR>", {silent = true})
     buf_map(bufnr, "n", "]k", ":LspDiagNext<CR>", {silent = true})
-    buf_map(bufnr, "n", "ga", ":LspCodeAction<CR>", {silent = true})
     buf_map(bufnr, "n", "<Leader>a", ":LspDiagLine<CR>", {silent = true})
     buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>",
         {silent = true})
-
-    if client.resolved_capabilities.document_formatting then
-        vim.api.nvim_exec([[
-            augroup LspAutocommands
-            autocmd! * <buffer>
-            autocmd BufWritePost <buffer> LspFormatting
-            augroup END
-            ]], true)
-    end
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -349,10 +382,29 @@ lsp.tsserver.setup{
     filetypes = { 'javascript', 'typescript', 'typescriptreact' }, 
     root_dir = function() return vim.loop.cwd() end,
     on_attach = function(client)
-        client.resolved_capabilities.document_formatting = false -- avoid conflicts with prettier
+        client.resolved_capabilities.document_formatting = false -- avoid conflicts with eslint server
         on_attach(client)
     end
 }
+lsp.eslint.setup {
+    settings = {
+      format = true
+    },
+    on_attach = function(client)
+        client.resolved_capabilities.document_formatting = true
+        on_attach(client)
+        cmd('autocmd BufWritePre *.js,*.ts,*.jsx,*.tsx :LspFormattingSync')
+    end
+}
+
+lsp.hls.setup({
+  on_attach = on_attach,
+  settings = {
+    haskell = {
+      formattingProvider = "fourmolu"
+    }
+  }
+})
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
         underline = true,
@@ -361,71 +413,39 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
     })
 
 cmd [[
-sign define LspDiagnosticsSignError text=🔻 linehl= numhl=
-sign define LspDiagnosticsSignWarning text=🔸 linehl= numhl=
-sign define LspDiagnosticsSignInformation text=🔹 linehl= numhl=
-sign define LspDiagnosticsSignHint text=👉 linehl= numhl=
+sign define DiagnosticSignError text=🔻 linehl= numhl=
+sign define DiagnosticSignWarn text=🔸 linehl= numhl=
+sign define DiagnosticSignInfo text=🔹 linehl= numhl=
+sign define DiagnosticSignHint text=👉 linehl= numhl=
 ]]
 
 map('n', '<C-l>', '<cmd>noh<CR>')    -- Clear highlights
 map('n','<leader>h', ':Gitsigns preview_hunk<CR>')
+map('n','<leader>gb', ':Gitsigns blame_line<CR>')
 
-local filetypes = {
-    typescript = "eslint",
-    javascript = "eslint",
-    typescriptreact = "eslint",
-}
+-- easier map to ":"
+map('n', '<Space>', ':', { silent = false })
+map('x', '<Space>', ':', { silent = false })
 
-local linters = {
-    eslint = {
-        sourceName = "eslint",
-        command = "eslint_d",
-        rootPatterns = {".eslintrc.js", "package.json"},
-        debounce = 100,
-        args = {"--stdin", "--stdin-filename", "%filepath", "--format", "json"},
-        parseJson = {
-            errorsRoot = "[0].messages",
-            line = "line",
-            column = "column",
-            endLine = "endLine",
-            endColumn = "endColumn",
-            message = "${message} [${ruleId}]",
-            security = "severity"
-        },
-        securities = {[2] = "warning", [1] = "error"}
-    }
-}
+cmd [[
+  cnoreabbrev W! w!
+  cnoreabbrev Q! q!
+  cnoreabbrev Qall! qall!
+  cnoreabbrev Wq wq
+  cnoreabbrev Wa wa
+  cnoreabbrev wQ wq
+  cnoreabbrev WQ wq
+  cnoreabbrev W w
+  cnoreabbrev Q q
+  cnoreabbrev Qall qall
+]]
 
-local formatters = {
-    prettier = {command = "prettier", args = {"--stdin-filepath", "%filepath"}}
-}
-
-local formatFiletypes = {
-    typescript = "prettier",
-    javascript = "prettier",
-    typescriptreact = "prettier"
-}
-
-lsp.diagnosticls.setup {
-    on_attach = on_attach,
-    filetypes = vim.tbl_keys(filetypes),
-    init_options = {
-        filetypes = filetypes,
-        linters = linters,
-        formatters = formatters,
-        formatFiletypes = formatFiletypes
-    }
-}
-
--- Abbreviations / Remapping / Other key bindings --
-
-cmd 'cnoreabbrev W! w!'
-cmd 'cnoreabbrev Q! q!'
-cmd 'cnoreabbrev Qall! qall!'
-cmd 'cnoreabbrev Wq wq'
-cmd 'cnoreabbrev Wa wa'
-cmd 'cnoreabbrev wQ wq'
-cmd 'cnoreabbrev WQ wq'
-cmd 'cnoreabbrev W w'
-cmd 'cnoreabbrev Q q'
-cmd 'cnoreabbrev Qall qall'
+g.haskell_classic_highlighting = 1
+g.haskell_indent_do = 4
+g.haskell_indent_case = 4
+g.haskell_indent_if = 4
+g.haskell_indent_in = 4
+g.haskell_indent_guard = 4
+g.haskell_indent_before_where = 2
+g.haskell_indent_after_bare_where = 2
+g.haskell_indent_case_alternative = 4
