@@ -5,7 +5,6 @@
 dunst &               # for notifications
 nm-applet &           # for network-applet on status bar
 blueman-applet &      # for bluetooth-applet on status bar
-xfce4-power-manager & # for managing battery
 unclutter &           # for removing mouse when idle
 telegram-desktop &    # for telegram
 #polybar-launcher &    # start polybar

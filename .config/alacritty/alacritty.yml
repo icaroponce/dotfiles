@@ -12,7 +12,7 @@
   # available, otherwise `xterm-256color` is used.
   #TERM: alacritty
 
-#window:
+window:
   # Window dimensions (changes require restart)
   #
   # Specified in number of columns/lines, not pixels.
@@ -20,6 +20,7 @@
   #dimensions:
   #  columns: 0
   #  lines: 0
+  opacity: 1
 
   # Window position (changes require restart)
   #
@@ -232,7 +233,6 @@ font:
   #   `- { index: 16, color: '#ff00ff' }`
   #
   #indexed_colors: []
-
 # Nightfox Alacritty Colors
 # Style: nightfox
 # Upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/nightfox/nightfox_alacritty.yml
@@ -253,14 +253,14 @@ colors:
     white:   '0xdfdfe0'
   # Bright colors
   bright:
-    black:   '0x7f8c98'
-    red:     '0xd6616b'
-    green:   '0x58cd8b'
-    yellow:  '0xffe37e'
-    blue:    '0x84cee4'
-    magenta: '0xb8a1e3'
-    cyan:    '0x59f0ff'
-    white:   '0xf2f2f2'
+    black:   '0x575860'
+    red:     '0xd16983'
+    green:   '0x8ebaa4'
+    yellow:  '0xe0c989'
+    blue:    '0x86abdc'
+    magenta: '0xbaa1e2'
+    cyan:    '0x7ad4d6'
+    white:   '0xe4e4e5'
   indexed_colors:
     - { index: 16, color: '0xf4a261' }
     - { index: 17, color: '0xd67ad2' }
@@ -305,12 +305,6 @@ colors:
   #     args: ["Hello, World!"]
   #
   #command: None
-
-# Background opacity
-#
-# Window opacity as a floating point number from `0.0` to `1.0`.
-# The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 1
 
 #selection:
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
