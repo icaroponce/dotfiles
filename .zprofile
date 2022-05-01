@@ -1,1 +1,1 @@
-/home/icaro/dotfiles/.config/shell/profile
+.config/shell/profile
