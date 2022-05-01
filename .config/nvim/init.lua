@@ -184,7 +184,7 @@ lualine.setup({
 
 local ts = require 'nvim-treesitter.configs'
 ts.setup {
-    ensure_installed = 'maintained',
+    ensure_installed = 'all',
     highlight = {enable = true},
     -- indent = {enable = true}
 }
