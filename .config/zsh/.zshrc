@@ -8,7 +8,7 @@ setopt CORRECT
 setopt DVORAK
 setopt RM_STAR_WAIT
 
-## Load aliases and shortcuts if existent:
+## Load aliases and other stuff if existent:
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
 
@@ -57,9 +57,6 @@ bindkey '^ ' autosuggest-accept
 ## TODO: move everything below to a separate file (clean-up)
 eval "$(thefuck --alias)"
 
-GOPATH=$(go env GOPATH)
-export PATH=$PATH:$GOPATH/bin:~/protoc/bin
-
 eval "$(direnv hook zsh)"
 
 # Fuzzy matching vim pluging junegunn/fzf with ripgrep for listing
@@ -72,25 +69,17 @@ export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/.cargo/bin
 export PATH=$PATH:~/.cabal/bin
 export PATH=$PATH:~/.ghcup/bin
-export PATH=$PATH:$(yarn global bin)
 export PATH=$PATH:/opt/i3-lock-fancy-rapid/
+[ -x "$(command -v yarn)" ] && export PATH=$PATH:$(yarn global bin)
 
 eval "$(pyenv init -)"
 
-# The next line updates PATH for the Google Cloud SDK.
- if [ -f '/opt/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/google-cloud-sdk/path.zsh.inc'; fi
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/p" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/p"
 
- # The next line enables shell command completion for gcloud.
- if [ -f '/opt/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/google-cloud-sdk/completion.zsh.inc'; fi
-
-
-# TODO: check replace plugin by something else with same func
-source /usr/share/zsh/plugins/zshmarks/zshmarks.plugin.zsh
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
-source /usr/share/nvm/init-nvm.sh
-[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
+source "${ZDOTDIR}/plugins/zsh-autosuggestions.zsh"
+source "${ZDOTDIR}/plugins/zsh-syntax-highlighting.zsh"
+source "${ZDOTDIR}/plugins/zsh-history-substring-search.zsh"
+source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/z.sh"
 
 # Search history
 bindkey '^[[A' history-substring-search-up

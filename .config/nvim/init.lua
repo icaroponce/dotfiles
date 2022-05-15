@@ -2,15 +2,14 @@ local cmd = vim.cmd  -- to execute Vim commands e.g. cmd('pwd')
 local fn = vim.fn    -- to call Vim functions e.g. fn.bufnr()
 local g = vim.g      -- a table to access global variables
 local opt = vim.opt  -- to set options
+local api = vim.api
+local keymap = vim.keymap
 
 local function map(mode, lhs, rhs, opts)
   local options = {noremap = true}
   if opts then options = vim.tbl_extend('force', options, opts) end
   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
-
-local execute = vim.api.nvim_command
-local fn = vim.fn
 
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 
@@ -57,18 +56,16 @@ opt.encoding = "utf-8"
 opt.history = 5000
 opt.swapfile = false
 opt.signcolumn = "yes"
-opt.ruler = true 
+opt.ruler = true
 opt.expandtab = true
 opt.wrap = true
 opt.termguicolors = true
-opt.showmode = false -- get rido fo the -- INSERT --
+opt.showmode = false -- get rid of the -- INSERT --
 opt.clipboard = 'unnamedplus'
-cmd "set shortmess+=c"
+opt.shortmess = opt.shortmess + "c"
+-- cmd "set shortmess+=c"
 
 g['mapleader'] = ','
-
-g['python3_host_prog'] = '~/.pyenv/versions/neovim3/bin/python'
-g['python_host_prog'] = '~/.pyenv/versions/neovim2/bin/python'
 
 local packer = require('packer')
 packer.startup(function()
@@ -87,7 +84,72 @@ packer.startup(function()
         "ray-x/lsp_signature.nvim",
         config = 'require "lsp_signature".setup({ floating_window = true })',
     }
-    use 'neovim/nvim-lspconfig'
+    use {
+      "williamboman/nvim-lsp-installer",
+      {
+        "neovim/nvim-lspconfig",
+        config = function ()
+          require("nvim-lsp-installer").setup {}
+
+          local capabilities = vim.lsp.protocol.make_client_capabilities()
+          capabilities.textDocument.completion.completionItem.snippetSupport = true
+          capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+          local on_attach = function(_, bufnr)
+              local opts = { noremap=true, silent=true }
+              local buf_map = vim.api.nvim_buf_set_keymap
+
+              buf_map(bufnr, "n", "ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+              buf_map(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+              buf_map(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+              buf_map(bufnr, "n", "ga", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+              buf_map(bufnr, "n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+              buf_map(bufnr, "n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+              buf_map(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+              buf_map(bufnr, "n", "gi", "<cmd>lua lsp_organize_imports()<CR>", opts)
+              buf_map(bufnr, "n", "[k", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+              buf_map(bufnr, "n", "]k", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
+              buf_map(bufnr, "n", "<Leader>a", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+              buf_map(bufnr, "i", "<C-x><C-x>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+          end
+
+          local lsp = require("lspconfig")
+          lsp.pylsp.setup {
+            capabilities=capabilities,
+            on_attach=on_attach,
+          }
+          lsp.sumneko_lua.setup { on_attach=on_attach, capabilities=capabilities }
+          lsp.tsserver.setup {
+              capabilities = capabilities,
+              root_dir = function() return vim.loop.cwd() end,
+              on_attach = function(client, bufnr)
+                  client.resolved_capabilities.document_formatting = false -- avoid conflicts with eslint formatting
+                  on_attach(client, bufnr)
+              end
+          }
+          lsp.eslint.setup {
+              settings = {
+                format = true
+              },
+              root_dir = function() return vim.loop.cwd() end,
+              on_attach = function(client, bufnr)
+                  client.resolved_capabilities.document_formatting = true
+                  on_attach(client, bufnr)
+                  vim.cmd [[autocmd BufWritePre *.js,*.ts,*.jsx,*.tsx lua vim.lsp.buf.formatting_seq_sync(nil, 1000)]]
+                end
+          }
+          lsp.hls.setup({
+            on_attach = on_attach,
+            settings = {
+              haskell = {
+                formattingProvider = "fourmolu"
+              }
+            }
+          })
+
+        end
+      }
+    }
     use {
         'hrsh7th/nvim-cmp',
         requires = {
@@ -102,14 +164,15 @@ packer.startup(function()
         }
     }
     use 'neovimhaskell/haskell-vim'
-    use {
-        'iamcco/markdown-preview.nvim',
-        run = 'cd app && yarn install',
-        cmd = 'MarkdownPreview'
-    }
+    -- use {
+        -- 'iamcco/markdown-preview.nvim',
+        -- run = 'cd app && yarn install',
+        -- cmd = 'MarkdownPreview'
+    -- }
     use {
         'nvim-telescope/telescope.nvim',
-        requires = { {'nvim-lua/plenary.nvim'} }
+        requires = { {'nvim-lua/plenary.nvim'} },
+        { 'nvim-telescope/telescope-ui-select.nvim' }
     }
     use 'hoob3rt/lualine.nvim'
     use 'machakann/vim-highlightedyank'
@@ -184,7 +247,7 @@ lualine.setup({
 
 local ts = require 'nvim-treesitter.configs'
 ts.setup {
-    ensure_installed = 'all',
+    ensure_installed = { 'python', 'yaml', 'lua', 'markdown', 'proto', 'css', 'typescript', 'javascript', 'vim', 'bash', 'html' , 'tsx', 'dockerfile', 'graphql', 'json', 'haskell', 'make', 'cpp', 'elm' },
     highlight = {enable = true},
     -- indent = {enable = true}
 }
@@ -201,42 +264,39 @@ telescope.setup {
             },
         },
     },
-    pickers = {
-        lsp_code_actions = {
-            layout_config = {
-                horizontal = {
-                    height = 0.3;
-                    width = 0.7
-                }
-
-            }
-        }
+    extensions = {
+        ["ui-select"] = {
+          require("telescope.themes").get_dropdown {}
+      }
     }
 }
+require("telescope").load_extension("ui-select")
 
 map('n', '<C-p>', '<cmd>Telescope find_files<cr>')
 map('n', '<leader>/', '<cmd>Telescope live_grep<cr>')
 map('n', "<leader>'", '<cmd>Telescope buffers<cr>')
 map('n', '<leader>fh', '<cmd>Telescope help_tags<cr>')
 map('n', '<leader>gs', '<cmd>Telescope git_status<cr>')
-map('n', 'ca', '<cmd>Telescope lsp_code_actions<cr>')
+map('n', '<leader>gr', '<cmd>Telescope lsp_references<cr>')
 
 -- nvim-tree configuration --
-cmd('autocmd BufEnter NvimTree* set cursorline')
-
 local tree = require 'nvim-tree'
 tree.setup {
   hijack_cursor = true;
   update_focused_file = {
     enable = true;
-  }
+  };
 }
 
-map('n', "<leader>t", '<cmd>NvimTreeToggle<CR>')
-map('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>')
+keymap.set('n', '<leader>t', tree.toggle)
 
--- lsp configuration --
-local lsp = require 'lspconfig'
+api.nvim_create_autocmd("BufEnter", {
+    pattern = "NvimTree*",
+    callback = function ()
+        opt.cursorline = true
+    end
+})
+
 local cmp = require 'cmp'
 local lspkind = require "lspkind"
 local luasnip = require 'luasnip'
@@ -318,19 +378,6 @@ cmp.setup {
     }
 }
 
--- local format_async = function(err, result, ctx, config)
---     if err ~= nil or result == nil then return end
---     if not vim.api.nvim_buf_get_option(ctx.bufnr, "modified") then
---         local view = vim.fn.winsaveview()
---         vim.lsp.util.apply_text_edits(result, ctx.bufnr)
---         vim.fn.winrestview(view)
---         if ctx.bufnr == vim.api.nvim_get_current_buf() then
---             vim.api.nvim_command("noautocmd :update")
---         end
---     end
--- end
--- vim.lsp.handlers["textDocument/formatting"] = format_async
-
 _G.lsp_organize_imports = function()
     local params = {
         command = "_typescript.organizeImports",
@@ -339,72 +386,6 @@ _G.lsp_organize_imports = function()
     }
     vim.lsp.buf.execute_command(params)
 end
-
-local on_attach = function(client, bufnr)
-    local buf_map = vim.api.nvim_buf_set_keymap
-    cmd("command! LspDef lua vim.lsp.buf.definition()")
-    cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
-    cmd("command! LspFormattingSync lua vim.lsp.buf.formatting_seq_sync(nil, 1000)")
-    cmd("command! LspCodeAction lua vim.lsp.buf.code_action()")
-    cmd("command! LspHover lua vim.lsp.buf.hover()")
-    cmd("command! LspRename lua vim.lsp.buf.rename()")
-    cmd("command! LspOrganize lua lsp_organize_imports()")
-    cmd("command! LspRefs lua vim.lsp.buf.references()")
-    cmd("command! LspTypeDef lua vim.lsp.buf.type_definition()")
-    cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
-    cmd("command! LspDiagPrev lua vim.diagnostic.goto_prev()")
-    cmd("command! LspDiagNext lua vim.diagnostic.goto_next()")
-    cmd(
-        "command! LspDiagLine lua vim.diagnostic.open_float()")
-    cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
-
-    buf_map(bufnr, "n", "gd", ":LspDef<CR>", {silent = true})
-    buf_map(bufnr, "n", "gr", ":LspRename<CR>", {silent = true})
-    buf_map(bufnr, "n", "ga", ":LspFormatting<CR>", {silent = true})
-    buf_map(bufnr, "n", "gR", ":LspRefs<CR>", {silent = true})
-    buf_map(bufnr, "n", "gy", ":LspTypeDef<CR>", {silent = true})
-    buf_map(bufnr, "n", "K", ":LspHover<CR>", {silent = true})
-    buf_map(bufnr, "n", "gi", ":LspOrganize<CR>", {silent = true})
-    buf_map(bufnr, "n", "[k", ":LspDiagPrev<CR>", {silent = true})
-    buf_map(bufnr, "n", "]k", ":LspDiagNext<CR>", {silent = true})
-    buf_map(bufnr, "n", "<Leader>a", ":LspDiagLine<CR>", {silent = true})
-    buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>",
-        {silent = true})
-end
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
-lsp.pylsp.setup { on_attach = on_attach, capabilities = capabilities }
-lsp.tsserver.setup{
-    capabilities = capabilities,
-    filetypes = { 'javascript', 'typescript', 'typescriptreact' }, 
-    root_dir = function() return vim.loop.cwd() end,
-    on_attach = function(client)
-        client.resolved_capabilities.document_formatting = false -- avoid conflicts with eslint server
-        on_attach(client)
-    end
-}
-lsp.eslint.setup {
-    settings = {
-      format = true
-    },
-    on_attach = function(client)
-        client.resolved_capabilities.document_formatting = true
-        on_attach(client)
-        cmd('autocmd BufWritePre *.js,*.ts,*.jsx,*.tsx :LspFormattingSync')
-    end
-}
-
-lsp.hls.setup({
-  on_attach = on_attach,
-  settings = {
-    haskell = {
-      formattingProvider = "fourmolu"
-    }
-  }
-})
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
         underline = true,
@@ -419,13 +400,44 @@ sign define DiagnosticSignInfo text=🔹 linehl= numhl=
 sign define DiagnosticSignHint text=👉 linehl= numhl=
 ]]
 
-map('n', '<C-l>', '<cmd>noh<CR>')    -- Clear highlights
-map('n','<leader>h', ':Gitsigns preview_hunk<CR>')
-map('n','<leader>gb', ':Gitsigns blame_line<CR>')
+
+map('n' , '<leader>h'  , ':Gitsigns preview_hunk<CR>')
+map('n' , '<leader>gb' , ':Gitsigns blame_line<CR>')
+
+-- better navigation between panes
+keymap.set({'n' , 't'} , '<leader>w' , ':split<CR>')
+keymap.set({'n' , 't'} , '<leader>v' , ':vsplit<CR>')
+keymap.set({'n', 't', 'i'} , '<C-h>'     , '<C-\\><C-N><C-w>h<CR>')
+keymap.set({'n', 't', 'i'} , '<C-t>'     , '<C-\\><C-N><C-w>j<CR>')
+keymap.set({'n', 't', 'i'} , '<C-n>'     , '<C-\\><C-N><C-w>k<CR>')
+keymap.set({'n', 't', 'i'} , '<C-s>'     , '<C-\\><C-N><C-w>l<CR>')
+keymap.set({'n', 't', 'i'} , '<C-A-h>'     , '5<C-w><<CR>')
+keymap.set({'n', 't', 'i'} , '<C-A-t>'     , '5<C-w>-<CR>')
+keymap.set({'n', 't', 'i'} , '<C-A-n>'     , '5<C-w>+<CR>')
+keymap.set({'n', 't', 'i'} , '<C-A-s>'     , '5<C-w>><CR>')
+
 
 -- easier map to ":"
 map('n', '<Space>', ':', { silent = false })
 map('x', '<Space>', ':', { silent = false })
+
+map('n' , '<C-l>'      , '<cmd>noh<CR>')    -- Clear highlights
+map('n', '<C-,>', '^')
+map('n', '<C-.>', '$')
+
+-- terminal mode
+api.nvim_create_autocmd("TermOpen", {
+    pattern = "*",
+    callback = function ()
+        opt.cursorline = false
+        opt.number = false
+        opt.relativenumber = false
+    end
+})
+cmd('highlight! TermCursorNC guibg=red guifg=white ctermbg=2 ctermbg=15')
+
+map('t', '<Esc>', '<C-\\><C-n>')
+map('t', '<C-v><Esc>', '<Esc>') -- verbatim esc
 
 cmd [[
   cnoreabbrev W! w!
