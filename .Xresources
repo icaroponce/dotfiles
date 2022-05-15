@@ -3,7 +3,3 @@ Xft.dpi: 120
 !Xft.autohint: 0
 !Xft.lcdfilter:  lcddefault
 !Xft.hintstyle:  hintfull
-
-!#include ".Xresources.d/colors"
-!#include ".Xresources.d/themes/solarized-dark"
-!#include ".Xresources.d/themes/gruvbox"
