@@ -1,2 +1,11 @@
+.luarc.json
 .zcompdump*
+.zcompcache*
+
 packer_compiled.lua
+
+.config/zsh/plugins/
+.config/zsh/.zsh_*
+
+.config/shell/p
+.config/shell/z*
