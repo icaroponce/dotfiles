@@ -1,0 +1,45 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           xmonadrc
+version:        0.1.0.0
+homepage:       https://github.com/githubuser/xmonad#readme
+bug-reports:    https://github.com/githubuser/xmonad/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2022 Author name here
+license:        BSD3
+build-type:     Simple
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/xmonad
+
+executable xmobar
+  main-is: xmobar.hs
+  other-modules:
+      Paths_xmonadrc
+  hs-source-dirs:
+      ./
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -rtsopts -threaded -with-rtsopts=-N
+  build-depends:
+      base
+    , xmobar
+  default-language: Haskell2010
+
+executable xmonadrc
+  main-is: xmonad.hs
+  other-modules:
+      Paths_xmonadrc
+  hs-source-dirs:
+      ./
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2
+  build-depends:
+      base
+    , containers
+    , xmonad
+    , xmonad-contrib >=0.16
+  default-language: Haskell2010

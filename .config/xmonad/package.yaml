@@ -1,0 +1,36 @@
+name:                xmonadrc
+version:             0.1.0.0
+github:              "githubuser/xmonad"
+license:             BSD3
+author:              "Author name here"
+maintainer:          "example@example.com"
+copyright:           "2022 Author name here"
+
+ghc-options:
+  -Wall
+  -Wcompat
+  -Wincomplete-record-updates
+  -Wincomplete-uni-patterns
+  -Wredundant-constraints
+  -O2
+
+executables:
+  xmonadrc:
+    source-dirs:         .
+    main:                xmonad.hs
+    dependencies:
+      - base
+      - containers
+      - xmonad
+      - xmonad-contrib >= 0.16
+
+  xmobar:
+     source-dirs:     .
+     main: xmobar.hs
+     dependencies:
+       - base
+       - xmobar
+     ghc-options:
+       -rtsopts
+       -threaded
+       -with-rtsopts=-N
