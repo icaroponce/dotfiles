@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd "${XDG_CONFIG_HOME}/xmonad" && stack build --reconfigure || exit
+
+ln -f -T "$(stack exec -- which xmonadrc)" "$1"

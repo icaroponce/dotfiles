@@ -1,0 +1,17 @@
+resolver: lts-19.0
+
+packages:
+- .
+
+flags:
+  xmobar:
+    with_alsa: true
+    with_threaded: true
+    with_weather: true
+    with_utf8: true
+    with_xft: true
+
+extra-deps:
+  - git: https://github.com/jaor/xmobar
+    commit: 52980f31965961bb9c52c83d45e5822d4472ec02
+  - X11-xft-0.3.4
