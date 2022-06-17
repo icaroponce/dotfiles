@@ -9,3 +9,6 @@ packer_compiled.lua
 
 .config/shell/p
 .config/shell/z*
+
+stack.yaml.lock
+dist-newstyle

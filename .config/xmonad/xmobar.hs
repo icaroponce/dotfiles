@@ -28,7 +28,7 @@ myCommands =
         , "-L", "0"
         , "-H", "25"
         , "--low"   , colorBlue
-        , "--normal", colorBg
+        , "--normal", colorFg
         , "--high"  , colorRed
         ] (30 `minutes`)
     , Run $ Cpu
@@ -41,9 +41,15 @@ myCommands =
         [ "--template", "Vol: <volumestatus>"
         , "--suffix"  , "True"
         , "--"
-        , "--on", ""
+        , "--on"     , ""
+        , "--onc"    , colorFg                -- On  colour.
+        , "--offc"   , colorFg                -- Off colour.
+        , "--off"    , inAltIconFont "🔇"
+        , "--lows"   , inIconFont "\61478  "  -- Low    charge string: 
+        , "--mediums", inIconFont "\61479  "  -- Medium charge string: 
+        , "--highs"  , inIconFont "\61480  "  -- High   charge string: 
         ]
-    , Run $ Memory ["--template", inEmojiFont "🧠" <> ": <usedratio>%"] (10 `seconds`)
+    , Run $ Memory ["--template", inAltIconFont "🧠" <> ": <usedratio>%"] (10 `seconds`)
     , Run $ Date ("%a %Y-%m-%d " <> cyan "%H:%M") "date" (10 `seconds`)
     , Run $ Battery
           [ "--template", "<acstatus>"
@@ -139,5 +145,5 @@ inIconFont :: String -> String
 inIconFont = wrap "<fn=1>" "</fn>"
 
 -- | Wrap stuff so it uses the icon font.
-inEmojiFont :: String -> String
-inEmojiFont = wrap "<fn=2>" "</fn>"
+inAltIconFont :: String -> String
+inAltIconFont = wrap "<fn=2>" "</fn>"

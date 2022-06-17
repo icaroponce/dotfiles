@@ -1,0 +1,13 @@
+cradle:
+  cabal:
+    - path: "./xmobar.hs"
+      component: "xmonadrc:exe:xmobar"
+
+    - path: "./Paths_xmonadrc.hs"
+      component: "xmonadrc:exe:xmobar"
+
+    - path: "./xmonad.hs"
+      component: "xmonadrc:exe:xmonadrc"
+
+    - path: "./Paths_xmonadrc.hs"
+      component: "xmonadrc:exe:xmonadrc"

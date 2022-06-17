@@ -8,6 +8,9 @@ import XMonad.Util.Loggers
 
 import XMonad.Layout.ThreeColumns
 -- import XMonad.Layout.Magnifier
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.MultiToggle.Instances
+import XMonad.Layout.NoBorders (smartBorders)
 
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.DynamicLog
@@ -16,7 +19,12 @@ import XMonad.Hooks.StatusBar.PP
 
 import qualified XMonad.StackSet as W
 
-myLayout = tiled ||| Mirror tiled ||| Full ||| threeCol
+myLayout = smartBorders
+  . mkToggle (single NBFULL)
+  $ tiled
+  ||| Mirror tiled
+  ||| Full
+  ||| threeCol
   where
     threeCol = ThreeColMid nmaster delta ratio
     tiled    = Tall nmaster delta ratio
@@ -25,14 +33,15 @@ myLayout = tiled ||| Mirror tiled ||| Full ||| threeCol
     delta    = 3/100  -- Percent of screen to increment by when resizing panes
 
 myConfig = def
-  { modMask = mod4Mask
-  , terminal = myTerminal
+  { modMask            = mod4Mask
+  , terminal           = myTerminal
 
   , focusedBorderColor = myFocusedBorderColor
-  , normalBorderColor = myUnfocusedBorderColor
-  , borderWidth = myBorderWidth
+  , normalBorderColor  = myUnfocusedBorderColor
+  , borderWidth        = myBorderWidth
 
-  , layoutHook = myLayout
+  , layoutHook         = myLayout
+  , manageHook         = myManageHook
   }
   `additionalKeysP`
   myKeys
@@ -48,48 +57,66 @@ type Keybindings = [Keybinding]
 myKeys :: Keybindings
 myKeys = concat
     [ appKeys
-    , volumeKeys
+    , mediaKeys
     , windowsKeys
     ]
 
 appKeys :: Keybindings
-appKeys = 
-    [ ("M-o", spawn myBrowser)
-    , ("M-<Return>", spawn myTerminal) 
-    , ("M-S-<Print>", unGrab *> spawn "scrot -s")
-    , ("M-d", spawnLauncher)
-    , ("<XF86AudioPrev>", play "prev")
-    , ("<XF86AudioNext>", play "next")
-    , ("<XF86AudioPlay>", play "toggle")
-    , ("<XF86AudioPause>", play "toggle")
+appKeys =
+    [ ("M-o"         , spawn myBrowser)
+    , ("M-<Return>"  , spawn myTerminal)
+    , ("M-d"         , spawnLauncher)
+    , ("M-S-q"       , lockscreen)
+    -- printscreen bindings
+    , ("<Print>"     , unGrab *> printscreen "")
+    , ("M-S-<Print>" , unGrab *> printscreen "-s")
+    , ("M-<Print>"   , unGrab *> printscreen "-u")
+    -- dunst bindings
+    , ("A-<Space>"   , spawn "dunstctl close")
+    , ("A-S-<Space>" , spawn "dunstctl close-all")
+    , ("A-`"         , spawn "dunstctl history-pop")
     ]
   where
     spawnLauncher :: X ()
-    spawnLauncher = spawn $ myLauncher <> " -combi-mode window,drun,ssh -show combi"
+    spawnLauncher = spawn $ myLauncher <> " -combi-mode window,drun,ssh -theme gruvbox-dark -show combi"
+
+    lockscreen :: X ()
+    lockscreen = spawn "i3lock-fancy-rapid 5 3"
+
+    printscreen :: String -> X ()
+    printscreen flag = spawn $ "scrot " <> flag  <> " ~/Screenshots/$(date '+%Y-%m-%dT%H:%M:%S.png')"
+
+mediaKeys :: Keybindings
+mediaKeys =
+    [ ("<XF86AudioRaiseVolume>", volume "5%+"   )
+    , ("<XF86AudioLowerVolume>", volume "5%-"   )
+    , ("<XF86AudioMute>"       , volume "toggle")
+    , ("<XF86AudioPrev>"       , play "prev")
+    , ("<XF86AudioNext>"       , play "next")
+    , ("<XF86AudioPlay>"       , play "play-pause")
+    , ("<XF86AudioPause>"      , play "play-pause")
+    ]
+  where
+    volume :: String -> X ()
+    volume = spawn . ("amixer -q set Master " <>)
 
     play :: String -> X ()
     play = spawn . (playerCommand <>)
     playerCommand :: String
     playerCommand = "playerctl -p $(playerctl -l | grep " <> myPlayer <> ") "
 
-volumeKeys :: Keybindings
-volumeKeys = 
-    [ ("<XF86AudioRaiseVolume>", volume "+5000"   )
-    , ("<XF86AudioLowerVolume>", volume "-5000"   )
-    , ("<XF86AudioMute>"       , volume "toggle"  )
-    ]
-  where
-    volume :: String -> X ()
-    volume = spawn . ("pactl set-sink-volume @DEFAULT_SINK@" <>)
-
 windowsKeys :: Keybindings
 windowsKeys =
-    [ ("M-c", kill) -- kill current window 
-    , ("M-t", windows W.focusDown) -- next window
-    , ("M-n", windows W.focusUp) -- prev window
-    , ("M-S-t", windows W.swapDown) -- swap with the next
-    , ("M-S-n", windows W.swapUp) -- swap with the prev
+    [ ("M-c"   , kill) -- kill current window
+    , ("M-f"   , toggleFullScreen)
+    , ("M-t"   , windows W.focusDown) -- next window
+    , ("M-n"   , windows W.focusUp) -- prev window
+    , ("M-S-t" , windows W.swapDown) -- swap with the next
+    , ("M-S-n" , windows W.swapUp) -- swap with the prev
     ]
+      where
+        toggleFullScreen :: X ()
+        toggleFullScreen = sendMessage $ Toggle NBFULL
 
 main :: IO ()
 main = xmonad
@@ -109,24 +136,25 @@ myXmobarPP = def
     , ppOrder = \[ws, l, _, wins] -> [ws, l, wins]
     , ppExtras = [logTitles formatFocused formatUnfocused]
     }
-  where 
+  where
     formatFocused = wrap (white "[[") (white "]]") . orange . ppWindow
     formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . blue . ppWindow
-  
+
     -- shortens windows title, which is required 
     ppWindow :: String -> String
     ppWindow  = xmobarRaw . (\w -> if null w then "Untitled" else w) . shorten 30
 
 
-colorBg       :: String = "#192330"
-colorFg       :: String = "#f8f8f2"
-colorYellow   :: String = "#e0c989"
-colorCyan     :: String = "#63cdcf"
-colorBlue     :: String = "#86abdc"
-colorLowWhite :: String = "#bbbbbb"
-colorMagenta  :: String = "#baa1e2"
-colorOrange   :: String = "#f4a261"
-colorRed      :: String = "#c94f6d"
+colorRed, colorBg, colorFg, colorYellow, colorCyan, colorBlue, colorLowWhite, colorMagenta, colorOrange :: String
+colorBg       = "#192330"
+colorFg       = "#f8f8f2"
+colorYellow   = "#e0c989"
+colorCyan     = "#63cdcf"
+colorBlue     = "#86abdc"
+colorLowWhite = "#bbbbbb"
+colorMagenta  = "#baa1e2"
+colorOrange   = "#f4a261"
+colorRed      = "#c94f6d"
 
 yellow, blue, lowWhite, white, magenta, orange, red :: String -> String
 yellow   = xmobarColor colorYellow ""
@@ -138,16 +166,16 @@ orange   = xmobarColor colorOrange ""
 red      = xmobarColor colorRed ""
 
 myTerminal :: String
-myTerminal = "/usr/bin/kitty"
+myTerminal = "kitty"
 
 myLauncher :: String
-myLauncher = "/usr/bin/rofi"
+myLauncher = "rofi"
 
 myBrowser :: String
-myBrowser = "/usr/bin/brave"
+myBrowser = "brave"
 
 myPlayer :: String
-myPlayer = "/usr/bin/spotify"
+myPlayer = "spotify"
 
 myFocusedBorderColor :: String
 myFocusedBorderColor = colorBlue
@@ -155,6 +183,7 @@ myFocusedBorderColor = colorBlue
 myUnfocusedBorderColor :: String
 myUnfocusedBorderColor = colorBg
 
+myBorderWidth :: Dimension
 myBorderWidth = 2
 
 -- Window rules
@@ -170,17 +199,11 @@ myBorderWidth = 2
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below
 --
--- myManageHook = composeAll
---     [ className =? "Chromium"       --> doShift "2:web"
---     , className =? "Google-chrome"  --> doShift "2:web"
---     , resource  =? "desktop_window" --> doIgnore
---     , className =? "Galculator"     --> doFloat
---     , className =? "Steam"          --> doFloat
---     , className =? "Gimp"           --> doFloat
---     , resource  =? "gpicview"       --> doFloat
---     , className =? "MPlayer"        --> doFloat
---     , className =? "VirtualBox"     --> doShift "4:vm"
---     , className =? "Xchat"          --> doShift "5:media"
---     , className =? "stalonetray"    --> doIgnore
---     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
-
+myManageHook = composeAll 
+    [ className =? "Galculator"     --> doFloat
+    , className =? "Gimp"           --> doFloat
+    , className =? "Lxappearance"   --> doFloat
+    , className =? "Pavucontrol"          --> doFloat
+    ]
+    -- , className =? "stalonetray"    --> doIgnore
+    -- , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
