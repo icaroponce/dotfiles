@@ -12,7 +12,6 @@ ghc-options:
   -Wincomplete-record-updates
   -Wincomplete-uni-patterns
   -Wredundant-constraints
-  -O2
 
 executables:
   xmonadrc:
@@ -22,7 +21,7 @@ executables:
       - base
       - containers
       - xmonad
-      - xmonad-contrib >= 0.16
+      - xmonad-contrib >= 0.17
 
   xmobar:
      source-dirs:     .
@@ -32,5 +31,4 @@ executables:
        - xmobar
      ghc-options:
        -rtsopts
-       -threaded
        -with-rtsopts=-N
