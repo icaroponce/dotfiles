@@ -54,10 +54,9 @@ bindkey '^R' history-incremental-pattern-search-backward
 # Accept command suggestion with ctrl+space
 bindkey '^ ' autosuggest-accept
 
-## TODO: move everything below to a separate file (clean-up)
 eval "$(thefuck --alias)"
-
 eval "$(direnv hook zsh)"
+eval "$(zoxide init zsh)"
 
 # Fuzzy matching vim pluging junegunn/fzf with ripgrep for listing
 export PATH=$PATH:~/.vim/pack/minpac/start/fzf/bin
@@ -79,7 +78,7 @@ eval "$(pyenv init -)"
 source "${ZDOTDIR}/plugins/zsh-autosuggestions.zsh"
 source "${ZDOTDIR}/plugins/zsh-syntax-highlighting.zsh"
 source "${ZDOTDIR}/plugins/zsh-history-substring-search.zsh"
-source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/z.sh"
+# source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/z.sh"
 
 # Search history
 bindkey '^[[A' history-substring-search-up

@@ -6,6 +6,12 @@ import Xmobar
 main :: IO ()
 main = xmobar config
 
+data HaskellIcon = HaskellIcon deriving (Show, Read)
+
+instance Exec HaskellIcon where
+  alias HaskellIcon = "hasIcon"
+  run   HaskellIcon  = return $ purple $ ("  " ++) $ inIconFont "\58911" -- ""
+
 config :: Config
 config = defaultConfig {
     font = mainFont
@@ -17,7 +23,7 @@ config = defaultConfig {
     , commands = myCommands
     , sepChar  = "%"
     , alignSep = "}{"
-    , template = "%XMonadLog% }{ %alsa:default:Master% | %battery% | %cpu% | %memory% | %EDDB% | %date%"
+    , template = "%hasIcon% | %XMonadLog% }{ %alsa:default:Master% | %battery% | %cpu% | %memory% | %EDDB% | %date%"
 }
 
 myCommands :: [Runnable]
@@ -45,9 +51,9 @@ myCommands =
         , "--onc"    , colorFg                -- On  colour.
         , "--offc"   , colorFg                -- Off colour.
         , "--off"    , inAltIconFont "🔇"
-        , "--lows"   , inIconFont "\61478  "  -- Low    charge string: 
-        , "--mediums", inIconFont "\61479  "  -- Medium charge string: 
-        , "--highs"  , inIconFont "\61480  "  -- High   charge string: 
+        , "--lows"   , inIconFont "\61478"  -- Low    charge string: 
+        , "--mediums", inIconFont "\61479"  -- Medium charge string: 
+        , "--highs"  , inIconFont "\61480"  -- High   charge string: 
         ]
     , Run $ Memory ["--template", inAltIconFont "🧠" <> ": <usedratio>%"] (10 `seconds`)
     , Run $ Date ("%a %Y-%m-%d " <> cyan "%H:%M") "date" (10 `seconds`)
@@ -67,10 +73,11 @@ myCommands =
             -- while the @AC on@ and @idle@ strings ignore them.
           , "--lowt"    , "15"       -- Low  threshold for charge strings (in %).
           , "--hight"   , "70"       -- High threshold for charge strings (in %).
-          , "--lows"    , inIconFont "\62020  "
-          , "--mediums" , inIconFont "\62018  "
-          , "--highs"   , inIconFont "\62016  "
+          , "--lows"    , inIconFont "\62020"
+          , "--mediums" , inIconFont "\62018"
+          , "--highs"   , inIconFont "\62016"
           ] (10 `seconds`)
+      , Run HaskellIcon
     ]
       where
         -- | Convenience functions.
@@ -100,8 +107,10 @@ colorGreen  :: String = "#81b29a"
 colorYellow :: String = "#e0c989" 
 colorCyan   :: String = "#63cdcf" 
 colorBlue   :: String = "#86abdc"
+colorPurple :: String = "#7b6f9c"
 
-cyan, green, yellow :: String -> String
+purple, cyan, green, yellow :: String -> String
+purple = xmobarColor colorPurple  ""
 green  = xmobarColor colorGreen   ""
 yellow = xmobarColor colorYellow  ""
 cyan   = xmobarColor colorCyan    ""
@@ -138,11 +147,11 @@ emojiFont :: String
 emojiFont = "xft:Symbola-10"
 
 iconFont :: String
-iconFont = "xft:FontAwesome-9"
+iconFont = "xft:Symbols Nerd Font"
 
 -- | Wrap stuff so it uses the icon font.
 inIconFont :: String -> String
-inIconFont = wrap "<fn=1>" "</fn>"
+inIconFont = wrap "<fn=1>" "</fn>  "
 
 -- | Wrap stuff so it uses the icon font.
 inAltIconFont :: String -> String

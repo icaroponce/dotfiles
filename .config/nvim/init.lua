@@ -84,13 +84,14 @@ packer.startup(function()
         "ray-x/lsp_signature.nvim",
         config = 'require "lsp_signature".setup({ floating_window = true })',
     }
+    use "simrat39/rust-tools.nvim"
     use {
       "williamboman/nvim-lsp-installer",
       {
         "neovim/nvim-lspconfig",
         config = function ()
           require("nvim-lsp-installer").setup {}
-
+          require('rust-tools').setup({})
           local capabilities = vim.lsp.protocol.make_client_capabilities()
           capabilities.textDocument.completion.completionItem.snippetSupport = true
           capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
@@ -146,7 +147,6 @@ packer.startup(function()
               }
             }
           })
-
         end
       }
     }
@@ -247,7 +247,7 @@ lualine.setup({
 
 local ts = require 'nvim-treesitter.configs'
 ts.setup {
-    ensure_installed = { 'python', 'yaml', 'lua', 'markdown', 'proto', 'css', 'typescript', 'javascript', 'vim', 'bash', 'html' , 'tsx', 'dockerfile', 'graphql', 'json', 'haskell', 'make', 'cpp', 'elm' },
+    ensure_installed = { 'python', 'yaml', 'lua', 'markdown', 'css', 'typescript', 'javascript', 'vim', 'bash', 'html' , 'tsx', 'dockerfile', 'graphql', 'json', 'haskell', 'make', 'cpp', 'elm' },
     highlight = {enable = true},
     -- indent = {enable = true}
 }

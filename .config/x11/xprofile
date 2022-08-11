@@ -12,8 +12,8 @@ trayer \
   --tint 0x5f5f5f \
   --height 20 &
 
-xsetroot -cursor_name left_ptr # Set the default X cursor to the usual pointer
-xfce4-power-manager & # for battery and suspend management
+# xsetroot -cursor_name left_ptr # Set the default X cursor to the usual pointer
+# xfce4-power-manager & # for battery and suspend management
 picom -b &            # for transparency
 dunst &               # for notifications
 nm-applet &           # for network-applet on status bar

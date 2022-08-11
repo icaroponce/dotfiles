@@ -72,9 +72,9 @@ appKeys =
     , ("M-S-<Print>" , unGrab *> printscreen "-s")
     , ("M-<Print>"   , unGrab *> printscreen "-u")
     -- dunst bindings
-    , ("A-<Space>"   , spawn "dunstctl close")
-    , ("A-S-<Space>" , spawn "dunstctl close-all")
-    , ("A-`"         , spawn "dunstctl history-pop")
+    , ("M1-<Space>"  , spawn "dunstctl close")
+    , ("M1-S-<Space>", spawn "dunstctl close-all")
+    , ("M1-<Escape>" , spawn "dunstctl history-pop")
     ]
   where
     spawnLauncher :: X ()
@@ -107,7 +107,7 @@ mediaKeys =
 
 windowsKeys :: Keybindings
 windowsKeys =
-    [ ("M-c"   , kill) -- kill current window
+    [ ("M-S-c" , kill) -- kill current window
     , ("M-f"   , toggleFullScreen)
     , ("M-t"   , windows W.focusDown) -- next window
     , ("M-n"   , windows W.focusUp) -- prev window

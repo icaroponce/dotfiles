@@ -6,7 +6,6 @@ https://github.com/neovim/neovim/tags.atom "tech" "vim"
 https://feeds.feedburner.com/2ality?format=xml "tech" "js"
 https://overreacted.io/rss.xml "tech" "react" "js"
 https://wickstrom.tech/feed.xml "tech" "haskell"
-https://tkdodo.eu/blog/rss.xml "tech" "js" "react"
 
 https://cprss.s3.amazonaws.com/nodeweekly.com.xml "js" "node"
 https://juliu.is/rss.xml "tech" "elm" "haskell"
