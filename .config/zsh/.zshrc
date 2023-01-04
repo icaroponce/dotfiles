@@ -1,6 +1,6 @@
 ## Enable colors
 autoload -U colors && colors
-PROMPT=" %F{032}%1~ %F{105}%#%f "
+PROMPT=" %F{032}%1~ %F{105}λ%f "
 
 setopt AUTOCD		# Automatically cd into typed directory 
 setopt INTERACTIVE_COMMENTS # Allow comments even in interactive shells.
@@ -78,7 +78,12 @@ eval "$(pyenv init -)"
 source "${ZDOTDIR}/plugins/zsh-autosuggestions.zsh"
 source "${ZDOTDIR}/plugins/zsh-syntax-highlighting.zsh"
 source "${ZDOTDIR}/plugins/zsh-history-substring-search.zsh"
-# source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/z.sh"
+# nix
+source "${ZDOTDIR}/plugins/zsh-nix-shell/nix-shell.plugin.zsh"
+source "${ZDOTDIR}/plugins/nix-zsh-completions/nix-zsh-completions.plugin.zsh"
+fpath=($ZDOTDIR/plugins/nix-zsh-completions $fpath)
+prompt_nix_shell_setup
+#
 
 # Search history
 bindkey '^[[A' history-substring-search-up

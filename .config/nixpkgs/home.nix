@@ -5,6 +5,8 @@
   # paths it should manage.
   home.username = "icaro";
   home.homeDirectory = "/home/icaro";
+  # targets.genericLinux.enable = true;
+
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -17,8 +19,26 @@
   home.stateVersion = "22.05";
 
   home.packages = with pkgs; [
+    neovim-unwrapped
+    git
+    zsh
+
     firefox
     zoxide 
+
+    stylua
+    sumneko-lua-language-server
+    #
+    # yarn
+    # nodePackages.npm
+    # nodePackages.typescript-language-server
+    #
+    ghcid
+    # stack
+    cabal2nix
+    # cabal-install
+    stylish-haskell
+    # haskell-language-server
   ];
 
   # Let Home Manager install and manage itself.
