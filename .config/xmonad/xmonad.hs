@@ -12,10 +12,14 @@ import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders (smartBorders)
 
+import XMonad.Actions.CycleWS (prevWS, nextWS)
+import XMonad.Actions.CycleRecentWS (toggleRecentWS)
+
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
+import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 
 import qualified XMonad.StackSet as W
 
@@ -42,6 +46,7 @@ myConfig = def
 
   , layoutHook         = myLayout
   , manageHook         = myManageHook
+  , logHook            = workspaceHistoryHook
   }
   `additionalKeysP`
   myKeys
@@ -91,7 +96,7 @@ mediaKeys =
     [ ("<XF86AudioRaiseVolume>", volume "5%+"   )
     , ("<XF86AudioLowerVolume>", volume "5%-"   )
     , ("<XF86AudioMute>"       , volume "toggle")
-    , ("<XF86AudioPrev>"       , play "prev")
+    , ("<XF86AudioPrev>"       , play "previous")
     , ("<XF86AudioNext>"       , play "next")
     , ("<XF86AudioPlay>"       , play "play-pause")
     , ("<XF86AudioPause>"      , play "play-pause")
@@ -107,12 +112,16 @@ mediaKeys =
 
 windowsKeys :: Keybindings
 windowsKeys =
-    [ ("M-S-c" , kill) -- kill current window
-    , ("M-f"   , toggleFullScreen)
-    , ("M-t"   , windows W.focusDown) -- next window
-    , ("M-n"   , windows W.focusUp) -- prev window
-    , ("M-S-t" , windows W.swapDown) -- swap with the next
-    , ("M-S-n" , windows W.swapUp) -- swap with the prev
+    [ ("M-S-c"     , kill) -- kill current window
+    , ("M-f"       , toggleFullScreen)
+    , ("M-t"       , windows W.focusDown) -- next window
+    , ("M-n"       , windows W.focusUp) -- prev window
+    , ("M-S-t"     , windows W.swapDown) -- swap with the next
+    , ("M-S-n"     , windows W.swapUp) -- swap with the prev
+
+    , ("M-<Left>"  , prevWS) -- prev workspace
+    , ("M-<Right>" , nextWS) -- next workspace
+    , ("M-S-<Tab>" , toggleRecentWS) -- go to most recent workspace
     ]
       where
         toggleFullScreen :: X ()
