@@ -19,7 +19,7 @@
   home.stateVersion = "22.05";
 
   home.packages = with pkgs; [
-    neovim-unwrapped
+    # neovim-unwrapped
     git
     zsh
 
