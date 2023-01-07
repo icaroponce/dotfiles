@@ -12,6 +12,13 @@ packer.startup(function()
   use {
     "nvim-treesitter/nvim-treesitter",
     config = [[require "plugins.nvim-treesitter"]],
+    run = function()
+      pcall(require("nvim-treesitter.install").update { with_sync = true })
+    end,
+  }
+  use { -- Additional text objects via treesitter
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    after = "nvim-treesitter",
   }
   use {
     "ray-x/lsp_signature.nvim",
@@ -50,7 +57,7 @@ packer.startup(function()
   }
   use {
     "hoob3rt/lualine.nvim",
-    config = [[require("plugins.lualine")]]
+    config = [[require("plugins.lualine")]],
   }
   use "machakann/vim-highlightedyank"
   use "justinmk/vim-dirvish"
