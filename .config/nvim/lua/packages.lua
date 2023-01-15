@@ -1,6 +1,6 @@
 local packer = require "packer"
 
-packer.startup(function()
+packer.startup(function(use)
   use "wbthomason/packer.nvim"
   use "tpope/vim-eunuch" -- vim sugar for UNIX shell cmds
   use "tpope/vim-unimpaired" -- [ ] aliases
@@ -20,13 +20,19 @@ packer.startup(function()
     "nvim-treesitter/nvim-treesitter-textobjects",
     after = "nvim-treesitter",
   }
-  use {
-    "ray-x/lsp_signature.nvim",
-    config = [[require "lsp_signature".setup({ floating_window = true })]],
-  }
+  -- use {
+  --   "ray-x/lsp_signature.nvim",
+  --   config = [[require "lsp_signature".setup({ floating_window = true })]],
+  -- }
   use {
     "neovim/nvim-lspconfig",
-    requires = "simrat39/rust-tools.nvim",
+    requires = {
+       -- Additional lua configuration, makes nvim stuff amazing
+      use 'folke/neodev.nvim',
+
+      -- Useful status updates for LSP
+      use 'j-hui/fidget.nvim'
+    },
     config = [[require "plugins.nvim-lspconfig"]],
   }
   use {
@@ -51,6 +57,8 @@ packer.startup(function()
     },
     config = [[require "plugins.telescope"]],
   }
+  -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   use {
     "neovimhaskell/haskell-vim",
     config = [[require "plugins.haskell"]],
@@ -59,7 +67,7 @@ packer.startup(function()
     "hoob3rt/lualine.nvim",
     config = [[require("plugins.lualine")]],
   }
-  use "machakann/vim-highlightedyank"
+  -- use "machakann/vim-highlightedyank"
   use "justinmk/vim-dirvish"
   use {
     "windwp/nvim-autopairs",
