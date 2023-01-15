@@ -10,9 +10,6 @@ end
 
 ensure "wbthomason/packer.nvim"
 
--- cmd "syntax enable"
--- cmd "filetype plugin indent on"
-
 require "options"
 require "packages"
 require "mappings"

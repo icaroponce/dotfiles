@@ -1,6 +1,13 @@
 local map = vim.keymap.set
 
-require("gitsigns").setup {
+require('gitsigns').setup {
+  signs = {
+    add = { text = '+' },
+    change = { text = '~' },
+    delete = { text = '_' },
+    topdelete = { text = '‾' },
+    changedelete = { text = '~' },
+  },
   on_attach = function(bufnr)
     local gs = require "gitsigns"
 
