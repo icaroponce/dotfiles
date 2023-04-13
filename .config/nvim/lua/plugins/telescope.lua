@@ -10,6 +10,7 @@ telescope.setup {
       i = {
         ["<C-j>"] = telescope_actions.move_selection_next,
         ["<C-k>"] = telescope_actions.move_selection_previous,
+        ["<C-l>"] = telescope_actions.send_selected_to_qflist + telescope_actions.open_qflist,
       },
     },
   },
