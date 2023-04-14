@@ -27,11 +27,11 @@ packer.startup(function(use)
   use {
     "neovim/nvim-lspconfig",
     requires = {
-       -- Additional lua configuration, makes nvim stuff amazing
-      use 'folke/neodev.nvim',
+      -- Additional lua configuration, makes nvim stuff amazing
+      use "folke/neodev.nvim",
 
       -- Useful status updates for LSP
-      use 'j-hui/fidget.nvim'
+      use "j-hui/fidget.nvim",
     },
     config = [[require "plugins.nvim-lspconfig"]],
   }
@@ -58,7 +58,7 @@ packer.startup(function(use)
     config = [[require "plugins.telescope"]],
   }
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
-  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
+  use { "nvim-telescope/telescope-fzf-native.nvim", run = "make", cond = vim.fn.executable "make" == 1 }
   use {
     "neovimhaskell/haskell-vim",
     config = [[require "plugins.haskell"]],

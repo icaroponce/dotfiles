@@ -6,7 +6,7 @@ tree.setup {
   },
 }
 
-vim.keymap.set("n", "<leader>t", tree.toggle)
+vim.keymap.set("n", "<leader>t", require("nvim-tree.api").tree.toggle)
 
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "NvimTree*",
