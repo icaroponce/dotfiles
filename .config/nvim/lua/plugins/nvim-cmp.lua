@@ -12,6 +12,7 @@ luasnip.config.set_config {
         hl_group = "Substitute",
       },
     },
+    [types.exitNode] = { passive = { hl_group = "Substitute" } },
     [types.choiceNode] = {
       active = {
         virt_text = { { "choiceNode", "IncSearch" } },
@@ -80,3 +81,5 @@ cmp.setup {
     -- { name = "buffer" },
   },
 }
+
+require("luasnip/loaders/from_vscode").lazy_load()

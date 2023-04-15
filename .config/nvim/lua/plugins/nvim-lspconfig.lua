@@ -38,9 +38,17 @@ local servers = {
   pylsp = {},
   eslint = {},
   tsserver = {},
+  elmls = {},
   hls = {
     haskell = {
       formattingProvider = "fourmolu",
+      plugin = {
+        rename = {
+          config = {
+            diff = true
+          }
+        }
+      }
     },
   },
   lua_ls = {
