@@ -45,10 +45,10 @@ local servers = {
       plugin = {
         rename = {
           config = {
-            diff = true
-          }
-        }
-      }
+            diff = true,
+          },
+        },
+      },
     },
   },
   lua_ls = {

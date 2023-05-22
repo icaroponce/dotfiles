@@ -26,7 +26,9 @@ pcall(require("telescope").load_extension, "fzf")
 telescope.load_extension "ui-select"
 
 map("n", "<C-p>", telescope_builtin.find_files, { desc = "Find Files" })
-map("n", "<leader>fh", function () telescope_builtin.find_files({ hidden = true}) end, { desc = "[F]ind Files (with [H]idden)" })
+map("n", "<leader>fh", function()
+  telescope_builtin.find_files { hidden = true }
+end, { desc = "[F]ind Files (with [H]idden)" })
 map("n", "<C-/>", telescope_builtin.live_grep, { desc = "Find by Grep" })
 map("n", "<leader>'", telescope_builtin.buffers, { desc = "['] Find existing buffers" })
 map("n", "<leader>ft", telescope_builtin.help_tags, { desc = "Search help tags" })
