@@ -46,7 +46,7 @@ packer.startup(function(use)
       "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
       "onsails/lspkind-nvim",
-      "rafamadriz/friendly-snippets"
+      "rafamadriz/friendly-snippets",
     },
     config = [[require "plugins.nvim-cmp"]],
   }
@@ -103,13 +103,10 @@ packer.startup(function(use)
     config = [[require "plugins.tree"]],
   }
 
-  use { 'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons',
-    config = [[require "bufferline".setup()]] }
-
   use {
     "folke/noice.nvim",
     config = function()
-      require("noice").setup({})
+      require("noice").setup {}
     end,
     requires = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
@@ -118,6 +115,14 @@ packer.startup(function(use)
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
       "rcarriga/nvim-notify",
-    }
+    },
+  }
+
+  use {
+    "dstein64/vim-startuptime",
+    cmd = "StartupTime",
+    config = function()
+      vim.g.startuptime_tries = 10
+    end,
   }
 end)
