@@ -1,7 +1,4 @@
 local o = vim.opt
-local g = vim.g
-
-g.mapleader = ","
 
 o.number = true
 o.relativenumber = true
@@ -18,7 +15,8 @@ o.hlsearch = true -- highlight same words when searching
 o.incsearch = true -- updates the searching match hl while typing
 o.hidden = true -- hides mouse pointer when typing
 o.showmatch = true -- show matching brackets
--- opt.matchtime = 2
+o.tabstop = 2 -- Number of spaces tabs count for
+o.shiftwidth = 2 -- Size of an indent
 
 -- disable errors beeps
 o.errorbells = false
@@ -32,6 +30,7 @@ o.cursorline = true
 o.autoread = true -- auto read file changes
 o.grepprg = "rg --vimgrep --no-heading --smart-case"
 
+o.smartindent = true
 o.encoding = "utf-8"
 o.history = 5000
 o.swapfile = false

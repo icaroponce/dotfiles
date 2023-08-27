@@ -10,5 +10,6 @@ packer_compiled.lua
 .config/shell/p
 .config/shell/z*
 
+*.log
 stack.yaml.lock
 dist-newstyle
