@@ -16,7 +16,7 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export MYVIMRC="${XDG_CONFIG_HOME:-$HOME/.config}/nvim/init.lua"
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
-export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
+# export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
 
 # use nvim as Man pager `:h Man`
 export MANPAGER='nvim +Man!'
@@ -32,4 +32,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 
-. $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+# . $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+. "$HOME/.cargo/env"

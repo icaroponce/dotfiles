@@ -1,5 +1,53 @@
 return {
   {
+    "stevearc/conform.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      local conform = require "conform"
+      conform.setup {
+        formatters_by_ft = {
+          lua = { "stylua" },
+          json = { "jq" },
+          javascript = { "prettier" },
+          typescript = { "prettier" },
+          css = { "prettier" },
+          html = { "prettier" },
+          markdown = { "prettier" },
+          yaml = { "prettier" },
+        },
+        -- format_on_save = {
+        --   timeout_ms = 500,
+        --   lsp_format = "fallback",
+        --   async = false,
+        --   quiet = false,
+        -- },
+      }
+
+      vim.keymap.set({ "n", "v" }, "<leader>=", function()
+        conform.format { lsp_fallback = "always", async = true }
+      end, { desc = "Format file or range (in visual mode)" })
+    end,
+  },
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      local lint = require "lint"
+      lint.linters_by_ft = {
+        yaml = { "yamllint" },
+        lua = { "luacheck" },
+        -- js = { "eslint" },
+        -- ts = { "eslint" },
+      }
+
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+          require("lint").try_lint()
+        end,
+      })
+    end,
+  },
+  {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
@@ -60,7 +108,7 @@ return {
       local servers = {
         pylsp = {},
         eslint = {},
-        tsserver = {},
+        ts_ls = {},
         elmls = {},
         hls = {
           haskell = {
@@ -80,6 +128,7 @@ return {
             telemetry = { enable = false },
           },
         },
+        terraformls = {},
       }
 
       for server, settings in pairs(servers) do
@@ -103,25 +152,6 @@ return {
       } do
         vim.fn.sign_define("DiagnosticSign" .. name, { text = text, linehl = "", numhl = "" })
       end
-    end,
-  },
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    event = "BufReadPre",
-    enabled = true,
-    opts = function()
-      local nls = require "null-ls"
-      return {
-        sources = {
-          nls.builtins.formatting.prettierd,
-          nls.builtins.formatting.stylua,
-          nls.builtins.diagnostics.ruff,
-          nls.builtins.formatting.ruff,
-          -- nls.builtins.formatting.black,
-          nls.builtins.formatting.alejandra,
-          nls.builtins.formatting.jq,
-        },
-      }
     end,
   },
 }

@@ -79,10 +79,10 @@ source "${ZDOTDIR}/plugins/zsh-autosuggestions.zsh"
 source "${ZDOTDIR}/plugins/zsh-syntax-highlighting.zsh"
 source "${ZDOTDIR}/plugins/zsh-history-substring-search.zsh"
 # nix
-source "${ZDOTDIR}/plugins/zsh-nix-shell/nix-shell.plugin.zsh"
-source "${ZDOTDIR}/plugins/nix-zsh-completions/nix-zsh-completions.plugin.zsh"
-fpath=($ZDOTDIR/plugins/nix-zsh-completions $fpath)
-prompt_nix_shell_setup
+# source "${ZDOTDIR}/plugins/zsh-nix-shell/nix-shell.plugin.zsh"
+# source "${ZDOTDIR}/plugins/nix-zsh-completions/nix-zsh-completions.plugin.zsh"
+# fpath=($ZDOTDIR/plugins/nix-zsh-completions $fpath)
+# prompt_nix_shell_setup
 #
 
 # Search history
