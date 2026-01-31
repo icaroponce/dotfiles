@@ -31,6 +31,11 @@ return {
 
     telescope.setup {
       defaults = {
+        layout_config = {
+          horizontal = {
+            width = 0.8
+          }
+        },
         mappings = {
           i = {
             ["<C-j>"] = telescope_actions.move_selection_next,

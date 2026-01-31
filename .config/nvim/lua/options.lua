@@ -37,6 +37,12 @@ o.swapfile = false
 o.signcolumn = "yes"
 o.ruler = true
 o.expandtab = true
+o.list = true
+o.listchars = {
+  tab = '▸ ',
+  trail = '·',
+  space = '·',
+}
 o.wrap = true
 o.termguicolors = true
 o.showmode = false -- get rid of the -- INSERT --

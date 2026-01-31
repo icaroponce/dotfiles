@@ -3,7 +3,7 @@ return {
   dependencies = "kyazdani42/nvim-web-devicons",
   keys = {
     {
-      "<leader>t",
+      "<leader>tt",
       function()
         require("nvim-tree.api").tree.toggle()
       end,
@@ -23,7 +23,5 @@ return {
         },
       },
     }
-
-    -- vim.keymap.set("n", "<leader>t", require("nvim-tree.api").tree.toggle)
   end,
 }
