@@ -1,5 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  branch = "master",
   dependencies = {
     -- Additional text objects via treesitter
     "nvim-treesitter/nvim-treesitter-textobjects",
@@ -11,7 +12,6 @@ return {
 
       ensure_installed = {
         "c",
-        "cpp",
         "go",
         "lua",
         "haskell",

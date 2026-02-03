@@ -12,7 +12,7 @@ import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders (smartBorders)
 
-import XMonad.Actions.CycleWS (prevWS, nextWS)
+import XMonad.Actions.CycleWS (Direction1D (Prev, Next), WSType (Not), moveTo, emptyWS)
 import XMonad.Actions.CycleRecentWS (toggleRecentWS)
 
 import XMonad.Hooks.EwmhDesktops
@@ -119,8 +119,8 @@ windowsKeys =
     , ("M-S-t"     , windows W.swapDown) -- swap with the next
     , ("M-S-n"     , windows W.swapUp) -- swap with the prev
 
-    , ("M-<Left>"  , prevWS) -- prev workspace
-    , ("M-<Right>" , nextWS) -- next workspace
+    , ("M-<Left>"  , moveTo  Prev $ Not emptyWS) -- prev workspace
+    , ("M-<Right>" , moveTo Next $ Not emptyWS) -- next workspace
     , ("M-S-<Tab>" , toggleRecentWS) -- go to most recent workspace
     ]
       where

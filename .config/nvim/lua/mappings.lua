@@ -33,13 +33,26 @@ vim.cmd [[
   cnoreabbrev Qall qall
 ]]
 
+local acmd = vim.api.nvim_create_autocmd
+
+local vimrc = vim.api.nvim_create_augroup("vimrc", { clear = false })
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
-local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
-vim.api.nvim_create_autocmd("TextYankPost", {
+acmd("TextYankPost", {
   callback = function()
     vim.highlight.on_yank { higroup = "IncSearch", timeout = 300 }
   end,
   group = highlight_group,
   pattern = "*",
 })
+
+
+acmd("InsertEnter", { group = vimrc, command = "set nohlsearch" })
+acmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.md", "*.rst" },
+  group = vimrc,
+  command = "setlocal spell spelllang=en_us",
+})
+acmd("BufReadPost", { group = vimrc, command = 'silent! normal! g`"zv' })

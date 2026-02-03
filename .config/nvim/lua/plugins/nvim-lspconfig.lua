@@ -1,5 +1,10 @@
 return {
   {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
+  {
     "stevearc/conform.nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
@@ -60,12 +65,24 @@ return {
         tag = "legacy",
         event = "LspAttach",
       },
+      "saghen/blink.cmp"
     },
     config = function()
       require("neodev").setup()
       require("fidget").setup()
 
-      local lsp = require "lspconfig"
+      local function toggle_inlay()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+      end
+
+      local mappings = {
+        ["<Leader>lq"] = vim.diagnostic.setloclist,
+        ["<Leader>li"] = toggle_inlay,
+      }
+
+      for shortcut, callback in pairs(mappings) do
+        vim.keymap.set("n", shortcut, callback, { noremap = true, silent = true })
+      end
 
       local on_attach = function(buff)
         local nmap = function(keys, func, desc)
@@ -103,7 +120,16 @@ return {
         end,
       })
 
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
+      -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      local function lsp_enable(name, conf)
+        local config = conf or {}
+        config.capabilities = capabilities
+
+        vim.lsp.config(name, config)
+        vim.lsp.enable(name)
+      end
 
       local servers = {
         pylsp = {},
@@ -132,26 +158,30 @@ return {
       }
 
       for server, settings in pairs(servers) do
-        lsp[server].setup {
-          capabilities = capabilities,
-          settings = settings,
-        }
+        lsp_enable(server, settings)
       end
 
-      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        underline = true,
-        signs = true,
-        virtual_text = false,
-      })
-
-      for name, text in pairs {
-        Error = "🔻",
-        Warn = "🔶",
-        Info = "🔷",
-        Hint = "👉",
-      } do
-        vim.fn.sign_define("DiagnosticSign" .. name, { text = text, linehl = "", numhl = "" })
-      end
+      vim.diagnostic.config {
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = "⚬",
+            [vim.diagnostic.severity.WARN] = "⚬",
+            [vim.diagnostic.severity.INFO] = "⚬",
+            [vim.diagnostic.severity.HINT] = "⚬",
+          },
+        },
+      }
+    end,
+  },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    config = function()
+      require("tiny-inline-diagnostic").setup {
+        profile = "powerline",
+      }
+      vim.diagnostic.config { virtual_text = false }  -- Disable Neovim's default virtual text diagnostics
     end,
   },
 }
