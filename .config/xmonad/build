@@ -7,7 +7,7 @@ XMONAD_BIN="${XDG_CACHE_HOME:-${HOME}/.cache}/xmonad/xmonad-x86_64-linux"
 # xmobar is spawned by name via PATH. ~/.local/bin is in PATH, cache is not.
 XMOBAR_BIN="${HOME}/.local/bin/xmobar"
 
-cd "${XDG_CONFIG_HOME:-${HOME}/.config}/xmonad" && stack build --reconfigure || exit
+cd "${XDG_CONFIG_HOME:-${HOME}/.config}/xmonad" && stack build || exit
 
 ln -f -T "$(stack exec -- which xmonadrc)" "${XMONAD_BIN}"
 ln -f -T "$(stack exec -- which xmobar)" "${XMOBAR_BIN}"
