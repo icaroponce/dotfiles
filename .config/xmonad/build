@@ -1,5 +1,8 @@
 #!/bin/sh
 
+XMONAD_BIN="${HOME}/.local/bin/xmonad-x86_64-linux"
+
 cd "${XDG_CONFIG_HOME}/xmonad" && stack build --reconfigure || exit
 
-ln -f -T "$(stack exec -- which xmonadrc)" "$1"
+ln -f -T "$(stack exec -- which xmonadrc)" "${XMONAD_BIN}"
+ln -f -T "$(stack exec -- which xmobar)" "$(dirname ${XMONAD_BIN})/xmobar"

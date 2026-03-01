@@ -5,26 +5,22 @@
 
 packages:
 - completed:
-    commit: 09f9cb86a017d588db3f7524b3f12f6bee22f71c
-    git: https://codeberg.org/xmobar/xmobar
-    name: xmobar
+    hackage: xmonad-contrib-0.18.0@sha256:aae129651391ec65e4c7cf4c23b280cc5e69f709d86668502426a41eebab9d3c,22370
     pantry-tree:
-      sha256: cc49ffabcaaffe6b67be70aeb52373fc6258865f3afca830f142296f9ecc35bb
-      size: 10342
-    version: 0.44.2
+      sha256: d2987f3843f1c5ca11bf63d22630679a34b7578f432a96f0dec97b98c4984e72
+      size: 23806
   original:
-    commit: 09f9cb86a017d588db3f7524b3f12f6bee22f71c
-    git: https://codeberg.org/xmobar/xmobar
+    hackage: xmonad-contrib-0.18.0
 - completed:
-    hackage: X11-xft-0.3.4@sha256:e08bd69d24c40f1a33e6c87964f200656da77ad6a1fbdf6a4073dcb967e65599,1380
+    hackage: xmobar-0.47.4@sha256:27e63d21e46f6ed6c44293a566a43ee81cf74e517aa205b260d159128e38e3eb,15129
     pantry-tree:
-      sha256: 0dad74fea9135433d0f4ca7a65dba6c8ac99136bb6cacf901d2ddf795846d0f1
-      size: 330
+      sha256: 4e842b5a15556646db0478812e5d5986a10939b88e145432d57880051d2e7c3f
+      size: 9769
   original:
-    hackage: X11-xft-0.3.4
+    hackage: xmobar-0.47.4
 snapshots:
 - completed:
-    sha256: 57d4ce67cc097fea2058446927987bc1f7408890e3a6df0da74e5e318f051c20
-    size: 618884
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/7.yaml
-  original: lts-19.7
+    sha256: 08bd13ce621b41a8f5e51456b38d5b46d7783ce114a50ab604d6bbab0d002146
+    size: 720271
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/22/43.yaml
+  original: lts-22.43
