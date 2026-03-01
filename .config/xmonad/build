@@ -1,8 +1,13 @@
 #!/bin/sh
 
-XMONAD_BIN="${HOME}/.local/bin/xmonad-x86_64-linux"
+# XMonad restarts by re-executing its own binary path, which is always
+# ~/.cache/xmonad/xmonad-x86_64-linux. The build output must go here.
+XMONAD_BIN="${XDG_CACHE_HOME:-${HOME}/.cache}/xmonad/xmonad-x86_64-linux"
 
-cd "${XDG_CONFIG_HOME}/xmonad" && stack build --reconfigure || exit
+# xmobar is spawned by name via PATH. ~/.local/bin is in PATH, cache is not.
+XMOBAR_BIN="${HOME}/.local/bin/xmobar"
+
+cd "${XDG_CONFIG_HOME:-${HOME}/.config}/xmonad" && stack build --reconfigure || exit
 
 ln -f -T "$(stack exec -- which xmonadrc)" "${XMONAD_BIN}"
-ln -f -T "$(stack exec -- which xmobar)" "$(dirname ${XMONAD_BIN})/xmobar"
+ln -f -T "$(stack exec -- which xmobar)" "${XMOBAR_BIN}"
