@@ -11,23 +11,25 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.Fullscreen
 
 import XMonad.Actions.CycleWS (Direction1D (Prev, Next), WSType (Not), moveTo, emptyWS)
 import XMonad.Actions.CycleRecentWS (toggleRecentWS)
 
-import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.EwmhDesktops hiding (fullscreenEventHook)
+import XMonad.Hooks.ManageHelpers (doCenterFloat)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 
 import qualified XMonad.StackSet as W
+import qualified Data.Map        as M
 
-myLayout = smartBorders
+myLayout = fullscreenFull $ smartBorders
   . mkToggle (single NBFULL)
   $ tiled
   ||| Mirror tiled
-  ||| Full
   ||| threeCol
   where
     threeCol = ThreeColMid nmaster delta ratio
@@ -45,7 +47,8 @@ myConfig = def
   , borderWidth        = myBorderWidth
 
   , layoutHook         = myLayout
-  , manageHook         = myManageHook
+  , manageHook         = myManageHook <> fullscreenManageHook
+  , handleEventHook    = fullscreenEventHook
   , logHook            = workspaceHistoryHook
   }
   `additionalKeysP`
@@ -118,6 +121,7 @@ windowsKeys :: Keybindings
 windowsKeys =
     [ ("M-S-c"     , kill) -- kill current window
     , ("M-f"       , toggleFullScreen)
+    , ("M-S-f"     , withFocused toggleFloat) -- float/sink toggle
     , ("M-t"       , windows W.focusDown) -- next window
     , ("M-n"       , windows W.focusUp) -- prev window
     , ("M-S-t"     , windows W.swapDown) -- swap with the next
@@ -125,7 +129,7 @@ windowsKeys =
 
     , ("M-<Left>"  , moveTo  Prev $ Not emptyWS) -- prev workspace
     , ("M-<Right>" , moveTo Next $ Not emptyWS) -- next workspace
-    , ("M-S-<Tab>" , toggleRecentWS) -- go to most recent workspace
+    , ("M-<Tab>"   , toggleRecentWS) -- go to most recent workspace
     ]
       where
         toggleFullScreen :: X ()
@@ -133,7 +137,6 @@ windowsKeys =
 
 main :: IO ()
 main = xmonad
-     . ewmhFullscreen
      . ewmh
      . withEasySB (statusBarProp "xmobar" (pure myXmobarPP)) defToggleStrutsKey
      $ myConfig
@@ -199,24 +202,21 @@ myUnfocusedBorderColor = colorBg
 myBorderWidth :: Dimension
 myBorderWidth = 2
 
--- Window rules
--- Execute arbitrary actions and WindowSet manipulations when managing
--- a new window. You can use this to, for example, always float a
--- particular program, or have a client always appear on a particular
--- workspace.
---
--- To find the property name associated with a program, use
--- > xprop | grep WM_CLASS
--- and click on the client you're interested in.
---
--- To match on the WM_NAME, you can use 'title' in the same way that
--- 'className' and 'resource' are used below
---
-myManageHook = composeAll 
-    [ className =? "Galculator"     --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , className =? "Lxappearance"   --> doFloat
-    , className =? "Pavucontrol"          --> doFloat
+toggleFloat :: Window -> X ()
+toggleFloat w = windows $ \s ->
+    if M.member w (W.floating s)
+        then W.sink w s
+        else W.float w (W.RationalRect 0.1 0.1 0.8 0.8) s
+
+-- Window rules: float specific applications centered on screen.
+-- To find the className of any window: run `xprop | grep WM_CLASS` and click
+-- the window. Use the SECOND quoted value (res_class) for className matches.
+myManageHook = composeAll
+    [ className =? "Galculator"   --> doCenterFloat
+    , className =? "gimp"         --> doCenterFloat  -- GIMP 3.0 (GTK4) uses lowercase
+    , className =? "Lxappearance" --> doCenterFloat
+    , className =? "pavucontrol"  --> doCenterFloat
+    , className =? "Blueman-manager" --> doCenterFloat
+ -- , className =? "stalonetray"    --> doIgnore
+ -- , isFullscreen --> (doF W.focusDown <+> doFullFloat)
     ]
-    -- , className =? "stalonetray"    --> doIgnore
-    -- , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
