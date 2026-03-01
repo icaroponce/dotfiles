@@ -24,12 +24,8 @@ executables:
       - xmonad-contrib >= 0.17
 
   xmobar:
-     source-dirs:     .
-     main: xmobar.hs
-     dependencies:
-       - base
-       - xmobar
-     ghc-options:
-       -rtsopts
-       -with-rtsopts=-N
-       -threaded
+    source-dirs:         .
+    main:                xmobar.hs
+    dependencies:
+      - base
+      - xmobar

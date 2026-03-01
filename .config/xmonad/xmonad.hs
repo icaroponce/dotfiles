@@ -3,8 +3,8 @@
 import XMonad
 
 import XMonad.Util.EZConfig
-import XMonad.Util.Ungrab
 import XMonad.Util.Loggers
+import XMonad.Util.Ungrab
 
 import XMonad.Layout.ThreeColumns
 -- import XMonad.Layout.Magnifier
@@ -73,7 +73,7 @@ appKeys =
     , ("M-d"         , spawnLauncher)
     , ("M-S-q"       , lockscreen)
     -- printscreen bindings
-    , ("<Print>"     , unGrab *> printscreen "")
+    , ("<Print>"     , unGrab *> printscreenFlameshot)
     , ("M-S-<Print>" , unGrab *> printscreen "-s")
     , ("M-<Print>"   , unGrab *> printscreen "-u")
     -- dunst bindings
@@ -91,10 +91,13 @@ appKeys =
     printscreen :: String -> X ()
     printscreen flag = spawn $ "scrot " <> flag  <> " ~/Screenshots/$(date '+%Y-%m-%dT%H:%M:%S.png')"
 
+    printscreenFlameshot :: X ()
+    printscreenFlameshot = spawn "flameshot gui"
+
 mediaKeys :: Keybindings
 mediaKeys =
-    [ ("<XF86AudioRaiseVolume>", volume "5%+"   )
-    , ("<XF86AudioLowerVolume>", volume "5%-"   )
+    [ ("<XF86AudioRaiseVolume>", volume "+5%"   )
+    , ("<XF86AudioLowerVolume>", volume "-5%"   )
     , ("<XF86AudioMute>"       , volume "toggle")
     , ("<XF86AudioPrev>"       , play "previous")
     , ("<XF86AudioNext>"       , play "next")
@@ -103,7 +106,8 @@ mediaKeys =
     ]
   where
     volume :: String -> X ()
-    volume = spawn . ("amixer -q set Master " <>)
+    volume "toggle" = spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    volume vol      = spawn $ "pactl set-sink-volume @DEFAULT_SINK@ " <> vol
 
     play :: String -> X ()
     play = spawn . (playerCommand <>)

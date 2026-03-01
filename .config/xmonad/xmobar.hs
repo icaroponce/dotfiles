@@ -23,7 +23,7 @@ config = defaultConfig {
     , commands = myCommands
     , sepChar  = "%"
     , alignSep = "}{"
-    , template = "%hasIcon% | %XMonadLog% }{ %alsa:default:Master% | %battery% | %cpu% | %memory% | %EDDB% | %date%"
+    , template = "%hasIcon% | %XMonadLog% }{ " <> inIconFont "\61480" <> "%vol% | %battery% | %cpu% | %memory% | %EDDB% | %date%"
 }
 
 myCommands :: [Runnable]
@@ -42,19 +42,11 @@ myCommands =
         , "-H", "50"
         , "--high"  , colorRed
         , "--normal", colorGreen
+        , "--template", inIconFont "\62171" <> "<total>%"
         ] (10 `seconds`)
-    , Run $ Alsa "default" "Master"
-        [ "--template", "Vol: <volumestatus>"
-        , "--suffix"  , "True"
-        , "--"
-        , "--on"     , ""
-        , "--onc"    , colorFg                -- On  colour.
-        , "--offc"   , colorFg                -- Off colour.
-        , "--off"    , inAltIconFont "🔇"
-        , "--lows"   , inIconFont "\61478"  -- Low    charge string: 
-        , "--mediums", inIconFont "\61479"  -- Medium charge string: 
-        , "--highs"  , inIconFont "\61480"  -- High   charge string: 
-        ]
+    , Run $ Com "bash"
+        ["-c", "pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\\d+(?=%)' | head -1 | awk '{print \"Vol: \" $1 \"%\"}'"]
+        "vol" (2 `seconds`)
     , Run $ Memory ["--template", inAltIconFont "🧠" <> ": <usedratio>%"] (10 `seconds`)
     , Run $ Date ("%a %Y-%m-%d " <> cyan "%H:%M") "date" (10 `seconds`)
     , Run $ Battery
@@ -67,8 +59,8 @@ myCommands =
           , "--suffix"  , "True"     -- Display '%' after '<left>'.
           , "--"                     -- battery specific options start here.
           , "--off"     , "<left> (<timeleft>)"                         -- AC off.
-          , "--on"      , yellow "Charging" <> ": <left> (<timeleft>)"  -- AC on.
-          , "--idle"    , green  "Charged"  <> " <left>"                -- Fully charged.
+          , "--on"      , inIconFont "\61671" <> yellow "Charging" <> ": <left> (<timeleft>)"  -- AC on.
+          , "--idle"    , inIconFont "\61926" <> green  "Charged"  <> " <left>"                -- Fully charged.
             -- Charge strings.  These go _in front_ of the @AC off@ string,
             -- while the @AC on@ and @idle@ strings ignore them.
           , "--lowt"    , "15"       -- Low  threshold for charge strings (in %).
@@ -141,13 +133,13 @@ xmobarColor fg bg = wrap open "</fc>"
 
 {-----------------------------------FONTS-----------------------------------}
 mainFont :: String
-mainFont = "xft:DejaVu Sans:antialias=true:size=9" 
+mainFont = "DejaVu Sans 11"
 
 emojiFont :: String
-emojiFont = "xft:Symbola-10"
+emojiFont = "Symbola 10"
 
 iconFont :: String
-iconFont = "xft:Symbols Nerd Font"
+iconFont = "Symbols Nerd Font 10"
 
 -- | Wrap stuff so it uses the icon font.
 inIconFont :: String -> String

@@ -1,16 +1,11 @@
-resolver: lts-19.7
+resolver: lts-22.43
 
 packages:
 - .
 
-flags:
-  xmobar:
-    with_alsa: true
-    with_threaded: true
-    with_weather: true
-    with_xft: true
-
 extra-deps:
-  - git: https://codeberg.org/xmobar/xmobar
-    commit: 09f9cb86a017d588db3f7524b3f12f6bee22f71c # v0.44.2
-  - X11-xft-0.3.4
+  - xmonad-contrib-0.18.0
+  - xmobar-0.47.4
+
+ghc-options:
+  hashtables: -optc-std=gnu11
