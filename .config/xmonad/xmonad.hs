@@ -5,12 +5,14 @@ import XMonad
 import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
 import XMonad.Util.Ungrab
+import XMonad.Util.NamedScratchpad
 
 import XMonad.Layout.ThreeColumns
 -- import XMonad.Layout.Magnifier
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.Spacing
 import XMonad.Layout.Fullscreen
 
 import XMonad.Actions.CycleWS (Direction1D (Prev, Next), WSType (Not), moveTo, emptyWS)
@@ -28,6 +30,7 @@ import qualified Data.Map        as M
 
 myLayout = fullscreenFull $ smartBorders
   . mkToggle (single NBFULL)
+  . smartSpacingWithEdge 6
   $ tiled
   ||| Mirror tiled
   ||| threeCol
@@ -83,6 +86,8 @@ appKeys =
     , ("M1-<Space>"  , spawn "dunstctl close")
     , ("M1-S-<Space>", spawn "dunstctl close-all")
     , ("M1-<Escape>" , spawn "dunstctl history-pop")
+    -- scratchpads
+    , ("M-v"         , namedScratchpadAction myScratchpads "pavucontrol")
     ]
   where
     spawnLauncher :: X ()
@@ -208,15 +213,22 @@ toggleFloat w = windows $ \s ->
         then W.sink w s
         else W.float w (W.RationalRect 0.1 0.1 0.8 0.8) s
 
+myScratchpads :: [NamedScratchpad]
+myScratchpads =
+    [ NS "pavucontrol" "pavucontrol"
+         (className =? "pavucontrol")
+         (customFloating $ W.RationalRect 0.2 0.15 0.6 0.7)
+    ]
+
 -- Window rules: float specific applications centered on screen.
 -- To find the className of any window: run `xprop | grep WM_CLASS` and click
 -- the window. Use the SECOND quoted value (res_class) for className matches.
 myManageHook = composeAll
-    [ className =? "Galculator"   --> doCenterFloat
-    , className =? "gimp"         --> doCenterFloat  -- GIMP 3.0 (GTK4) uses lowercase
-    , className =? "Lxappearance" --> doCenterFloat
-    , className =? "pavucontrol"  --> doCenterFloat
+    [ className =? "Galculator"      --> doCenterFloat
+    , className =? "gimp"            --> doCenterFloat  -- GIMP 3.0 (GTK4) uses lowercase
+    , className =? "Lxappearance"    --> doCenterFloat
     , className =? "Blueman-manager" --> doCenterFloat
- -- , className =? "stalonetray"    --> doIgnore
- -- , isFullscreen --> (doF W.focusDown <+> doFullFloat)
+    , className =? "Arandr"          --> doCenterFloat
+ -- , className =? "stalonetray"     --> doIgnore
     ]
+    <> namedScratchpadManageHook myScratchpads
