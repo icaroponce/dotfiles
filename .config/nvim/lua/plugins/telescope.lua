@@ -8,19 +8,18 @@ return {
   },
   cmd = "Telescope",
   keys = {
-    { "<C-p>", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
-    { "<leader>fh", "<cmd>Telescope find_files hidden=true<cr>", desc = "[F]ind Files (with [H]idden)" },
-    { "<C-/>", "<cmd>Telescope live_grep<cr>", desc = "Find by Grep" },
-    { "<leader>'", "<cmd>Telescope buffers<cr>", desc = "['] Find existing buffers" },
-    { "<leader>ft", "<cmd>Telescope help_tags<cr>", desc = "Search help tags" },
-    { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "[?] Find recently opened files" },
-    { "<leader>gs", "<cmd>Telescope git_status<cr>", desc = "Show [G]it [S]tatus" },
-    { "<leader>gr", "<cmd>Telescope lsp_references<cr>", desc = "Find LSP refences" },
-    { "<leader>km", "<cmd>Telescope keymaps<cr>", desc = "Find [K]ey[M]aps" },
+    { "<C-p>",      "<cmd>Telescope find_files<cr>",          desc = "Find Files" },
+    { "<C-/>",      "<cmd>Telescope live_grep<cr>",           desc = "Find by Grep" },
+    { "<leader>'",  "<cmd>Telescope buffers<cr>",             desc = "['] Find existing buffers" },
+    { "<leader>ft", "<cmd>Telescope help_tags<cr>",           desc = "Search help tags" },
+    { "<leader>fr", "<cmd>Telescope oldfiles<cr>",            desc = "[?] Find recently opened files" },
+    { "<leader>gs", "<cmd>Telescope git_status<cr>",          desc = "Show [G]it [S]tatus" },
+    { "<leader>gr", "<cmd>Telescope lsp_references<cr>",      desc = "Find LSP refences" },
+    { "<leader>km", "<cmd>Telescope keymaps<cr>",             desc = "Find [K]ey[M]aps" },
     { "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
-    { "<leader>sD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },
-    { "<leader>sw", "<cmd>Telescope grep_string<cr>", desc = "[S]earch current [W]ord" },
-    { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command history" },
+    { "<leader>sD", "<cmd>Telescope diagnostics<cr>",         desc = "Workspace diagnostics" },
+    { "<leader>sw", "<cmd>Telescope grep_string<cr>",         desc = "[S]earch current [W]ord" },
+    { "<leader>:",  "<cmd>Telescope command_history<cr>",     desc = "Command history" },
   },
   config = function()
     local map = vim.keymap.set
@@ -30,6 +29,18 @@ return {
     local telescope_themes = require "telescope.themes"
 
     telescope.setup {
+      pickers = {
+        live_grep = {
+          file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+          additional_args = function(_)
+            return { "--hidden" }
+          end
+        },
+        find_files = {
+          file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+          hidden = true
+        }
+      },
       defaults = {
         layout_config = {
           horizontal = {
@@ -45,6 +56,7 @@ return {
         },
       },
       extensions = {
+        "fzf",
         ["ui-select"] = {
           require("telescope.themes").get_dropdown {},
         },
