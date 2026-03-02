@@ -6,6 +6,7 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
 import XMonad.Util.Ungrab
 import XMonad.Util.NamedScratchpad
+import XMonad.Util.SpawnOnce
 
 import XMonad.Layout.ThreeColumns
 -- import XMonad.Layout.Magnifier
@@ -19,6 +20,7 @@ import XMonad.Actions.CycleWS (Direction1D (Prev, Next), WSType (Not), moveTo, e
 import XMonad.Actions.CycleRecentWS (toggleRecentWS)
 
 import XMonad.Hooks.EwmhDesktops hiding (fullscreenEventHook)
+import XMonad.Hooks.Rescreen
 import XMonad.Hooks.ManageHelpers (doCenterFloat)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
@@ -53,6 +55,7 @@ myConfig = def
   , manageHook         = myManageHook <> fullscreenManageHook
   , handleEventHook    = fullscreenEventHook
   , logHook            = workspaceHistoryHook
+  , startupHook        = myStartupHook
   }
   `additionalKeysP`
   myKeys
@@ -143,6 +146,7 @@ windowsKeys =
 main :: IO ()
 main = xmonad
      . ewmh
+     . addRandrChangeHook (spawn "autorandr --change")
      . withEasySB (statusBarProp "xmobar" (pure myXmobarPP)) defToggleStrutsKey
      $ myConfig
 
@@ -212,6 +216,16 @@ toggleFloat w = windows $ \s ->
     if M.member w (W.floating s)
         then W.sink w s
         else W.float w (W.RationalRect 0.1 0.1 0.8 0.8) s
+
+myStartupHook :: X ()
+myStartupHook = do
+    spawn     "autorandr --change"   -- apply saved monitor profile on startup/restart
+    spawnOnce "picom"
+    spawnOnce "dunst"
+    spawnOnce "nm-applet"
+    spawnOnce "blueman-applet"
+    spawnOnce "unclutter"
+    spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --alpha 0 --tint 0x192330 --height 17"
 
 myScratchpads :: [NamedScratchpad]
 myScratchpads =
