@@ -1,21 +1,2 @@
 #!/bin/sh
-# Run this file when starting the WM.
-
-trayer \
-  --edge top \
-  --align right \
-  --SetDockType true \
-  --SetPartialStrut true \
-  --expand true \
-  --width 10 \
-  --transparent true \
-  --tint 0x5f5f5f \
-  --height 20 &
-
-# xsetroot -cursor_name left_ptr # Set the default X cursor to the usual pointer
-# xfce4-power-manager & # for battery and suspend management
-picom -b &            # for transparency
-dunst &               # for notifications
-nm-applet &           # for network-applet on status bar
-blueman-applet &      # for bluetooth-applet on status bar
-unclutter &           # for removing mouse when idle
+# Startup apps are managed by XMonad's startupHook (xmonad.hs) via spawnOnce.
