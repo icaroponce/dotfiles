@@ -93,6 +93,7 @@ appKeys =
     , ("M1-<Escape>" , spawn "dunstctl history-pop")
     -- scratchpads
     , ("M-v"         , namedScratchpadAction myScratchpads "pavucontrol")
+    , ("M-s"         , namedScratchpadAction myScratchpads "terminal")
     , ("M-c"         , spawnClipboard)
     ]
   where
@@ -250,6 +251,9 @@ myScratchpads =
     [ NS "pavucontrol" "pavucontrol"
          (className =? "pavucontrol")
          (customFloating $ W.RationalRect 0.2 0.15 0.6 0.7)
+    , NS "terminal" "kitty --class scratchpad"
+         (className =? "scratchpad")
+         (customFloating $ W.RationalRect 0.15 0.1 0.7 0.8)
     ]
 
 -- Window rules: float specific applications centered on screen.
