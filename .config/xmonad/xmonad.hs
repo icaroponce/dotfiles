@@ -9,6 +9,7 @@ import XMonad.Util.NamedScratchpad
 import XMonad.Util.SpawnOnce
 
 import XMonad.Layout.ThreeColumns
+import XMonad.Layout.ResizableTile (ResizableTall(..), MirrorResize(..))
 -- import XMonad.Layout.Magnifier
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
@@ -39,7 +40,7 @@ myLayout = fullscreenFull $ smartBorders
   ||| threeCol
   where
     threeCol = ThreeColMid nmaster delta ratio
-    tiled    = Tall nmaster delta ratio
+    tiled    = ResizableTall nmaster delta ratio []
     nmaster  = 1      -- Default number of windows in the master pane
     ratio    = 1/2    -- Default proportion of screen occupied by master pane
     delta    = 3/100  -- Percent of screen to increment by when resizing panes
@@ -139,6 +140,9 @@ windowsKeys =
     , ("M-<Left>"  , moveTo  Prev $ Not emptyWS) -- prev workspace
     , ("M-<Right>" , moveTo Next $ Not emptyWS) -- next workspace
     , ("M-<Tab>"   , toggleRecentNonNSP) -- go to most recent non-scratchpad workspace
+
+    , ("M-a"       , sendMessage MirrorShrink) -- shrink focused window vertically
+    , ("M-z"       , sendMessage MirrorExpand) -- grow focused window vertically
     ]
       where
         toggleFullScreen :: X ()
