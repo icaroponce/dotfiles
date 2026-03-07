@@ -17,7 +17,7 @@ import XMonad.Layout.Spacing
 import XMonad.Layout.Fullscreen
 
 import XMonad.Actions.CycleWS (Direction1D (Prev, Next), WSType (Not), moveTo, emptyWS)
-import XMonad.Actions.CycleRecentWS (toggleRecentWS)
+import XMonad.Actions.CycleRecentWS
 
 import XMonad.Hooks.EwmhDesktops hiding (fullscreenEventHook)
 import XMonad.Hooks.Rescreen
@@ -25,7 +25,7 @@ import XMonad.Hooks.ManageHelpers (doCenterFloat)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
-import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
+import XMonad.Hooks.WorkspaceHistory (workspaceHistory, workspaceHistoryHookExclude)
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -54,7 +54,7 @@ myConfig = def
   , layoutHook         = myLayout
   , manageHook         = myManageHook <> fullscreenManageHook
   , handleEventHook    = fullscreenEventHook
-  , logHook            = workspaceHistoryHook
+  , logHook            = workspaceHistoryHookExclude [scratchpadWorkspaceTag]
   , startupHook        = myStartupHook
   }
   `additionalKeysP`
@@ -137,7 +137,7 @@ windowsKeys =
 
     , ("M-<Left>"  , moveTo  Prev $ Not emptyWS) -- prev workspace
     , ("M-<Right>" , moveTo Next $ Not emptyWS) -- next workspace
-    , ("M-<Tab>"   , toggleRecentWS) -- go to most recent workspace
+    , ("M-<Tab>"   , toggleRecentNonNSP) -- go to most recent non-scratchpad workspace
     ]
       where
         toggleFullScreen :: X ()
@@ -210,6 +210,14 @@ myUnfocusedBorderColor = colorBg
 
 myBorderWidth :: Dimension
 myBorderWidth = 2
+
+toggleRecentNonNSP :: X ()
+toggleRecentNonNSP = do
+    hist <- workspaceHistory
+    let nonNSP = filter (/= scratchpadWorkspaceTag) hist
+    case nonNSP of
+        (_:prev:_) -> windows $ W.greedyView prev
+        _          -> return ()
 
 toggleFloat :: Window -> X ()
 toggleFloat w = windows $ \s ->
