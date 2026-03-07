@@ -18,7 +18,7 @@ config = defaultConfig {
     , additionalFonts = [iconFont, emojiFont]
     , bgColor  = colorBg
     , fgColor  = colorFg
-    , position = TopW L 90
+    , position = TopSize L 95 22
 
     , commands = myCommands
     , sepChar  = "%"
