@@ -93,6 +93,7 @@ appKeys =
     , ("M1-<Escape>" , spawn "dunstctl history-pop")
     -- scratchpads
     , ("M-v"         , namedScratchpadAction myScratchpads "pavucontrol")
+    , ("M-c"         , spawnClipboard)
     ]
   where
     spawnLauncher :: X ()
@@ -106,6 +107,9 @@ appKeys =
 
     printscreenFlameshot :: X ()
     printscreenFlameshot = spawn "flameshot gui"
+
+    spawnClipboard :: X ()
+    spawnClipboard = spawn "rofi -modi 'clipboard:greenclip print' -show clipboard -theme gruvbox-dark"
 
 mediaKeys :: Keybindings
 mediaKeys =
@@ -238,6 +242,7 @@ myStartupHook = do
     spawnOnce "nm-applet"
     spawnOnce "blueman-applet"
     spawnOnce "unclutter"
+    spawnOnce "greenclip daemon"
     spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 5 --transparent true --alpha 0 --tint 0x192330 --height 22"
 
 myScratchpads :: [NamedScratchpad]
