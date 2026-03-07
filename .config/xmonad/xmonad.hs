@@ -7,6 +7,7 @@ import XMonad.Util.Loggers
 import XMonad.Util.Ungrab
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.SpawnOnce
+import XMonad.Util.NamedWindows (getName)
 
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.ResizableTile (ResizableTall(..), MirrorResize(..))
@@ -20,6 +21,7 @@ import XMonad.Layout.Fullscreen
 import XMonad.Actions.CycleWS (Direction1D (Prev, Next), WSType (Not), moveTo, emptyWS)
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.WindowGo (runOrRaise)
+import XMonad.Actions.WindowBringer (gotoMenuConfig, bringMenuConfig, WindowBringerConfig(..))
 
 import XMonad.Hooks.EwmhDesktops hiding (fullscreenEventHook)
 import XMonad.Hooks.Rescreen
@@ -92,6 +94,8 @@ appKeys =
     , ("M1-S-<Space>", spawn "dunstctl close-all")
     , ("M1-<Escape>" , spawn "dunstctl history-pop")
     -- scratchpads
+    , ("M-g"         , gotoMenuConfig  windowBringerConfig) -- goto any window
+    , ("M-S-g"       , bringMenuConfig windowBringerConfig) -- bring any window here
     , ("M-v"         , namedScratchpadAction myScratchpads "pavucontrol")
     , ("M-s"         , namedScratchpadAction myScratchpads "terminal")
     , ("M-c"         , spawnClipboard)
@@ -220,6 +224,18 @@ myUnfocusedBorderColor = colorBg
 
 myBorderWidth :: Dimension
 myBorderWidth = 2
+
+windowBringerConfig :: WindowBringerConfig
+windowBringerConfig = def
+    { menuCommand  = "rofi"
+    , menuArgs     = ["-dmenu", "-i", "-p", "window", "-theme", "gruvbox-dark"]
+    , windowTitler = titler
+    }
+  where
+    titler ws w = do
+        name <- getName w
+        app  <- runQuery className w
+        return $ W.tag ws <> " - " <> app <> ": " <> show name
 
 toggleRecentNonNSP :: X ()
 toggleRecentNonNSP = do
