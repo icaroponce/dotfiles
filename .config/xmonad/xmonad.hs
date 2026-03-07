@@ -225,7 +225,7 @@ myStartupHook = do
     spawnOnce "nm-applet"
     spawnOnce "blueman-applet"
     spawnOnce "unclutter"
-    spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --alpha 0 --tint 0x192330 --height 17"
+    spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 5 --transparent true --alpha 0 --tint 0x192330 --height 22"
 
 myScratchpads :: [NamedScratchpad]
 myScratchpads =
