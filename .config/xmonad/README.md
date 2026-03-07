@@ -9,21 +9,21 @@
 | Keybinding | Action |
 |------------|--------|
 | `Super + Return` | Open terminal (kitty) |
-| `Super + o` | Open browser (brave) |
+| `Super + o` | Focus browser if open, spawn otherwise (brave) |
 | `Super + d` | Open rofi launcher (window/drun/ssh) |
+| `Super + c` | Open clipboard history (greenclip) |
 | `Super + Shift + q` | Lock screen (i3lock-fancy-rapid) |
 
 ---
 
-## Screenshots
+## Scratchpads
 
-Saved to `~/Screenshots/`
+Floating windows that persist their state when hidden.
 
 | Keybinding | Action |
 |------------|--------|
-| `Print` | Full screenshot |
-| `Super + Shift + Print` | Selection screenshot (`-s`) |
-| `Super + Print` | Upload screenshot (`-u`) |
+| `Super + s` | Toggle terminal scratchpad (kitty) |
+| `Super + v` | Toggle volume mixer (pavucontrol) |
 
 ---
 
@@ -33,10 +33,15 @@ Saved to `~/Screenshots/`
 |------------|--------|
 | `Super + Shift + c` | Kill focused window |
 | `Super + f` | Toggle fullscreen |
+| `Super + Shift + f` | Float / sink toggle |
 | `Super + t` | Focus next window |
 | `Super + n` | Focus previous window |
 | `Super + Shift + t` | Swap with next window |
 | `Super + Shift + n` | Swap with previous window |
+| `Super + a` | Shrink focused window vertically |
+| `Super + z` | Grow focused window vertically |
+| `Super + g` | Go to any window (across all workspaces) |
+| `Super + Shift + g` | Bring any window to current workspace |
 
 ---
 
@@ -46,7 +51,7 @@ Saved to `~/Screenshots/`
 |------------|--------|
 | `Super + Left` | Go to previous non-empty workspace |
 | `Super + Right` | Go to next non-empty workspace |
-| `Super + Shift + Tab` | Toggle to most recent workspace |
+| `Super + Tab` | Toggle to most recent workspace |
 
 ---
 
@@ -57,6 +62,18 @@ Saved to `~/Screenshots/`
 | `Alt + Space` | Close notification |
 | `Alt + Shift + Space` | Close all notifications |
 | `Alt + Escape` | Show notification history |
+
+---
+
+## Screenshots
+
+Saved to `~/Screenshots/`
+
+| Keybinding | Action |
+|------------|--------|
+| `Print` | Flameshot GUI |
+| `Super + Shift + Print` | Selection screenshot (scrot `-s`) |
+| `Super + Print` | Upload screenshot (scrot `-u`) |
 
 ---
 
@@ -77,10 +94,11 @@ Saved to `~/Screenshots/`
 
 Cycle layouts with `Super + Space` (default xmonad):
 
-1. **Tall** - Master left, stack right (default)
-2. **Mirror Tall** - Master top, stack bottom
-3. **Full** - Single window fullscreen
-4. **ThreeColMid** - Master in center, two columns on sides
+1. **ResizableTall** — master left, stack right; `Super + a`/`z` resize stack windows vertically
+2. **Mirror ResizableTall** — master top, stack bottom
+3. **ThreeColMid** — master in center, two columns on sides
+
+`Super + f` toggles borderless fullscreen over any layout.
 
 ---
 
@@ -90,7 +108,7 @@ Cycle layouts with `Super + Space` (default xmonad):
 |------------|--------|
 | `Super + Space` | Cycle layouts |
 | `Super + Shift + Space` | Reset to default layout |
-| `Super + h/l` | Shrink/Expand master |
+| `Super + h` / `Super + l` | Shrink/Expand master pane |
 | `Super + ,` / `Super + .` | Inc/Dec master windows |
 | `Super + [1-9]` | Switch to workspace |
 | `Super + Shift + [1-9]` | Move window to workspace |
@@ -105,23 +123,40 @@ Cycle layouts with `Super + Space` (default xmonad):
 - Galculator
 - Gimp
 - Lxappearance
-- Pavucontrol
+- Blueman-manager
+- Arandr
+
+---
+
+## Startup Apps
+
+Managed by `myStartupHook` via `spawnOnce` (won't re-launch on `Super + q` restart):
+
+- `picom` — compositor
+- `dunst` — notification daemon
+- `nm-applet` — network manager tray icon
+- `blueman-applet` — Bluetooth tray icon
+- `unclutter` — hide cursor when idle
+- `trayer` — system tray
+- `greenclip daemon` — clipboard history
+
+`autorandr --change` runs on every restart and on monitor plug/unplug.
 
 ---
 
 ## Build & Restart
 
 ```bash
-# Build xmonad and link the binary to your PATH
 cd ~/.config/xmonad
-./build ~/.local/bin/xmonad-x86_64-linux
+./build
 ```
 
-The `build` script does the following:
-1. Runs `stack build --reconfigure` in the xmonad config directory
-2. Creates a hard link from the compiled `xmonadrc` binary to the specified path
+The `build` script:
+1. Runs `stack build` in the xmonad config directory
+2. Hard-links the compiled `xmonadrc` binary to `~/.cache/xmonad/xmonad-x86_64-linux`
+3. Hard-links the compiled `xmobar` binary to `~/.local/bin/xmobar`
 
-After building, restart xmonad with `Super + q` (default binding).
+Restart xmonad with `Super + q`.
 
 ---
 
@@ -131,10 +166,11 @@ After building, restart xmonad with `Super + q` (default binding).
 |------|---------|
 | `xmonad.hs` | Main WM config, keybindings, layouts |
 | `xmobar.hs` | Status bar config |
-| `build` | Build script for Arch Linux (uses Stack) |
+| `build` | Build script (Stack, GHC 9.6.6, lts-22.43) |
+| `~/.config/dunst/dunstrc` | Notification daemon config |
 
 ---
 
 ## Xmobar Status Bar
 
-Shows: Haskell icon | workspaces | windows -> volume | battery | cpu | memory | weather (EDDB) | date/time
+Shows: Haskell icon | workspaces | windows → volume | battery | cpu | memory | weather (EDDB) | date/time
