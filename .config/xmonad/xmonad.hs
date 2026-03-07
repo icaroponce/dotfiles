@@ -18,6 +18,7 @@ import XMonad.Layout.Fullscreen
 
 import XMonad.Actions.CycleWS (Direction1D (Prev, Next), WSType (Not), moveTo, emptyWS)
 import XMonad.Actions.CycleRecentWS
+import XMonad.Actions.WindowGo (runOrRaise)
 
 import XMonad.Hooks.EwmhDesktops hiding (fullscreenEventHook)
 import XMonad.Hooks.Rescreen
@@ -77,7 +78,7 @@ myKeys = concat
 
 appKeys :: Keybindings
 appKeys =
-    [ ("M-o"         , spawn myBrowser)
+    [ ("M-o"         , runOrRaise myBrowser (className =? "Brave-browser"))
     , ("M-<Return>"  , spawn myTerminal)
     , ("M-d"         , spawnLauncher)
     , ("M-S-q"       , lockscreen)
