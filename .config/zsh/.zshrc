@@ -64,12 +64,6 @@ export FZF_DEFAULT_COMMAND='rg --files'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:~/.cargo/bin
-export PATH=$PATH:~/.cabal/bin
-export PATH=$PATH:~/.ghcup/bin
-export PATH=$PATH:/opt/i3-lock-fancy-rapid/
-[ -x "$(command -v yarn)" ] && export PATH=$PATH:$(yarn global bin)
 
 eval "$(pyenv init -)"
 
@@ -107,3 +101,12 @@ load-nvmrc  # also run on shell init
 
 # opencode
 export PATH=/home/icaro/.opencode/bin:$PATH
+
+# ── Haskell ───────────────────────────────────────────────────────────────────
+new-hs() {
+  local name=$1
+  if [[ -z "$name" ]]; then echo "Usage: new-hs <project-name>"; return 1; fi
+  stack new "$name" simple --resolver "ghc-$(ghc --numeric-version)"
+  cp ~/.config/haskell/fourmolu.yaml "$name/"
+  cd "$name" && stack build
+}
