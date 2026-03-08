@@ -20,8 +20,11 @@ Arch Linux setup with xmonad, kitty, neovim, zsh, and more.
 │   ├── shell/        # Shell profile & aliases
 │   ├── x11/          # X11 config (.xinitrc, xprofile)
 │   ├── xmonad/       # Window manager
+│   ├── haskell/      # Haskell tools config (fourmolu.yaml)
 │   ├── zathura/      # PDF viewer
 │   └── zsh/          # Zsh config
+├── .stack/
+│   └── config.yaml   # Stack global config (file symlink, not dir)
 ├── .local/
 │   └── bin/          # Custom scripts
 ├── etc/              # System config references
@@ -72,8 +75,13 @@ ln -sf ~/dotfiles/.config/picom ~/.config/picom
 ln -sf ~/dotfiles/.config/shell ~/.config/shell
 ln -sf ~/dotfiles/.config/x11 ~/.config/x11
 ln -sf ~/dotfiles/.config/xmonad ~/.config/xmonad
+ln -sf ~/dotfiles/.config/haskell ~/.config/haskell
 ln -sf ~/dotfiles/.config/zathura ~/.config/zathura
 ln -sf ~/dotfiles/.config/zsh ~/.config/zsh
+
+# Stack (file symlink — ~/.stack/ contains build artifacts, not tracked)
+mkdir -p ~/.stack
+ln -sf ~/dotfiles/.stack/config.yaml ~/.stack/config.yaml
 ```
 
 ### Quick Setup Script
@@ -95,9 +103,12 @@ ln -sf $DOTFILES/.nix-channels ~/.nix-channels
 
 # .config directory
 mkdir -p ~/.config
-for dir in dunst fontconfig kitty newsboat nix nixpkgs nvim picom shell x11 xmonad zathura zsh; do
+for dir in dunst fontconfig haskell kitty newsboat nix nixpkgs nvim picom shell x11 xmonad zathura zsh; do
     ln -sf $DOTFILES/.config/$dir ~/.config/$dir
 done
+
+mkdir -p ~/.stack
+ln -sf $DOTFILES/.stack/config.yaml ~/.stack/config.yaml
 
 echo "Symlinks created!"
 ```
@@ -158,7 +169,8 @@ Core packages needed:
 - **Compositor**: picom
 - **PDF**: zathura
 - **Browser**: brave
-- **Build**: stack (for xmonad), pyenv, nix
+- **Build**: stack, pyenv, nix
+- **Haskell**: ghcup (manages GHC/HLS/stack), fourmolu (formatter)
 
 ---
 
