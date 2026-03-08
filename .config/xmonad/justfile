@@ -1,0 +1,32 @@
+# XMonad config — task runner (https://github.com/casey/just)
+# Usage: just <recipe>
+
+default: build
+
+# Build and install xmonad + xmobar binaries
+build:
+    ./build
+
+# Format source files in-place
+format:
+    fourmolu --mode inplace xmonad.hs xmobar.hs
+
+# Check formatting without modifying files
+format-check:
+    fourmolu --mode check xmonad.hs xmobar.hs
+
+# Lint with HLint
+lint:
+    hlint xmonad.hs xmobar.hs
+
+# Launch GHCi repl
+repl:
+    stack repl
+
+# Remove build artifacts
+clean:
+    stack clean
+
+# Restart xmonad in-place (no logout needed)
+restart:
+    xmonad --restart

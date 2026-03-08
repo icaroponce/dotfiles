@@ -1,0 +1,48 @@
+# Haskell project — task runner (https://github.com/casey/just)
+# Usage: just <recipe>
+
+default: build
+
+# Build the project
+build:
+    stack build
+
+# Build and watch for changes
+watch:
+    stack build --file-watch
+
+# Run the executable
+run:
+    stack run
+
+# Launch GHCi repl
+repl:
+    stack repl
+
+# Run the test suite
+test:
+    stack test
+
+# Format source files in-place
+format:
+    fourmolu --mode inplace src/
+
+# Check formatting without modifying files
+format-check:
+    fourmolu --mode check src/
+
+# Lint with HLint (requires: yay -S hlint)
+lint:
+    hlint src/
+
+# Build with all warnings as errors
+check:
+    stack build --ghc-options="-Werror"
+
+# Remove build artifacts
+clean:
+    stack clean
+
+# Full clean including snapshot deps
+clean-full:
+    stack clean --full

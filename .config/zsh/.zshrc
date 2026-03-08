@@ -108,5 +108,6 @@ new-hs() {
   if [[ -z "$name" ]]; then echo "Usage: new-hs <project-name>"; return 1; fi
   stack new "$name" simple --resolver "ghc-$(ghc --numeric-version)"
   cp ~/.config/haskell/fourmolu.yaml "$name/"
+  cp ~/.config/haskell/justfile "$name/"
   cd "$name" && stack build
 }
