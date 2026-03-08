@@ -4,76 +4,80 @@ import XMonad
 
 import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
-import XMonad.Util.Ungrab
 import XMonad.Util.NamedScratchpad
-import XMonad.Util.SpawnOnce
 import XMonad.Util.NamedWindows (getName)
+import XMonad.Util.SpawnOnce
+import XMonad.Util.Ungrab
 
+import XMonad.Layout.ResizableTile (MirrorResize (..), ResizableTall (..))
 import XMonad.Layout.ThreeColumns
-import XMonad.Layout.ResizableTile (ResizableTall(..), MirrorResize(..))
+
 -- import XMonad.Layout.Magnifier
+
+import XMonad.Layout.Fullscreen
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Layout.Spacing
-import XMonad.Layout.Fullscreen
 
-import XMonad.Actions.CycleWS (Direction1D (Prev, Next), WSType (Not), moveTo, emptyWS)
 import XMonad.Actions.CycleRecentWS
+import XMonad.Actions.CycleWS (Direction1D (Next, Prev), WSType (Not), emptyWS, moveTo)
+import XMonad.Actions.WindowBringer (WindowBringerConfig (..), bringMenuConfig, gotoMenuConfig)
 import XMonad.Actions.WindowGo (runOrRaise)
-import XMonad.Actions.WindowBringer (gotoMenuConfig, bringMenuConfig, WindowBringerConfig(..))
 
-import XMonad.Hooks.EwmhDesktops hiding (fullscreenEventHook)
-import XMonad.Hooks.Rescreen
-import XMonad.Hooks.ManageHelpers (doCenterFloat)
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops hiding (fullscreenEventHook)
+import XMonad.Hooks.ManageHelpers (doCenterFloat)
+import XMonad.Hooks.Rescreen
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.WorkspaceHistory (workspaceHistory, workspaceHistoryHookExclude)
 
+import qualified Data.Map as M
 import qualified XMonad.StackSet as W
-import qualified Data.Map        as M
 
-myLayout = fullscreenFull $ smartBorders
-  . mkToggle (single NBFULL)
-  . smartSpacingWithEdge 6
-  $ tiled
-  ||| Mirror tiled
-  ||| threeCol
+myLayout =
+  fullscreenFull
+    $ smartBorders
+      . mkToggle (single NBFULL)
+      . smartSpacingWithEdge 6
+    $ tiled
+      ||| Mirror tiled
+      ||| threeCol
   where
     threeCol = ThreeColMid nmaster delta ratio
-    tiled    = ResizableTall nmaster delta ratio []
-    nmaster  = 1      -- Default number of windows in the master pane
-    ratio    = 1/2    -- Default proportion of screen occupied by master pane
-    delta    = 3/100  -- Percent of screen to increment by when resizing panes
+    tiled = ResizableTall nmaster delta ratio []
+    nmaster = 1 -- Default number of windows in the master pane
+    ratio = 1 / 2 -- Default proportion of screen occupied by master pane
+    delta = 3 / 100 -- Percent of screen to increment by when resizing panes
 
-myConfig = def
-  { modMask            = mod4Mask
-  , terminal           = myTerminal
+myConfig =
+  def
+    { modMask = mod4Mask
+    , terminal = myTerminal
+    , focusedBorderColor = myFocusedBorderColor
+    , normalBorderColor = myUnfocusedBorderColor
+    , borderWidth = myBorderWidth
+    , layoutHook = myLayout
+    , manageHook = myManageHook <> fullscreenManageHook
+    , handleEventHook = fullscreenEventHook
+    , logHook = workspaceHistoryHookExclude [scratchpadWorkspaceTag]
+    , startupHook = myStartupHook
+    }
+    `additionalKeysP` myKeys
 
-  , focusedBorderColor = myFocusedBorderColor
-  , normalBorderColor  = myUnfocusedBorderColor
-  , borderWidth        = myBorderWidth
-
-  , layoutHook         = myLayout
-  , manageHook         = myManageHook <> fullscreenManageHook
-  , handleEventHook    = fullscreenEventHook
-  , logHook            = workspaceHistoryHookExclude [scratchpadWorkspaceTag]
-  , startupHook        = myStartupHook
-  }
-  `additionalKeysP`
-  myKeys
-
--- | A keybinding is a key (encoded via the 'EZConfig', Emacs-like
--- encoding), together with an action that executes once that key is
--- pressed.
+{- | A keybinding is a key (encoded via the 'EZConfig', Emacs-like
+encoding), together with an action that executes once that key is
+pressed.
+-}
 type Keybinding = (String, X ())
 
 -- | Lots of keybindings.
 type Keybindings = [Keybinding]
 
 myKeys :: Keybindings
-myKeys = concat
+myKeys =
+  concat
     [ appKeys
     , mediaKeys
     , windowsKeys
@@ -81,25 +85,25 @@ myKeys = concat
 
 appKeys :: Keybindings
 appKeys =
-    [ ("M-o"         , runOrRaise myBrowser (className =? "Brave-browser"))
-    , ("M-<Return>"  , spawn myTerminal)
-    , ("M-d"         , spawnLauncher)
-    , ("M-S-q"       , lockscreen)
-    -- printscreen bindings
-    , ("<Print>"     , unGrab *> printscreenFlameshot)
-    , ("M-S-<Print>" , unGrab *> printscreen "-s")
-    , ("M-<Print>"   , unGrab *> printscreen "-u")
-    -- dunst bindings
-    , ("M1-<Space>"  , spawn "dunstctl close")
-    , ("M1-S-<Space>", spawn "dunstctl close-all")
-    , ("M1-<Escape>" , spawn "dunstctl history-pop")
-    -- scratchpads
-    , ("M-g"         , gotoMenuConfig  windowBringerConfig) -- goto any window
-    , ("M-S-g"       , bringMenuConfig windowBringerConfig) -- bring any window here
-    , ("M-v"         , namedScratchpadAction myScratchpads "pavucontrol")
-    , ("M-s"         , namedScratchpadAction myScratchpads "terminal")
-    , ("M-c"         , spawnClipboard)
-    ]
+  [ ("M-o", runOrRaise myBrowser (className =? "Brave-browser"))
+  , ("M-<Return>", spawn myTerminal)
+  , ("M-d", spawnLauncher)
+  , ("M-S-q", lockscreen)
+  , -- printscreen bindings
+    ("<Print>", unGrab *> printscreenFlameshot)
+  , ("M-S-<Print>", unGrab *> printscreen "-s")
+  , ("M-<Print>", unGrab *> printscreen "-u")
+  , -- dunst bindings
+    ("M1-<Space>", spawn "dunstctl close")
+  , ("M1-S-<Space>", spawn "dunstctl close-all")
+  , ("M1-<Escape>", spawn "dunstctl history-pop")
+  , -- scratchpads
+    ("M-g", gotoMenuConfig windowBringerConfig) -- goto any window
+  , ("M-S-g", bringMenuConfig windowBringerConfig) -- bring any window here
+  , ("M-v", namedScratchpadAction myScratchpads "pavucontrol")
+  , ("M-s", namedScratchpadAction myScratchpads "terminal")
+  , ("M-c", spawnClipboard)
+  ]
   where
     spawnLauncher :: X ()
     spawnLauncher = spawn $ myLauncher <> " -combi-mode window,drun,ssh -theme gruvbox-dark -show combi"
@@ -108,7 +112,7 @@ appKeys =
     lockscreen = spawn "i3lock-fancy-rapid 5 3"
 
     printscreen :: String -> X ()
-    printscreen flag = spawn $ "scrot " <> flag  <> " ~/Screenshots/$(date '+%Y-%m-%dT%H:%M:%S.png')"
+    printscreen flag = spawn $ "scrot " <> flag <> " ~/Screenshots/$(date '+%Y-%m-%dT%H:%M:%S.png')"
 
     printscreenFlameshot :: X ()
     printscreenFlameshot = spawn "flameshot gui"
@@ -118,18 +122,18 @@ appKeys =
 
 mediaKeys :: Keybindings
 mediaKeys =
-    [ ("<XF86AudioRaiseVolume>", volume "+5%"   )
-    , ("<XF86AudioLowerVolume>", volume "-5%"   )
-    , ("<XF86AudioMute>"       , volume "toggle")
-    , ("<XF86AudioPrev>"       , play "previous")
-    , ("<XF86AudioNext>"       , play "next")
-    , ("<XF86AudioPlay>"       , play "play-pause")
-    , ("<XF86AudioPause>"      , play "play-pause")
-    ]
+  [ ("<XF86AudioRaiseVolume>", volume "+5%")
+  , ("<XF86AudioLowerVolume>", volume "-5%")
+  , ("<XF86AudioMute>", volume "toggle")
+  , ("<XF86AudioPrev>", play "previous")
+  , ("<XF86AudioNext>", play "next")
+  , ("<XF86AudioPlay>", play "play-pause")
+  , ("<XF86AudioPause>", play "play-pause")
+  ]
   where
     volume :: String -> X ()
     volume "toggle" = spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle"
-    volume vol      = spawn $ "pactl set-sink-volume @DEFAULT_SINK@ " <> vol
+    volume vol = spawn $ "pactl set-sink-volume @DEFAULT_SINK@ " <> vol
 
     play :: String -> X ()
     play = spawn . (playerCommand <>)
@@ -138,35 +142,35 @@ mediaKeys =
 
 windowsKeys :: Keybindings
 windowsKeys =
-    [ ("M-S-c"     , kill) -- kill current window
-    , ("M-f"       , toggleFullScreen)
-    , ("M-S-f"     , withFocused toggleFloat) -- float/sink toggle
-    , ("M-t"       , windows W.focusDown) -- next window
-    , ("M-n"       , windows W.focusUp) -- prev window
-    , ("M-S-t"     , windows W.swapDown) -- swap with the next
-    , ("M-S-n"     , windows W.swapUp) -- swap with the prev
-
-    , ("M-<Left>"  , moveTo  Prev $ Not emptyWS) -- prev workspace
-    , ("M-<Right>" , moveTo Next $ Not emptyWS) -- next workspace
-    , ("M-<Tab>"   , toggleRecentNonNSP) -- go to most recent non-scratchpad workspace
-
-    , ("M-a"       , sendMessage MirrorShrink) -- shrink focused window vertically
-    , ("M-z"       , sendMessage MirrorExpand) -- grow focused window vertically
-    ]
-      where
-        toggleFullScreen :: X ()
-        toggleFullScreen = sendMessage $ Toggle NBFULL
+  [ ("M-S-c", kill) -- kill current window
+  , ("M-f", toggleFullScreen)
+  , ("M-S-f", withFocused toggleFloat) -- float/sink toggle
+  , ("M-t", windows W.focusDown) -- next window
+  , ("M-n", windows W.focusUp) -- prev window
+  , ("M-S-t", windows W.swapDown) -- swap with the next
+  , ("M-S-n", windows W.swapUp) -- swap with the prev
+  , ("M-<Left>", moveTo Prev $ Not emptyWS) -- prev workspace
+  , ("M-<Right>", moveTo Next $ Not emptyWS) -- next workspace
+  , ("M-<Tab>", toggleRecentNonNSP) -- go to most recent non-scratchpad workspace
+  , ("M-a", sendMessage MirrorShrink) -- shrink focused window vertically
+  , ("M-z", sendMessage MirrorExpand) -- grow focused window vertically
+  ]
+  where
+    toggleFullScreen :: X ()
+    toggleFullScreen = sendMessage $ Toggle NBFULL
 
 main :: IO ()
-main = xmonad
-     . ewmh
-     . addRandrChangeHook (spawn "autorandr --change")
-     . withEasySB (statusBarProp "xmobar" (pure myXmobarPP)) defToggleStrutsKey
-     $ myConfig
+main =
+  xmonad
+    . ewmh
+    . addRandrChangeHook (spawn "autorandr --change")
+    . withEasySB (statusBarProp "xmobar" (pure myXmobarPP)) defToggleStrutsKey
+    $ myConfig
 
 myXmobarPP :: PP
-myXmobarPP = def
-    { ppSep   = magenta " | "
+myXmobarPP =
+  def
+    { ppSep = magenta " | "
     , ppTitleSanitize = xmobarStrip
     , ppCurrent = wrap " " "" . xmobarBorder "Top" colorCyan 2
     , ppHidden = white . wrap " " ""
@@ -179,30 +183,38 @@ myXmobarPP = def
     formatFocused = wrap (white "[[") (white "]]") . orange . ppWindow
     formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . blue . ppWindow
 
-    -- shortens windows title, which is required 
+    -- shortens windows title, which is required
     ppWindow :: String -> String
-    ppWindow  = xmobarRaw . (\w -> if null w then "Untitled" else w) . shorten 30
+    ppWindow = xmobarRaw . (\w -> if null w then "Untitled" else w) . shorten 30
 
-
-colorRed, colorBg, colorFg, colorYellow, colorCyan, colorBlue, colorLowWhite, colorMagenta, colorOrange :: String
-colorBg       = "#192330"
-colorFg       = "#f8f8f2"
-colorYellow   = "#e0c989"
-colorCyan     = "#63cdcf"
-colorBlue     = "#86abdc"
+colorRed
+  , colorBg
+  , colorFg
+  , colorYellow
+  , colorCyan
+  , colorBlue
+  , colorLowWhite
+  , colorMagenta
+  , colorOrange ::
+    String
+colorBg = "#192330"
+colorFg = "#f8f8f2"
+colorYellow = "#e0c989"
+colorCyan = "#63cdcf"
+colorBlue = "#86abdc"
 colorLowWhite = "#bbbbbb"
-colorMagenta  = "#baa1e2"
-colorOrange   = "#f4a261"
-colorRed      = "#c94f6d"
+colorMagenta = "#baa1e2"
+colorOrange = "#f4a261"
+colorRed = "#c94f6d"
 
 yellow, blue, lowWhite, white, magenta, orange, red :: String -> String
-yellow   = xmobarColor colorYellow ""
-white    = xmobarColor colorFg ""
+yellow = xmobarColor colorYellow ""
+white = xmobarColor colorFg ""
 lowWhite = xmobarColor colorLowWhite ""
-blue     = xmobarColor colorBlue ""
-magenta  = xmobarColor colorMagenta ""
-orange   = xmobarColor colorOrange ""
-red      = xmobarColor colorRed ""
+blue = xmobarColor colorBlue ""
+magenta = xmobarColor colorMagenta ""
+orange = xmobarColor colorOrange ""
+red = xmobarColor colorRed ""
 
 myTerminal :: String
 myTerminal = "kitty"
@@ -226,61 +238,68 @@ myBorderWidth :: Dimension
 myBorderWidth = 2
 
 windowBringerConfig :: WindowBringerConfig
-windowBringerConfig = def
-    { menuCommand  = "rofi"
-    , menuArgs     = ["-dmenu", "-i", "-p", "window", "-theme", "gruvbox-dark"]
+windowBringerConfig =
+  def
+    { menuCommand = "rofi"
+    , menuArgs = ["-dmenu", "-i", "-p", "window", "-theme", "gruvbox-dark"]
     , windowTitler = titler
     }
   where
     titler ws w = do
-        name <- getName w
-        app  <- runQuery className w
-        return $ W.tag ws <> " - " <> app <> ": " <> show name
+      name <- getName w
+      app <- runQuery className w
+      return $ W.tag ws <> " - " <> app <> ": " <> show name
 
 toggleRecentNonNSP :: X ()
 toggleRecentNonNSP = do
-    hist <- workspaceHistory
-    let nonNSP = filter (/= scratchpadWorkspaceTag) hist
-    case nonNSP of
-        (_:prev:_) -> windows $ W.greedyView prev
-        _          -> return ()
+  hist <- workspaceHistory
+  let nonNSP = filter (/= scratchpadWorkspaceTag) hist
+  case nonNSP of
+    (_ : prev : _) -> windows $ W.greedyView prev
+    _ -> return ()
 
 toggleFloat :: Window -> X ()
 toggleFloat w = windows $ \s ->
-    if M.member w (W.floating s)
-        then W.sink w s
-        else W.float w (W.RationalRect 0.1 0.1 0.8 0.8) s
+  if M.member w (W.floating s)
+    then W.sink w s
+    else W.float w (W.RationalRect 0.1 0.1 0.8 0.8) s
 
 myStartupHook :: X ()
 myStartupHook = do
-    spawn     "autorandr --change"   -- apply saved monitor profile on startup/restart
-    spawnOnce "picom"
-    spawnOnce "dunst"
-    spawnOnce "nm-applet"
-    spawnOnce "blueman-applet"
-    spawnOnce "unclutter"
-    spawnOnce "greenclip daemon"
-    spawnOnce "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 5 --transparent true --alpha 0 --tint 0x192330 --height 22"
+  spawn "autorandr --change" -- apply saved monitor profile on startup/restart
+  spawnOnce "picom"
+  spawnOnce "dunst"
+  spawnOnce "nm-applet"
+  spawnOnce "blueman-applet"
+  spawnOnce "unclutter"
+  spawnOnce "greenclip daemon"
+  spawnOnce
+    "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 5 --transparent true --alpha 0 --tint 0x192330 --height 22"
 
 myScratchpads :: [NamedScratchpad]
 myScratchpads =
-    [ NS "pavucontrol" "pavucontrol"
-         (className =? "pavucontrol")
-         (customFloating $ W.RationalRect 0.2 0.15 0.6 0.7)
-    , NS "terminal" "kitty --class scratchpad"
-         (className =? "scratchpad")
-         (customFloating $ W.RationalRect 0.15 0.1 0.7 0.8)
-    ]
+  [ NS
+      "pavucontrol"
+      "pavucontrol"
+      (className =? "pavucontrol")
+      (customFloating $ W.RationalRect 0.2 0.15 0.6 0.7)
+  , NS
+      "terminal"
+      "kitty --class scratchpad"
+      (className =? "scratchpad")
+      (customFloating $ W.RationalRect 0.15 0.1 0.7 0.8)
+  ]
 
 -- Window rules: float specific applications centered on screen.
 -- To find the className of any window: run `xprop | grep WM_CLASS` and click
 -- the window. Use the SECOND quoted value (res_class) for className matches.
-myManageHook = composeAll
-    [ className =? "Galculator"      --> doCenterFloat
-    , className =? "gimp"            --> doCenterFloat  -- GIMP 3.0 (GTK4) uses lowercase
-    , className =? "Lxappearance"    --> doCenterFloat
+myManageHook =
+  composeAll
+    [ className =? "Galculator" --> doCenterFloat
+    , className =? "gimp" --> doCenterFloat -- GIMP 3.0 (GTK4) uses lowercase
+    , className =? "Lxappearance" --> doCenterFloat
     , className =? "Blueman-manager" --> doCenterFloat
-    , className =? "Arandr"          --> doCenterFloat
- -- , className =? "stalonetray"     --> doIgnore
+    , className =? "Arandr" --> doCenterFloat
+    -- , className =? "stalonetray"     --> doIgnore
     ]
     <> namedScratchpadManageHook myScratchpads
