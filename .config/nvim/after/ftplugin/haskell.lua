@@ -2,6 +2,11 @@ local ht = require("haskell-tools")
 local bufnr = vim.api.nvim_get_current_buf()
 local opts = { noremap = true, silent = true, buffer = bufnr }
 
+-- require("which-key").add({
+--   { "<leader>r", group = "repl",   buffer = bufnr },
+--   { "<leader>h", group = "hoogle", buffer = bufnr },
+-- })
+
 local function map(key, action, desc)
   vim.keymap.set("n", key, action, vim.tbl_extend("force", opts, { desc = desc }))
 end

@@ -7,11 +7,7 @@ export NVM_DIR="$HOME/.config/.nvm"
 # opencode
 export PATH=/home/icaro/.opencode/bin:$PATH
 
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:~/.cargo/bin
-export PATH=$PATH:~/.cabal/bin
-export PATH=$PATH:~/.ghcup/bin
-export PATH=$PATH:/opt/i3-lock-fancy-rapid/
-[ -x "$(command -v yarn)" ] && export PATH=$PATH:$(yarn global bin)
+export PATH=~/.local/bin:~/.cargo/bin:~/.cabal/bin:~/.ghcup/bin:/opt/i3-lock-fancy-rapid/:$PATH
+[ -x "$(command -v yarn)" ] && export PATH=$(yarn global bin):$PATH
 
 eval "$(pyenv init -)"
