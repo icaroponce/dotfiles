@@ -136,22 +136,12 @@ return {
         eslint = {},
         ts_ls = {},
         elmls = {},
-        hls = {
-          haskell = {
-            formattingProvider = "fourmolu",
-            plugin = {
-              rename = {
-                config = {
-                  diff = true,
-                },
-              },
-            },
-          },
-        },
         lua_ls = {
-          Lua = {
-            workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
+          settings = {
+            Lua = {
+              workspace = { checkThirdParty = false },
+              telemetry = { enable = false },
+            },
           },
         },
         terraformls = {},
