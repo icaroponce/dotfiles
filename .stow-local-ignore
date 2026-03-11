@@ -1,0 +1,7 @@
+# Stow ignore list — patterns that should not be symlinked into $HOME
+^etc$
+^\.claude$
+^mimeapps\.list$
+^\.git$
+^\.gitignore$
+^README\.md$

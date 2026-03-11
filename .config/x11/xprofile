@@ -1,2 +1,0 @@
-#!/bin/sh
-# Startup apps are managed by XMonad's startupHook (xmonad.hs) via spawnOnce.
