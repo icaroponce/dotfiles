@@ -1,6 +1,7 @@
 # Personal Dotfiles
 
-Arch Linux setup with xmonad, kitty, neovim, zsh, and more.
+Arch Linux + macOS setup with xmonad, kitty, neovim, zsh, and more.
+Managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ---
 
@@ -9,173 +10,159 @@ Arch Linux setup with xmonad, kitty, neovim, zsh, and more.
 ```
 ~/dotfiles/
 ├── .config/
-│   ├── dunst/        # Notification daemon
-│   ├── fontconfig/   # Font configuration
+│   ├── dunst/        # Notification daemon (Linux)
+│   ├── fontconfig/   # Font configuration (Linux)
+│   ├── haskell/      # Haskell tools (fourmolu.yaml, justfile template)
 │   ├── kitty/        # Terminal emulator
 │   ├── newsboat/     # RSS reader
 │   ├── nix/          # Nix config
 │   ├── nixpkgs/      # Nix packages
 │   ├── nvim/         # Neovim
-│   ├── picom/        # Compositor
-│   ├── shell/        # Shell profile & aliases
-│   ├── x11/          # X11 config (.xinitrc, xprofile)
-│   ├── xmonad/       # Window manager
-│   ├── haskell/      # Haskell tools config (fourmolu.yaml)
-│   ├── zathura/      # PDF viewer
+│   ├── picom/        # Compositor (Linux)
+│   ├── shell/        # Shell profile & aliases (cross-platform)
+│   ├── xmonad/       # Window manager (Linux)
+│   ├── zathura/      # PDF viewer (Linux)
 │   └── zsh/          # Zsh config
-├── .stack/
-│   └── config.yaml   # Stack global config (file symlink, not dir)
 ├── .local/
 │   └── bin/          # Custom scripts
-├── etc/              # System config references
+├── .stack/
+│   └── config.yaml   # Stack global config
 ├── wallpapers/       # Desktop wallpapers
-├── .Xresources       # X resources
-├── .xserverrc        # X server config
+├── .xinitrc          # X session entry point (Linux)
+├── .Xresources       # X resources (Linux)
+├── .xserverrc        # X server config (Linux)
 ├── .profile          # -> .config/shell/profile
 ├── .zprofile         # -> .config/shell/profile
-└── .nix-channels     # Nix channels
+├── .nix-channels     # Nix channels
+└── etc/              # System config references (manual, see below)
 ```
 
 ---
 
-## Symlink Setup
+## Setup
 
-### Home Directory Symlinks (~/)
-
-These files need to be symlinked directly in your home directory:
+### Linux (Arch)
 
 ```bash
-# Profile files
-ln -sf ~/dotfiles/.profile ~/.profile
-ln -sf ~/dotfiles/.zprofile ~/.zprofile
+yay -S stow
+git clone git@github.com:you/dotfiles.git ~/dotfiles
+cd ~/dotfiles && stow .
 
-# X11 files
-ln -sf ~/dotfiles/.Xresources ~/.Xresources
-ln -sf ~/dotfiles/.xserverrc ~/.xserverrc
-ln -sf ~/dotfiles/.config/x11/.xinitrc ~/.xinitrc
+# Kitty font size override (Linux uses smaller size than macOS default)
+ln -sf kitty.linux.conf ~/.config/kitty/kitty.local.conf
 
-# Nix
-ln -sf ~/dotfiles/.nix-channels ~/.nix-channels
+# Build xmonad
+cd ~/.config/xmonad && just build
 ```
 
-### Config Directory Symlinks (~/.config/)
-
-These directories are symlinked into `~/.config/`:
+### macOS
 
 ```bash
-# Create symlinks for all config directories
-ln -sf ~/dotfiles/.config/dunst ~/.config/dunst
-ln -sf ~/dotfiles/.config/fontconfig ~/.config/fontconfig
-ln -sf ~/dotfiles/.config/kitty ~/.config/kitty
-ln -sf ~/dotfiles/.config/newsboat ~/.config/newsboat
-ln -sf ~/dotfiles/.config/nix ~/.config/nix
-ln -sf ~/dotfiles/.config/nixpkgs ~/.config/nixpkgs
-ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
-ln -sf ~/dotfiles/.config/picom ~/.config/picom
-ln -sf ~/dotfiles/.config/shell ~/.config/shell
-ln -sf ~/dotfiles/.config/x11 ~/.config/x11
-ln -sf ~/dotfiles/.config/xmonad ~/.config/xmonad
-ln -sf ~/dotfiles/.config/haskell ~/.config/haskell
-ln -sf ~/dotfiles/.config/zathura ~/.config/zathura
-ln -sf ~/dotfiles/.config/zsh ~/.config/zsh
+brew install stow
+git clone git@github.com:you/dotfiles.git ~/dotfiles
+cd ~/dotfiles && stow .
 
-# Stack (file symlink — ~/.stack/ contains build artifacts, not tracked)
-mkdir -p ~/.stack
-ln -sf ~/dotfiles/.stack/config.yaml ~/.stack/config.yaml
+# Kitty font size: macOS default (18) is already set in kitty.conf — nothing to do
 ```
 
-### Quick Setup Script
-
-Run all symlinks at once:
+### After adding or removing files from dotfiles
 
 ```bash
-#!/bin/bash
-
-DOTFILES=~/dotfiles
-
-# Home directory
-ln -sf $DOTFILES/.profile ~/.profile
-ln -sf $DOTFILES/.zprofile ~/.zprofile
-ln -sf $DOTFILES/.Xresources ~/.Xresources
-ln -sf $DOTFILES/.xserverrc ~/.xserverrc
-ln -sf $DOTFILES/.config/x11/.xinitrc ~/.xinitrc
-ln -sf $DOTFILES/.nix-channels ~/.nix-channels
-
-# .config directory
-mkdir -p ~/.config
-for dir in dunst fontconfig haskell kitty newsboat nix nixpkgs nvim picom shell x11 xmonad zathura zsh; do
-    ln -sf $DOTFILES/.config/$dir ~/.config/$dir
-done
-
-mkdir -p ~/.stack
-ln -sf $DOTFILES/.stack/config.yaml ~/.stack/config.yaml
-
-echo "Symlinks created!"
+cd ~/dotfiles && stow -R .
 ```
 
 ---
 
-## XMonad Setup
+## OS-specific config
 
-After creating symlinks, build xmonad:
+Files that differ between Linux and macOS are handled inline — no duplicate files needed.
+
+| File | Mechanism |
+|------|-----------|
+| `kitty.conf` | `font_size 18` (macOS default) + `include kitty.local.conf` for overrides |
+| `kitty.linux.conf` | `font_size 10` — symlinked to `kitty.local.conf` on Linux |
+| `shell/profile` | `if [ "$(uname)" = "Darwin" ]` blocks for brew, BROWSER, QT vars |
+| `shell/aliasrc` | `if [ "$(uname)" = "Darwin" ]` for clipboard (`pbcopy` vs `xclip`) and `ls` flags |
+
+---
+
+## XMonad
 
 ```bash
 cd ~/.config/xmonad
-./build ~/.local/bin/xmonad-x86_64-linux
+just build    # builds xmonad + xmobar, symlinks binaries
+just restart  # restart xmonad in-place (no logout)
 ```
 
-Make sure `~/.local/bin` is in your PATH.
-
-See [xmonad/README.md](.config/xmonad/README.md) for keybindings and usage.
+Binary must be at `~/.local/bin/xmonad-x86_64-linux`. See [xmonad/README.md](.config/xmonad/README.md) for keybindings.
 
 ---
 
-## Startup Flow
+## Startup Flow (Linux)
 
-1. **Login** loads `.zprofile` -> `.config/shell/profile`
-2. **startx** runs `.xinitrc` which:
+1. **Login** → `.zprofile` → `.config/shell/profile`
+2. **startx** → `.xinitrc` which:
    - Loads `.Xresources`
    - Sets wallpaper via `feh`
-   - Sources `.config/x11/xprofile`
    - Executes `xmonad-x86_64-linux`
 
 ---
 
-## Environment Variables (from shell/profile)
+## Environment Variables
 
-| Variable | Value |
-|----------|-------|
-| `EDITOR` | nvim |
-| `TERMINAL` | kitty |
-| `BROWSER` | brave |
-| `READER` | zathura |
-| `XDG_CONFIG_HOME` | ~/.config |
-| `XDG_DATA_HOME` | ~/.local/share |
-| `XDG_CACHE_HOME` | ~/.cache |
-| `ZDOTDIR` | ~/.config/zsh |
+| Variable | Linux | macOS |
+|----------|-------|-------|
+| `EDITOR` | nvim | nvim |
+| `TERMINAL` | kitty | kitty |
+| `BROWSER` | brave | open |
+| `READER` | zathura | — |
+| `XDG_CONFIG_HOME` | ~/.config | ~/.config |
+| `ZDOTDIR` | ~/.config/zsh | ~/.config/zsh |
 
 ---
 
 ## Dependencies
 
-Core packages needed:
-
-- **WM**: xmonad, xmonad-contrib, xmobar
-- **Terminal**: kitty
+### Cross-platform
+- **Terminal**: kitty + Hack / LiterationMono Nerd Font
 - **Shell**: zsh
 - **Editor**: neovim
+- **Dotfiles**: stow
+- **Task runner**: just
+- **Haskell**: ghcup (GHC/HLS/stack), fourmolu (static binary in ~/.local/bin)
+
+### Linux only
+- **WM**: xmonad, xmonad-contrib, xmobar
 - **Launcher**: rofi
 - **Notifications**: dunst
 - **Compositor**: picom
 - **PDF**: zathura
 - **Browser**: brave
-- **Build**: stack, pyenv, nix
-- **Haskell**: ghcup (manages GHC/HLS/stack), fourmolu (formatter)
+- **Clipboard**: xclip
+- **Font packages**: `ttf-hack-nerd`, `ttf-liberation-mono-nerd`
+
+### macOS only
+- **Package manager**: homebrew
+- **Font**: `brew install --cask font-hack-nerd-font`
 
 ---
 
-## Notes
+## System config (manual, one-time)
 
-- The `.profile` and `.zprofile` in dotfiles root are symlinks to `.config/shell/profile`
-- xmonad binary must be at `~/.local/bin/xmonad-x86_64-linux` for `.xinitrc` to find it
-- Wallpaper is set from `~/dotfiles/wallpapers/solar-system.jpg`
+These files target `/etc/` and are not managed by stow. Apply once per machine with sudo.
+
+**`/etc/vconsole.conf`**
+```
+KEYMAP=ANSI-dvorak
+FONT=ter-v24n
+```
+
+**`/etc/X11/xorg.conf.d/00-keyboard.conf`**
+```
+Section "InputClass"
+    Identifier "system-keyboard"
+    MatchIsKeyboard "on"
+    Option "XkbLayout" "us"
+    Option "XkbVariant" "altgr-intl"
+EndSection
+```

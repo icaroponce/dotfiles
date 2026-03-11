@@ -13,3 +13,5 @@ packer_compiled.lua
 *.log
 stack.yaml.lock
 dist-newstyle
+
+.config/kitty/kitty.local.conf

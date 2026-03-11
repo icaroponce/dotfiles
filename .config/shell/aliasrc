@@ -16,8 +16,12 @@ alias \
 	b="buku --suggest" \
 	c="calcurse"
 
-# xclip alias
-alias cs="xclip -selection clipboard"
+# clipboard
+if [ "$(uname)" = "Darwin" ]; then
+    alias cs="pbcopy"
+else
+    alias cs="xclip -selection clipboard"
+fi
 # docker remove exited containers
 alias docrme='docker rm -v $(docker ps -qa -f status=exited)'
 # docker pause and remove 
@@ -36,7 +40,12 @@ alias \
 alias \
     grep="grep --color=auto" \
     diff="diff --color=auto"
-    ls="ls -h --color=auto --group-directories-first" \
+
+if [ "$(uname)" = "Darwin" ]; then
+    alias ls="ls -h --color=auto"
+else
+    alias ls="ls -h --color=auto --group-directories-first"
+fi
 
 # Git aliases
 alias \
