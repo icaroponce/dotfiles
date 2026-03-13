@@ -9,6 +9,13 @@ return {
   cmd = "Telescope",
   keys = {
     { "<C-p>",      "<cmd>Telescope find_files<cr>",          desc = "Find Files" },
+    { "<leader>fF", function()
+        require("telescope.builtin").find_files({
+          hidden = true,
+          no_ignore = true,
+          file_ignore_patterns = { 'node_modules/', '%.git/', 'dist/', 'tmp/', 'logs/', '%.cache/' },
+        })
+      end, desc = "Find Files (no gitignore)" },
     { "<C-/>",      "<cmd>Telescope live_grep<cr>",           desc = "Find by Grep" },
     { "<leader>'",  "<cmd>Telescope buffers<cr>",             desc = "['] Find existing buffers" },
     { "<leader>ft", "<cmd>Telescope help_tags<cr>",           desc = "Search help tags" },
@@ -31,14 +38,14 @@ return {
     telescope.setup {
       pickers = {
         live_grep = {
-          file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+          file_ignore_patterns = { 'node_modules', '.git'},
           additional_args = function(_)
             return { "--hidden" }
           end
         },
         find_files = {
-          file_ignore_patterns = { 'node_modules', '.git', '.venv' },
-          hidden = true
+          file_ignore_patterns = { 'node_modules', '.git' },
+          hidden = true,
         }
       },
       defaults = {
