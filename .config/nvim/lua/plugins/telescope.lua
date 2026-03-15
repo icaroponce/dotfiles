@@ -49,9 +49,13 @@ return {
         }
       },
       defaults = {
+        layout_strategy = "vertical",
         layout_config = {
-          horizontal = {
-            width = 0.8
+          vertical = {
+            width = 0.9,
+            height = 0.9,
+            preview_height = 0.5,
+            preview_cutoff = 20,
           }
         },
         mappings = {
