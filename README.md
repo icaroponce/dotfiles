@@ -33,6 +33,7 @@ Managed with [GNU Stow](https://www.gnu.org/software/stow/).
 ├── .xserverrc        # X server config (Linux)
 ├── .profile          # -> .config/shell/profile
 ├── .zprofile         # -> .config/shell/profile
+├── .zshenv           # Sets ZDOTDIR, sources .config/zsh/.zshenv (zsh bootstrap)
 ├── .nix-channels     # Nix channels
 └── etc/              # System config references (manual, see below)
 ```
@@ -46,7 +47,7 @@ Managed with [GNU Stow](https://www.gnu.org/software/stow/).
 ```bash
 yay -S stow
 git clone git@github.com:you/dotfiles.git ~/dotfiles
-cd ~/dotfiles && stow .
+cd ~/dotfiles && stow -t ~ .
 
 # Kitty font size override (Linux uses smaller size than macOS default)
 ln -sf kitty.linux.conf ~/.config/kitty/kitty.local.conf
@@ -60,7 +61,7 @@ cd ~/.config/xmonad && just build
 ```bash
 brew install stow
 git clone git@github.com:you/dotfiles.git ~/dotfiles
-cd ~/dotfiles && stow .
+cd ~/dotfiles && stow -t ~ .
 
 # Kitty font size: macOS default (18) is already set in kitty.conf — nothing to do
 ```
@@ -68,7 +69,7 @@ cd ~/dotfiles && stow .
 ### After adding or removing files from dotfiles
 
 ```bash
-cd ~/dotfiles && stow -R .
+cd ~/dotfiles && stow -t ~ -R .
 ```
 
 ---
@@ -98,13 +99,21 @@ Binary must be at `~/.local/bin/xmonad-x86_64-linux`. See [xmonad/README.md](.co
 
 ---
 
-## Startup Flow (Linux)
+## Startup Flow
+
+### Linux
 
 1. **Login** → `.zprofile` → `.config/shell/profile`
 2. **startx** → `.xinitrc` which:
    - Loads `.Xresources`
    - Sets wallpaper via `feh`
    - Executes `xmonad-x86_64-linux`
+
+### macOS / zsh
+
+1. **Every shell** → `.zshenv` (sets `ZDOTDIR`, sources `.config/zsh/.zshenv` for PATH/env)
+2. **Login shell** → `.zprofile` → `.config/shell/profile` (editor, browser, brew, etc.)
+3. **Interactive shell** → `.config/zsh/.zshrc`
 
 ---
 
@@ -143,7 +152,7 @@ Binary must be at `~/.local/bin/xmonad-x86_64-linux`. See [xmonad/README.md](.co
 
 ### macOS only
 - **Package manager**: homebrew
-- **Font**: `brew install --cask font-hack-nerd-font`
+- **Fonts**: `brew install --cask font-hack-nerd-font font-liberation-nerd-font`
 
 ---
 
