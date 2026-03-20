@@ -18,6 +18,10 @@ map("<leader>rq", ht.repl.quit,                                                 
 
 -- Hoogle
 map("<leader>hs", ht.hoogle.hoogle_signature,                                    "Haskell: Hoogle search signature")
+map("<leader>hq", function()
+  local query = vim.fn.input("Hoogle: ")
+  if query ~= "" then ht.hoogle.hoogle_signature({ search_term = query }) end
+end,                                                                              "Haskell: Hoogle free query")
 
 -- Code lenses & eval
 map("<leader>cl", vim.lsp.codelens.run,                                          "Haskell: run code lens")
