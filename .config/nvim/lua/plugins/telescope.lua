@@ -8,25 +8,25 @@ return {
   },
   cmd = "Telescope",
   keys = {
-    { "<C-p>",      "<cmd>Telescope find_files<cr>",          desc = "Find Files" },
+    { "<C-p>",      "<cmd>Telescope find_files<cr>",          desc = "Telescope: Find Files" },
     { "<leader>fF", function()
         require("telescope.builtin").find_files({
           hidden = true,
           no_ignore = true,
           file_ignore_patterns = { 'node_modules/', '%.git/', 'dist/', 'tmp/', 'logs/', '%.cache/' },
         })
-      end, desc = "Find Files (no gitignore)" },
-    { "<C-/>",      "<cmd>Telescope live_grep<cr>",           desc = "Find by Grep" },
-    { "<leader>'",  "<cmd>Telescope buffers<cr>",             desc = "['] Find existing buffers" },
-    { "<leader>ft", "<cmd>Telescope help_tags<cr>",           desc = "Search help tags" },
-    { "<leader>fr", "<cmd>Telescope oldfiles<cr>",            desc = "[?] Find recently opened files" },
-    { "<leader>gs", "<cmd>Telescope git_status<cr>",          desc = "Show [G]it [S]tatus" },
-    { "<leader>gr", "<cmd>Telescope lsp_references<cr>",      desc = "Find LSP refences" },
-    { "<leader>km", "<cmd>Telescope keymaps<cr>",             desc = "Find [K]ey[M]aps" },
-    { "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
-    { "<leader>sD", "<cmd>Telescope diagnostics<cr>",         desc = "Workspace diagnostics" },
-    { "<leader>sw", "<cmd>Telescope grep_string<cr>",         desc = "[S]earch current [W]ord" },
-    { "<leader>:",  "<cmd>Telescope command_history<cr>",     desc = "Command history" },
+      end, desc = "Telescope: Find Files (no gitignore)" },
+    { "<C-/>",      "<cmd>Telescope live_grep<cr>",           desc = "Telescope: Live Grep" },
+    { "<leader>'",  "<cmd>Telescope buffers<cr>",             desc = "Telescope: Buffers" },
+    { "<leader>ft", "<cmd>Telescope help_tags<cr>",           desc = "Telescope: Help Tags" },
+    { "<leader>fr", "<cmd>Telescope oldfiles<cr>",            desc = "Telescope: Recent Files" },
+    { "<leader>gs", "<cmd>Telescope git_status<cr>",          desc = "Telescope: Git Status" },
+    { "<leader>gr", "<cmd>Telescope lsp_references<cr>",      desc = "Telescope: LSP References" },
+    { "<leader>km", "<cmd>Telescope keymaps<cr>",             desc = "Telescope: Keymaps" },
+    { "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Telescope: Document Diagnostics" },
+    { "<leader>sD", "<cmd>Telescope diagnostics<cr>",         desc = "Telescope: Workspace Diagnostics" },
+    { "<leader>sw", "<cmd>Telescope grep_string<cr>",         desc = "Telescope: Grep String" },
+    { "<leader>:",  "<cmd>Telescope command_history<cr>",     desc = "Telescope: Command History" },
   },
   config = function()
     local map = vim.keymap.set

@@ -8,7 +8,18 @@ return {
 
   {
     "sindrets/diffview.nvim",
-    cmd = "DiffViewOpen",
+    keys = {
+      { "<leader>do", "<cmd>DiffviewOpen<cr>",            desc = "Diffview: Open" },
+      { "<leader>dc", "<cmd>DiffviewClose<cr>",           desc = "Diffview: Close" },
+      { "<leader>dh", "<cmd>DiffviewFileHistory %<cr>",   desc = "Diffview: File History" },
+      { "<leader>dM", function()
+          local branch = vim.fn.system("git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null")
+            :gsub("refs/remotes/origin/", "")
+            :gsub("\n", "")
+          if branch == "" then branch = "main" end
+          vim.cmd("DiffviewOpen " .. branch)
+        end, desc = "Diffview: Open vs Main" },
+    },
   },
   -- { "plasticboy/vim-markdown", event = "VeryLazy", dependencies = { "godlygeek/tabular" } },
   {
@@ -39,11 +50,7 @@ return {
   {
   "folke/which-key.nvim",
   event = "VeryLazy",
-  opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
-  },
+  opts = {},
   keys = {
     {
       "<leader>?",
