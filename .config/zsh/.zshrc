@@ -1,6 +1,29 @@
 ## Enable colors
 autoload -U colors && colors
-PROMPT=" %F{032}%1~ %F{105}λ%f "
+
+# Git branch + dirty state in prompt
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:git:*' unstagedstr '%F{red}*%f'
+zstyle ':vcs_info:git:*' stagedstr '%F{222}+%f'
+zstyle ':vcs_info:git:*' formats '%F{216}(%b)%f%u%c '
+
+# Vi mode indicator: blank in insert, [N] in normal
+VI_MODE=""
+function zle-keymap-select {
+  [[ $KEYMAP == vicmd ]] && VI_MODE="%F{red}[N]%f " || VI_MODE=""
+  zle reset-prompt
+}
+function zle-line-init { VI_MODE=""; zle reset-prompt }
+zle -N zle-keymap-select
+zle -N zle-line-init
+
+setopt PROMPT_SUBST
+PROMPT=' %F{032}%1~ ${vcs_info_msg_0_}${VI_MODE}%F{105}λ%f '
+
+# Show exit code in right prompt on failure
+RPROMPT='%(?..%F{red}%? ↵%f)'
 
 setopt AUTOCD		# Automatically cd into typed directory 
 setopt INTERACTIVE_COMMENTS # Allow comments even in interactive shells.
