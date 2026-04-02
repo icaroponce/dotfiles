@@ -1,9 +1,7 @@
 # convenient aliases for editing configs
 alias \
-	cfa="vim ~/.config/alacritty/alacritty.yml" \
-	cfv="vim ~/.config/nvim/init.lua" \
-	cfi="vim ~/.config/i3/config" \
-	cfz="vim ~/.config/zsh/.zshrc" \
+	cfv="nvim ~/.config/nvim/init.lua" \
+	cfz="nvim ~/.config/zsh/.zshrc" \
 	soz="source ~/.config/zsh/.zshrc"
 
 alias \
@@ -24,7 +22,7 @@ else
 fi
 # docker remove exited containers
 alias docrme='docker rm -v $(docker ps -qa -f status=exited)'
-# docker pause and remove 
+# docker pause and remove
 alias docsr='docker rm $(docker stop $(docker ps -q))'
 
 # Verbosity and settings that you pretty much just always are going to want.
