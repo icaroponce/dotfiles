@@ -9,8 +9,7 @@ setopt DVORAK
 setopt RM_STAR_WAIT
 
 ## Load aliases and other stuff if existent:
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc"
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
+[ -f "${ZDOTDIR}/aliases.zsh" ] && source "${ZDOTDIR}/aliases.zsh"
 
 HISTSIZE=10000000
 SAVEHIST=10000000
@@ -67,7 +66,7 @@ export FZF_DEFAULT_COMMAND='rg --files'
 
 eval "$(pyenv init -)"
 
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/p" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/p"
+[ -f "${ZDOTDIR}/private.zsh" ] && source "${ZDOTDIR}/private.zsh"
 
 source "${ZDOTDIR}/plugins/zsh-autosuggestions.zsh"
 source "${ZDOTDIR}/plugins/zsh-syntax-highlighting.zsh"
