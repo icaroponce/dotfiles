@@ -8,8 +8,7 @@ alias \
 	vim="nvim" \
 	vi="nvim" \
 	v="nvim" \
-	j="jump" \
-	s="bookmark" \
+	j="zi" \
 	n="newsboat" \
 	b="buku --suggest" \
 	c="calcurse"

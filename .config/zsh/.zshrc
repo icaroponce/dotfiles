@@ -80,11 +80,25 @@ eval "$(thefuck --alias)"
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 
-# Fuzzy matching vim pluging junegunn/fzf with ripgrep for listing
-export PATH=$PATH:~/.vim/pack/minpac/start/fzf/bin
-export FZF_DEFAULT_COMMAND='rg --files'
+# Don't record noise into zoxide — redefines the hook set by the eval above
+function __zoxide_hook() {
+    local pwd="$(__zoxide_pwd)"
+    case "$pwd" in
+        */.cache|*/.cache/*) return ;;
+        */node_modules|*/node_modules/*) return ;;
+        */.npm|*/.npm/*) return ;;
+    esac
+    \command zoxide add -- "$pwd"
+}
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# fzf shell integration
+if [[ "$OSTYPE" == darwin* ]]; then
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+else
+  [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
+  [ -f /usr/share/fzf/completion.zsh ]   && source /usr/share/fzf/completion.zsh
+fi
+export FZF_DEFAULT_COMMAND='rg --files'
 
 
 eval "$(pyenv init -)"
