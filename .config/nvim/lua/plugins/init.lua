@@ -34,6 +34,7 @@ return {
     build = "cd app && yarn install",
     init = function()
       vim.g.mkdp_filetypes = { "markdown" }
+      vim.g.mkdp_preview_options = { maid = {} }
     end,
     ft = { "markdown" },
   },
