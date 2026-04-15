@@ -99,6 +99,15 @@ else
   [ -f /usr/share/fzf/completion.zsh ]   && source /usr/share/fzf/completion.zsh
 fi
 export FZF_DEFAULT_COMMAND='rg --files'
+# Ctrl-L: pick a subdir with fzf (bypasses fzf's --walker which ignores FZF_DEFAULT_COMMAND on TTY)
+function _fzf_cd() {
+    local dir
+    dir=$(fd --type d --max-depth 4 --exclude node_modules 2>/dev/null | fzf +m) \
+        && cd "$dir"
+    zle reset-prompt
+}
+zle -N _fzf_cd
+bindkey '^L' _fzf_cd
 
 
 eval "$(pyenv init -)"
