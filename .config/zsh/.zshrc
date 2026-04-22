@@ -107,7 +107,7 @@ function _fzf_cd() {
     zle reset-prompt
 }
 zle -N _fzf_cd
-bindkey '^L' _fzf_cd
+bindkey '^G' _fzf_cd
 
 
 eval "$(pyenv init -)"
