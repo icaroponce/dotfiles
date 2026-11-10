@@ -13,9 +13,9 @@ return {
       { "<leader>dc", "<cmd>DiffviewClose<cr>",           desc = "Diffview: Close" },
       { "<leader>dh", "<cmd>DiffviewFileHistory %<cr>",   desc = "Diffview: File History" },
       { "<leader>dM", function()
-          local branch = vim.fn.system("git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null")
-            :gsub("refs/remotes/origin/", "")
-            :gsub("\n", "")
+          local out = vim.fn.system("git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null")
+          local lines = vim.split(out, "\n", { trimempty = true })
+          local branch = (lines[#lines] or ""):gsub("^refs/remotes/origin/", "")
           if branch == "" then branch = "main" end
           vim.cmd("DiffviewOpen " .. branch)
         end, desc = "Diffview: Open vs Main" },

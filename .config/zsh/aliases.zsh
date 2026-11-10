@@ -33,6 +33,9 @@ alias \
     mkd="mkdir -pv" \
     history="history -10000000"
 
+# exa was renamed to eza
+alias exa="eza"
+
 # Colorize commands when possible.
 alias \
     grep="grep --color=auto" \

@@ -134,7 +134,6 @@ return {
       local servers = {
         pylsp = {},
         eslint = {},
-        ts_ls = {},
         elmls = {},
         lua_ls = {
           settings = {

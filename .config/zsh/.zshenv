@@ -42,7 +42,9 @@ path=(
     /opt/i3-lock-fancy-rapid
     $path
 )
+
+[[ "$(uname)" == "Darwin" ]] && path=(/opt/homebrew/share/google-cloud-sdk/bin $path)
 export PATH
 
-[ -x "$(command -v yarn)" ] && export PATH=$(yarn global bin):$PATH
+[ -x "$(command -v yarn)" ] && export PATH=$(yarn global bin 2>/dev/null):$PATH
 [ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"

@@ -80,6 +80,9 @@ eval "$(thefuck --alias)"
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 
+# gcloud
+[[ "$(uname)" == "Darwin" ]] && source /opt/homebrew/share/google-cloud-sdk/completion.zsh.inc
+
 # Don't record noise into zoxide — redefines the hook set by the eval above
 function __zoxide_hook() {
     local pwd="$(__zoxide_pwd)"
