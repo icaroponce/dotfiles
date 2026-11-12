@@ -34,9 +34,16 @@ setopt RM_STAR_WAIT
 ## Load aliases and other stuff if existent:
 [ -f "${ZDOTDIR}/aliases.zsh" ] && source "${ZDOTDIR}/aliases.zsh"
 
+# History: state dir (not cache, which can be wiped), shared across windows
+mkdir -p ~/.local/state/zsh ~/.cache/zsh
+HISTFILE=~/.local/state/zsh/history
 HISTSIZE=10000000
 SAVEHIST=10000000
-HISTFILE=~/.cache/zsh/history
+setopt SHARE_HISTORY        # write each command at once, read other windows' commands
+setopt EXTENDED_HISTORY     # keep the timestamp and duration of each command
+setopt HIST_IGNORE_DUPS     # skip a command identical to the previous one
+setopt HIST_IGNORE_SPACE    # a command typed with a leading space is not saved
+setopt HIST_REDUCE_BLANKS   # trim extra blanks
 
 # Completion:
 autoload -Uz compinit
@@ -44,6 +51,9 @@ zstyle ':completion:*' menu select
 # Auto complete with case insenstivity
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zmodload zsh/complist
+# git: complete all commands, not just the common ones. No alias-commands: the wrapper's alias helper needs
+# `git help --aliases-for-completion`, which Apple's /usr/bin/git (2.39, first in PATH) lacks.
+zstyle ':completion:*:*:git:*' tag-order 'common-commands all-commands'
 compinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION
 _comp_options+=(globdots)		# Include hidden files.
 
