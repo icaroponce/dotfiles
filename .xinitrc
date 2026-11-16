@@ -4,4 +4,6 @@ wallpaper=~/dotfiles/wallpapers/solar-system.jpg
 
 xrdb -merge $userresources
 [ -f "${wallpaper}" ] && feh --bg-scale "$wallpaper"
-exec xmonad-x86_64-linux
+
+# xmonad recompiles ~/.config/xmonad/xmonad.hs itself when it changed.
+exec xmonad
