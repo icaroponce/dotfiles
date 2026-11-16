@@ -146,17 +146,14 @@ Managed by `myStartupHook` via `spawnOnce` (won't re-launch on `Super + q` resta
 
 ## Build & Restart
 
-```bash
-cd ~/.config/xmonad
-./build
-```
+No build step. Edit, then `Super + q` (or `just restart`):
 
-The `build` script:
-1. Runs `stack build` in the xmonad config directory
-2. Hard-links the compiled `xmonadrc` binary to `~/.cache/xmonad/xmonad-x86_64-linux`
-3. Hard-links the compiled `xmobar` binary to `~/.local/bin/xmobar`
+1. xmonad recompiles `xmonad.hs` (binary in `~/.cache/xmonad/`) and restarts in place.
+2. The restart also restarts xmobar, which recompiles `~/.config/xmobar/xmobar.hs` if it changed
+   (binary next to the source, gitignored).
 
-Restart xmonad with `Super + q`.
+`just check` compiles `xmonad.hs` without restarting, to see errors.
+Compile errors: xmonad shows them in an xmessage window; xmobar's go to `~/.local/share/xmobar/xmobar.errors`.
 
 ---
 
@@ -165,8 +162,8 @@ Restart xmonad with `Super + q`.
 | File | Purpose |
 |------|---------|
 | `xmonad.hs` | Main WM config, keybindings, layouts |
-| `xmobar.hs` | Status bar config |
-| `build` | Build script (Stack, GHC 9.6.6, lts-22.43) |
+| `~/.config/xmobar/xmobar.hs` | Status bar config |
+| `justfile` | check / restart / format / lint / repl |
 | `~/.config/dunst/dunstrc` | Notification daemon config |
 
 ---

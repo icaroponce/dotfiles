@@ -1,0 +1,4 @@
+# xmobar compiles xmobar.hs in place
+xmobar
+*.o
+*.hi

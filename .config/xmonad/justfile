@@ -1,32 +1,32 @@
 # XMonad config — task runner (https://github.com/casey/just)
 # Usage: just <recipe>
+#
+# No build step: xmonad compiles xmonad.hs and xmobar compiles ../xmobar/xmobar.hs
+# themselves (with the ghc on PATH) whenever the source is newer than the binary.
 
-default: build
+default: restart
 
-# Build and install xmonad + xmobar binaries
-build:
-    ./build
+# Compile xmonad.hs only (shows errors, keeps the running xmonad)
+check:
+    xmonad --recompile
+
+# Recompile + restart in place (no logout). The restart also restarts xmobar,
+# which then recompiles xmobar.hs if it changed.
+restart:
+    xmonad --recompile && xmonad --restart
 
 # Format source files in-place
 format:
-    fourmolu --mode inplace xmonad.hs xmobar.hs
+    fourmolu --mode inplace xmonad.hs ../xmobar/xmobar.hs
 
 # Check formatting without modifying files
 format-check:
-    fourmolu --mode check xmonad.hs xmobar.hs
+    fourmolu --mode check xmonad.hs ../xmobar/xmobar.hs
 
 # Lint with HLint
 lint:
-    hlint xmonad.hs xmobar.hs
+    hlint xmonad.hs ../xmobar/xmobar.hs
 
-# Launch GHCi repl
+# Launch GHCi with the config loaded
 repl:
-    stack repl
-
-# Remove build artifacts
-clean:
-    stack clean
-
-# Restart xmonad in-place (no logout needed)
-restart:
-    xmonad --restart
+    ghci xmonad.hs
