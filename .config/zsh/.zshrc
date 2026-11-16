@@ -86,7 +86,7 @@ bindkey '^R' history-incremental-pattern-search-backward
 # Accept command suggestion with ctrl+space
 bindkey '^ ' autosuggest-accept
 
-eval "$(thefuck --alias)"
+command -v thefuck >/dev/null && eval "$(thefuck --alias)"
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 
@@ -107,9 +107,8 @@ function __zoxide_hook() {
 # fzf shell integration
 if [[ "$OSTYPE" == darwin* ]]; then
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-else
-  [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
-  [ -f /usr/share/fzf/completion.zsh ]   && source /usr/share/fzf/completion.zsh
+else  # NixOS: fzf >= 0.48 prints its own integration
+  source <(fzf --zsh)
 fi
 export FZF_DEFAULT_COMMAND='rg --files'
 # Ctrl-L: pick a subdir with fzf (bypasses fzf's --walker which ignores FZF_DEFAULT_COMMAND on TTY)
@@ -123,7 +122,7 @@ zle -N _fzf_cd
 bindkey '^G' _fzf_cd
 
 
-eval "$(pyenv init -)"
+command -v pyenv >/dev/null && eval "$(pyenv init -)"
 
 [ -f "${ZDOTDIR}/private.zsh" ] && source "${ZDOTDIR}/private.zsh"
 
