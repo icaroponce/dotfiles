@@ -273,6 +273,7 @@ myStartupHook = do
   spawnOnce "blueman-applet"
   spawnOnce "unclutter"
   spawnOnce "greenclip daemon"
+  spawnOnce "flameshot" -- daemon: keeps "copy to clipboard" alive after the gui closes
   -- System tray in the 5% xmobar leaves free on the right: 4 slots x 24px = 96px.
   spawnOnce
     "stalonetray --geometry 4x1-0+0 --icon-size 22 --slot-size 24x22 --icon-gravity NE --background '#192330' --window-type dock --window-strut top --kludges force_icons_size --skip-taskbar --sticky"

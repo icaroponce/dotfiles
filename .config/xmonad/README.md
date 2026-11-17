@@ -139,6 +139,7 @@ Managed by `myStartupHook` via `spawnOnce` (won't re-launch on `Super + q` resta
 - `unclutter` — hide cursor when idle
 - `stalonetray` — system tray
 - `greenclip daemon` — clipboard history
+- `flameshot` — screenshot daemon (needed for copy to clipboard)
 
 `autorandr --change` runs on every restart and on monitor plug/unplug.
 
