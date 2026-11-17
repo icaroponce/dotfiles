@@ -23,7 +23,6 @@ Floating windows that persist their state when hidden.
 | Keybinding | Action |
 |------------|--------|
 | `Super + s` | Toggle terminal scratchpad (kitty) |
-| `Super + v` | Toggle volume mixer (pavucontrol) |
 
 ---
 
@@ -62,6 +61,7 @@ Floating windows that persist their state when hidden.
 | `Alt + Space` | Close notification |
 | `Alt + Shift + Space` | Close all notifications |
 | `Alt + Escape` | Show notification history |
+| `Alt + .` | Notification actions menu (rofi), e.g. accept a Bluetooth pairing. Middle-click works too |
 
 ---
 
@@ -125,6 +125,7 @@ Cycle layouts with `Super + Space` (default xmonad):
 - Lxappearance
 - Blueman-manager
 - Arandr
+- pavucontrol (volume mixer, start it from rofi)
 
 ---
 

@@ -97,10 +97,10 @@ appKeys =
     ("M1-<Space>", spawn "dunstctl close")
   , ("M1-S-<Space>", spawn "dunstctl close-all")
   , ("M1-<Escape>", spawn "dunstctl history-pop")
+  , ("M1-.", spawn "dunstctl context") -- actions menu (e.g. accept a Bluetooth pairing)
   , -- scratchpads
     ("M-g", gotoMenuConfig windowBringerConfig) -- goto any window
   , ("M-S-g", bringMenuConfig windowBringerConfig) -- bring any window here
-  , ("M-v", namedScratchpadAction myScratchpads "pavucontrol")
   , ("M-s", namedScratchpadAction myScratchpads "terminal")
   , ("M-c", spawnClipboard)
   ]
@@ -281,11 +281,6 @@ myStartupHook = do
 myScratchpads :: [NamedScratchpad]
 myScratchpads =
   [ NS
-      "pavucontrol"
-      "pavucontrol"
-      (className =? "pavucontrol")
-      (customFloating $ W.RationalRect 0.2 0.15 0.6 0.7)
-  , NS
       "terminal"
       "kitty --class scratchpad"
       (className =? "scratchpad")
@@ -302,6 +297,7 @@ myManageHook =
     , className =? "Lxappearance" --> doCenterFloat
     , className =? "Blueman-manager" --> doCenterFloat
     , className =? "Arandr" --> doCenterFloat
+    , className =? "pavucontrol" --> doCenterFloat
     -- , className =? "stalonetray"     --> doIgnore
     ]
     <> namedScratchpadManageHook myScratchpads
