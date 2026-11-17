@@ -137,7 +137,7 @@ Managed by `myStartupHook` via `spawnOnce` (won't re-launch on `Super + q` resta
 - `nm-applet` — network manager tray icon
 - `blueman-applet` — Bluetooth tray icon
 - `unclutter` — hide cursor when idle
-- `trayer` — system tray
+- `stalonetray` — system tray
 - `greenclip daemon` — clipboard history
 
 `autorandr --change` runs on every restart and on monitor plug/unplug.
