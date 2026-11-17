@@ -125,7 +125,7 @@ Cycle layouts with `Super + Space` (default xmonad):
 - Lxappearance
 - Blueman-manager
 - Arandr
-- pavucontrol (volume mixer, start it from rofi)
+- pavucontrol, pwvucontrol (volume mixers, start them from rofi)
 
 ---
 

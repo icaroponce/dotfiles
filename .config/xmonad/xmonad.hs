@@ -301,6 +301,7 @@ myManageHook =
     , className =? "Blueman-manager" --> doCenterFloat
     , className =? "Arandr" --> doCenterFloat
     , className =? "pavucontrol" --> doCenterFloat
+    , className =? "pwvucontrol" --> doCenterFloat
     -- , className =? "stalonetray"     --> doIgnore
     ]
     <> namedScratchpadManageHook myScratchpads
