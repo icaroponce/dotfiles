@@ -9,8 +9,6 @@ alias \
 	vi="nvim" \
 	v="nvim" \
 	j="zi" \
-	n="newsboat" \
-	b="buku --suggest" \
 	c="calcurse"
 
 # clipboard

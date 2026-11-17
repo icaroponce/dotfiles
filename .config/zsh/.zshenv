@@ -7,7 +7,7 @@ export EDITOR="nvim"
 export VISUAL=$EDITOR
 export USE_EDITOR=$EDITOR
 export TERMINAL="kitty"
-export FILE="ranger"
+export FILE="yazi"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"

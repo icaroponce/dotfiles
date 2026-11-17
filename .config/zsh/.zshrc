@@ -86,7 +86,7 @@ bindkey '^R' history-incremental-pattern-search-backward
 # Accept command suggestion with ctrl+space
 bindkey '^ ' autosuggest-accept
 
-command -v thefuck >/dev/null && eval "$(thefuck --alias)"
+eval "$(pay-respects zsh --alias fuck)" # successor of thefuck
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 
