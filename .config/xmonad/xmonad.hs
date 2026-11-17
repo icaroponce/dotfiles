@@ -7,7 +7,6 @@ import XMonad.Util.Loggers
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.NamedWindows (getName)
 import XMonad.Util.SpawnOnce
-import XMonad.Util.Ungrab
 
 import XMonad.Layout.ResizableTile (MirrorResize (..), ResizableTall (..))
 import XMonad.Layout.ThreeColumns
@@ -90,7 +89,8 @@ appKeys =
   , ("M-d", spawnLauncher)
   , ("M-S-q", lockscreen)
   , -- printscreen bindings
-    ("<Print>", unGrab *> printscreenFlameshot)
+    ("<Print>", unGrab *> spawn "flameshot gui --clipboard --accept-on-select") -- select = copied
+  , ("S-<Print>", unGrab *> spawn "flameshot gui") -- full editor (annotate, save, ...)
   , ("M-S-<Print>", unGrab *> printscreen "-s")
   , ("M-<Print>", unGrab *> printscreen "-u")
   , -- dunst bindings
@@ -113,9 +113,6 @@ appKeys =
 
     printscreen :: String -> X ()
     printscreen flag = spawn $ "scrot " <> flag <> " ~/Screenshots/$(date '+%Y-%m-%dT%H:%M:%S.png')"
-
-    printscreenFlameshot :: X ()
-    printscreenFlameshot = spawn "flameshot gui"
 
     spawnClipboard :: X ()
     spawnClipboard = spawn "rofi -modi 'clipboard:greenclip print' -show clipboard -theme gruvbox-dark"

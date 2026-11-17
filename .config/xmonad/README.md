@@ -71,7 +71,8 @@ Saved to `~/Screenshots/`
 
 | Keybinding | Action |
 |------------|--------|
-| `Print` | Flameshot GUI |
+| `Print` | Flameshot: select an area, it is copied to the clipboard |
+| `Shift + Print` | Flameshot full editor (annotate, save, ...) |
 | `Super + Shift + Print` | Selection screenshot (scrot `-s`) |
 | `Super + Print` | Upload screenshot (scrot `-u`) |
 
