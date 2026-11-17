@@ -1,3 +1,6 @@
+> **Archive:** this branch is the state of these dotfiles on **Arch Linux**, before moving to NixOS
+> (November 2026). It is kept for reference only and no longer updated. Current dotfiles: `master`.
+
 # Personal Dotfiles
 
 Arch Linux + macOS setup with xmonad, kitty, neovim, zsh, and more.
