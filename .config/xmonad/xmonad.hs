@@ -129,6 +129,8 @@ mediaKeys =
   , ("<XF86AudioNext>", play "next")
   , ("<XF86AudioPlay>", play "play-pause")
   , ("<XF86AudioPause>", play "play-pause")
+  , ("<XF86MonBrightnessUp>", spawn "brightnessctl set 5%+")
+  , ("<XF86MonBrightnessDown>", spawn "brightnessctl set 5%- --min-value=1")
   ]
   where
     volume :: String -> X ()
@@ -273,6 +275,7 @@ myStartupHook = do
   spawnOnce "blueman-applet"
   spawnOnce "unclutter"
   spawnOnce "greenclip daemon"
+  spawnOnce "xss-lock -- i3lock-fancy-rapid 5 3" -- lock before suspend (idle lock is off: `xset s off` in .xinitrc)
   spawnOnce "flameshot" -- daemon: keeps "copy to clipboard" alive after the gui closes
   -- System tray in the 5% xmobar leaves free on the right: 4 slots x 24px = 96px.
   spawnOnce
