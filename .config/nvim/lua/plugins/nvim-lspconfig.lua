@@ -135,6 +135,7 @@ return {
         pylsp = {},
         eslint = {},
         elmls = {},
+        nixd = {},
         lua_ls = {
           settings = {
             Lua = {
