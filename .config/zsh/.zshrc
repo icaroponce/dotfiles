@@ -121,9 +121,6 @@ function _fzf_cd() {
 zle -N _fzf_cd
 bindkey '^G' _fzf_cd
 
-
-command -v pyenv >/dev/null && eval "$(pyenv init -)"
-
 [ -f "${ZDOTDIR}/private.zsh" ] && source "${ZDOTDIR}/private.zsh"
 
 source "${ZDOTDIR}/plugins/zsh-autosuggestions.zsh"
@@ -155,9 +152,6 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc  # also run on shell init
-
-# opencode
-export PATH=/home/icaro/.opencode/bin:$PATH
 
 # ── Haskell ───────────────────────────────────────────────────────────────────
 new-hs() {

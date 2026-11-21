@@ -34,12 +34,9 @@ export NVM_DIR="$HOME/.config/.nvm"
 [[ "$(uname)" == "Darwin" ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
 path=(
-    $HOME/.opencode/bin
     $HOME/.local/bin
     $HOME/.cargo/bin
     $HOME/.cabal/bin
-    $HOME/.ghcup/bin
-    /opt/i3-lock-fancy-rapid
     $path
 )
 
@@ -47,4 +44,3 @@ path=(
 export PATH
 
 [ -x "$(command -v yarn)" ] && export PATH=$(yarn global bin 2>/dev/null):$PATH
-[ -x "$(command -v pyenv)" ] && eval "$(pyenv init -)"
