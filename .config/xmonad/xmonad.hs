@@ -272,11 +272,11 @@ myStartupHook = do
   spawnOnce "blueman-applet"
   spawnOnce "unclutter"
   spawnOnce "greenclip daemon"
-  spawnOnce "xss-lock -- i3lock-fancy-rapid 5 3" -- lock before suspend (idle lock is off: `xset s off` in .xinitrc)
+  spawnOnce "xss-lock -- i3lock-fancy-rapid 5 3" -- locks on idle (xset s in .xinitrc) and before suspend
   spawnOnce "flameshot" -- daemon: keeps "copy to clipboard" alive after the gui closes
-  -- System tray in the 5% xmobar leaves free on the right: 4 slots x 24px = 96px.
+  -- System tray in the 96px xmobar leaves free on the right: 4 slots x 24px, 16px icons (padding).
   spawnOnce
-    "stalonetray --geometry 4x1-0+0 --icon-size 22 --slot-size 24x22 --icon-gravity NE --background '#192330' --window-type dock --window-strut top --kludges force_icons_size --skip-taskbar --sticky"
+    "stalonetray --geometry 4x1-0+0 --icon-size 16 --slot-size 24x22 --icon-gravity NE --background '#192330' --window-type dock --window-strut top --kludges force_icons_size --skip-taskbar --sticky"
 
 myScratchpads :: [NamedScratchpad]
 myScratchpads =

@@ -12,7 +12,7 @@ xset s 900 0
 xset dpms 960 960 960
 
 xrdb -merge $userresources
-[ -f "${wallpaper}" ] && feh --bg-scale "$wallpaper"
+[ -f "${wallpaper}" ] && feh --no-fehbg --bg-fill "$wallpaper"
 
 # xmonad recompiles ~/.config/xmonad/xmonad.hs itself when it changed.
 exec xmonad
