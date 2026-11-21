@@ -154,9 +154,19 @@ add-zsh-hook chpwd load-nvmrc
 load-nvmrc  # also run on shell init
 
 # ── Haskell ───────────────────────────────────────────────────────────────────
+# With Nix: the haskell template from nix-config (cabal + direnv). Without: stack.
 new-hs() {
   local name=$1
   if [[ -z "$name" ]]; then echo "Usage: new-hs <project-name>"; return 1; fi
+  if command -v nix >/dev/null && [[ -d ~/nix-config/templates/haskell ]]; then
+    mkdir "$name" && cd "$name" || return 1
+    nix flake init -t ~/nix-config#haskell || return 1
+    mv project.cabal "$name.cabal"
+    sed -i.bak "s/project/$name/g" "$name.cabal" && rm -f ./*.bak
+    git init -q && git add -A # flakes only see tracked files
+    direnv allow && direnv exec . cabal build
+    return
+  fi
   stack new "$name" simple --resolver "ghc-$(ghc --numeric-version)"
   cp ~/.config/haskell/fourmolu.yaml "$name/"
   cp ~/.config/haskell/justfile "$name/"
