@@ -26,7 +26,7 @@ import XMonad.Actions.WindowGo (runOrRaise)
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops hiding (fullscreenEventHook)
-import XMonad.Hooks.ManageHelpers (doCenterFloat)
+import XMonad.Hooks.ManageHelpers (doCenterFloat, doRectFloat, isDialog)
 import XMonad.Hooks.Rescreen
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
@@ -300,7 +300,9 @@ myScratchpads =
 -- the window. Use the SECOND quoted value (res_class) for className matches.
 myManageHook =
   composeAll
-    [ className =? "Galculator" --> doCenterFloat
+    [ isFileChooser --> doRectFloat (W.RationalRect 0.2 0.15 0.6 0.7) -- centered, 60% x 70% (GTK remembers huge sizes)
+    , (isDialog <&&> fmap not isFileChooser) --> doCenterFloat -- other dialogs: centered, own size
+    , className =? "Galculator" --> doCenterFloat
     , className =? "gimp" --> doCenterFloat -- GIMP 3.0 (GTK4) uses lowercase
     , className =? "Lxappearance" --> doCenterFloat
     , className =? "Blueman-manager" --> doCenterFloat
@@ -310,3 +312,5 @@ myManageHook =
     -- , className =? "stalonetray"     --> doIgnore
     ]
     <> namedScratchpadManageHook myScratchpads
+  where
+    isFileChooser = stringProperty "WM_WINDOW_ROLE" =? "GtkFileChooserDialog" -- GTK open/save dialogs
