@@ -86,7 +86,8 @@ appKeys :: Keybindings
 appKeys =
   [ ("M-o", runOrRaise myBrowser (className =? "Brave-browser"))
   , ("M-<Return>", spawn myTerminal)
-  , ("M-d", spawnLauncher)
+  , ("M-d", spawnRofi "combi") -- launcher; Ctrl+Tab / Shift+arrows switch to the calculator
+  , ("M-S-d", spawnRofi "calc") -- calculator: Enter = history, Ctrl+Enter = copy result
   , ("M-S-q", lockscreen)
   , -- printscreen bindings
     ("<Print>", unGrab *> spawn "flameshot gui --clipboard --accept-on-select") -- select = copied
@@ -105,8 +106,15 @@ appKeys =
   , ("M-c", spawnClipboard)
   ]
   where
-    spawnLauncher :: X ()
-    spawnLauncher = spawn $ myLauncher <> " -combi-mode window,drun,ssh -theme gruvbox-dark -show combi"
+    -- calc (rofi-calc plugin) is its own mode: it shows no results inside combi.
+    spawnRofi :: String -> X ()
+    spawnRofi mode =
+      spawn $
+        myLauncher
+          <> " -modes combi,calc -combi-mode window,drun,ssh"
+          <> " -calc-command \"echo -n '{result}' | xclip -selection clipboard\""
+          <> " -theme gruvbox-dark -show "
+          <> mode
 
     lockscreen :: X ()
     lockscreen = spawn "i3lock-fancy-rapid 5 3"

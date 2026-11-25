@@ -8,8 +8,16 @@ alias \
 	vim="nvim" \
 	vi="nvim" \
 	v="nvim" \
-	j="zi" \
 	c="calcurse"
+
+# j: zoxide picker (fzf); jumps directly when only one directory matches (--select-1).
+# _ZO_FZF_OPTS replaces zoxide's defaults, so they are repeated here (zoxide 0.10).
+function j {  # `function` keyword: no clash with an old `j` alias on re-source
+    _ZO_FZF_OPTS="--exact --no-sort --bind=ctrl-z:ignore,btab:up,tab:down --cycle --keep-right \
+--border=sharp --height=45% --info=inline --layout=reverse --tabstop=1 --exit-0 --select-1 \
+--preview='\command -p ls -Cp --color=always --group-directories-first {2..}' \
+--preview-window=down,30%,sharp" zi "$@"
+}
 
 # clipboard
 if [ "$(uname)" = "Darwin" ]; then
