@@ -19,6 +19,19 @@ function j {  # `function` keyword: no clash with an old `j` alias on re-source
 --preview-window=down,30%,sharp" zi "$@"
 }
 
+# o: open files with the default app, detached and quiet; no args: pick files with fzf (Tab marks several).
+function o {
+    local opener=xdg-open f
+    [ "$(uname)" = "Darwin" ] && opener=open
+    if [ $# -eq 0 ]; then
+        set -- "${(@f)$(fd --type f --hidden --exclude .git | fzf --multi --height=45% --layout=reverse)}"
+        [ -n "$1" ] || return
+    fi
+    for f in "$@"; do
+        "$opener" "$f" >/dev/null 2>&1 &!
+    done
+}
+
 # clipboard
 if [ "$(uname)" = "Darwin" ]; then
     alias cs="pbcopy"
