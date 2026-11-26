@@ -1,0 +1,15 @@
+# Enter on images: all selected ones in one viewer (nothing selected: the hovered one).
+[[opener.gallery]]
+run = 'nsxiv %s' # n/p to cycle, Enter = thumbnail grid
+orphan = true
+desc = "nsxiv (all selected)"
+for = "linux"
+
+[[opener.gallery]]
+run = 'open -a Preview %s' # one window, thumbnails in the sidebar
+desc = "Preview (all selected)"
+for = "macos"
+
+[[open.prepend_rules]]
+mime = "image/*"
+use = ["gallery", "open"]
