@@ -86,6 +86,7 @@ appKeys :: Keybindings
 appKeys =
   [ ("M-o", runOrRaise myBrowser (className =? "Brave-browser"))
   , ("M-<Return>", spawn myTerminal)
+  , ("M-y", spawn (myTerminal <> " yazi")) -- file manager
   , ("M-d", spawnRofi "combi") -- launcher; Ctrl+Tab / Shift+arrows switch to the calculator
   , ("M-S-d", spawnRofi "calc") -- calculator: Enter = history, Ctrl+Enter = copy result
   , ("M-S-q", lockscreen)

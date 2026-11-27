@@ -32,6 +32,15 @@ function o {
     done
 }
 
+# y: yazi; on quit (q) the shell cds to the directory yazi was in (Q quits without cd).
+function y {
+    local tmp="$(mktemp -t yazi-cwd.XXXXXX)" cwd
+    yazi "$@" --cwd-file="$tmp"
+    cwd="$(command cat -- "$tmp")"
+    [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
+}
+
 # clipboard
 if [ "$(uname)" = "Darwin" ]; then
     alias cs="pbcopy"
