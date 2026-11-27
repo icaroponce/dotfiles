@@ -24,9 +24,7 @@ config =
     , sepChar = "%"
     , alignSep = "}{"
     , template =
-        "%hasIcon% | %XMonadLog% }{ "
-          <> inIconFont "\61480"
-          <> "%vol% | %battery% | %cpu% | %memory% | %EDDB% | %date%"
+        "%hasIcon% | %XMonadLog% }{ %bright% | %vol% | %battery% | %cpu% | %memory% | %EDDB% | %date%"
     }
 
 myCommands :: [Runnable]
@@ -67,11 +65,18 @@ myCommands =
       Com
         "bash"
         [ "-c"
-        , "pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\\d+(?=%)' | head -1 | awk '{print \"Vol: \" $1 \"%\"}'"
+        , "v=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\\d+(?=%)' | head -1); "
+            <> "if pactl get-sink-mute @DEFAULT_SINK@ | grep -q yes; "
+            <> ("then echo '" <> inIconFont "\984927" <> red "Muted" <> "'; ")
+            <> ("else echo '" <> inIconFont "\61480" <> "'\"$v\"'%'; fi")
         ]
         "vol"
         (2 `seconds`)
-  , Run $ Memory ["--template", inAltIconFont "🧠" <> ": <usedratio>%"] (10 `seconds`)
+  , Run $
+      Brightness
+        ["--template", inIconFont "\983263" <> "<percent>%", "--", "-D", "intel_backlight"]
+        (2 `seconds`)
+  , Run $ Memory ["--template", inAltIconFont "🧠" <> " <usedratio>%"] (10 `seconds`)
   , Run $ Date ("%a %Y-%m-%d " <> cyan "%H:%M") "date" (10 `seconds`)
   , Run $
       Battery
@@ -93,7 +98,7 @@ myCommands =
         , "--off"
         , "<left> (<timeleft>)" -- AC off.
         , "--on"
-        , inIconFont "\61671" <> yellow "Charging" <> ": <left> (<timeleft>)" -- AC on.
+        , inIconFont "\61671" <> yellow "Charging" <> " <left> (<timeleft>)" -- AC on.
         , "--idle"
         , inIconFont "\61926" <> green "Charged" <> " <left>" -- Fully charged.
         -- Charge strings.  These go _in front_ of the @AC off@ string,
@@ -142,7 +147,8 @@ colorCyan :: String = "#63cdcf"
 colorBlue :: String = "#86abdc"
 colorPurple :: String = "#7b6f9c"
 
-purple, cyan, green, yellow :: String -> String
+purple, cyan, green, yellow, red :: String -> String
+red = xmobarColor colorRed ""
 purple = xmobarColor colorPurple ""
 green = xmobarColor colorGreen ""
 yellow = xmobarColor colorYellow ""
