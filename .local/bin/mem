@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# mem: memory per program (all its processes summed), top 10 or `mem N`.
+# Linux: PSS (shared memory split between processes); Mac: RSS.
+if [ -r /proc/self/smaps_rollup ]; then
+    awk 'NR == FNR {p = $1; $1 = ""; name[p] = substr($0, 2); next}
+        {split($1, a, "/"); print $2, name[a[3]]}' \
+        <(ps -axo pid=,comm=) <(grep -s '^Pss:' /proc/[0-9]*/smaps_rollup)
+else
+    ps -axo rss=,comm=
+fi | awk '{k = $1; $1 = ""; m[substr($0, 2)] += k}
+    END {for (c in m) printf "%6.0f MiB  %s\n", m[c] / 1024, c}' | sort -rn | head -${1:-10}

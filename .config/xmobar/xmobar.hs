@@ -24,7 +24,11 @@ config =
     , sepChar = "%"
     , alignSep = "}{"
     , template =
-        "%hasIcon% | %XMonadLog% }{ %bright% | %vol% | %battery% | %cpu% | %memory% | %EDDB% | %date%"
+        "%hasIcon% | %XMonadLog% }{ %bright% | %vol% | %battery% | "
+          <> onClick (popup "100c" "30c" "htop -s PERCENT_CPU") "%cpu%" -- live, sorted by CPU
+          <> " | "
+          <> onClick (popup "40c" "16c" "zsh -c 'mem 15; read -sk1'") "%memory%" -- any key closes
+          <> " | %EDDB% | %date%"
     }
 
 myCommands :: [Runnable]
@@ -183,6 +187,20 @@ xmobarColor ::
 xmobarColor fg bg = wrap open "</fc>"
   where
     open :: String = concat ["<fc=", fg, if null bg then "" else "," <> bg, ">"]
+
+-- | Left click on a template part runs a command.
+onClick :: String -> String -> String
+onClick cmd s = "<action=`" <> cmd <> "` button=1>" <> s <> "</action>"
+
+-- | Command in a small kitty window (width, height in cells); xmonad floats it centered.
+popup :: String -> String -> String -> String
+popup w h cmd =
+  unwords
+    [ "kitty --class xmobar-popup -o remember_window_size=no"
+    , "-o initial_window_width=" <> w
+    , "-o initial_window_height=" <> h
+    , cmd
+    ]
 
 {-----------------------------------FONTS-----------------------------------}
 mainFont :: String

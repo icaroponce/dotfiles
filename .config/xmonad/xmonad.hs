@@ -310,6 +310,7 @@ myManageHook =
     , className =? "Arandr" --> doCenterFloat
     , className =? "pavucontrol" --> doCenterFloat
     , className =? "pwvucontrol" --> doCenterFloat
+    , className =? "xmobar-popup" --> doCenterFloat -- mem/htop from clicking xmobar
     -- , className =? "stalonetray"     --> doIgnore
     ]
     <> namedScratchpadManageHook myScratchpads
